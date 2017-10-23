@@ -1,7 +1,7 @@
 language: php
 php:
-- 7.1
-- 7.2
+  - 7.1
+  - 7.2
 matrix:
   fast_finish: true
 sudo: true
@@ -14,7 +14,7 @@ install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --prefer-dist --no-interaction
 script:
-  - php vendor/bin/codecept run --coverage --coverage-xml
+  - bash run-tests.sh
 after_script:
   - travis_retry wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage/coverage.clover

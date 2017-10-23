@@ -10,4 +10,4 @@ require __DIR__ . '/../../../vendor/autoload.php';
 
 $isLumen = class_exists('\Laravel\Lumen\Application');
 
-return ($isLumen ? require __DIR__ . '/lumen.php' : __DIR__ . '/laravel.php');
+return require ($isLumen ? __DIR__ . '/lumen.php' : __DIR__ . '/laravel.php');

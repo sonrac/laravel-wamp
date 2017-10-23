@@ -8,7 +8,7 @@ build:
   tests:
     override:
       -\
-        command: 'php vendor/bin/codecept run --coverage --coverage-xml'
+        command: 'bash run-tests.sh'
         coverage:
           file: 'tests/_output/coverage.xml'
           format: clover
