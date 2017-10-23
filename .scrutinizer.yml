@@ -7,7 +7,7 @@ build:
               - composer install --prefer-source
   tests:
     override:
-      -\
+      -
         command: 'bash run-tests.sh'
         coverage:
           file: 'tests/_output/coverage.xml'
