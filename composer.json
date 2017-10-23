@@ -4,6 +4,7 @@
     "keywords": [
         "laravel wamp", "lumen wamp", "wamp"
     ],
+    "license": "MIT",
     "authors": [
         {
             "name": "Donii Sergii",
