@@ -1,0 +1,19 @@
+{
+    "name": "conci/minion",
+    "authors": [
+        {
+            "name": "Donii Sergii",
+            "email": "s.donii@conci.info"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "sonrac\\WAMP\\": "src"
+        }
+    },
+    "require": {
+        "voryx/thruway": "^0.4.2",
+        "illuminate/console": "5.*",
+        "illuminate/support": "^5.5"
+    }
+}
