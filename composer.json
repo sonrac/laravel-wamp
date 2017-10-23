@@ -1,9 +1,13 @@
 {
     "name": "conci/minion",
+    "description": "WAMP protocol implementation for laravel & lumen",
+    "keywords": [
+        "laravel wamp", "lumen wamp", "wamp"
+    ],
     "authors": [
         {
             "name": "Donii Sergii",
-            "email": "s.donii@conci.info"
+            "email": "doniysa@doniysa@gmail.com"
         }
     ],
     "autoload": {
