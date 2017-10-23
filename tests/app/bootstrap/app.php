@@ -6,6 +6,8 @@
  * Time: 4:18 PM
  */
 
-$isLumen = !class_exists('\Laravel\Lumen\Application');
+require __DIR__ . '/../../../vendor/autoload.php';
 
-return require  ($isLumen ? require __DIR__ . '/lumen.php' : __DIR__ . '/laravel.php');
+$isLumen = class_exists('\Laravel\Lumen\Application');
+
+return ($isLumen ? require __DIR__ . '/lumen.php' : __DIR__ . '/laravel.php');
