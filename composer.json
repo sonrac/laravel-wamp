@@ -16,9 +16,18 @@
             "sonrac\\WAMP\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "sonrac\\WAMP\\tests\\": "tests"
+        }
+    },
     "require": {
         "voryx/thruway": "^0.4.2",
         "illuminate/console": "5.*",
-        "illuminate/support": "^5.5"
+        "illuminate/support": "5.*"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.3",
+        "symfony/http-kernel": "^3.3"
     }
 }

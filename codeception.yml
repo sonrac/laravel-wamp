@@ -1,0 +1,26 @@
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+actor_suffix: Tester
+coverage:
+    enabled: true
+    include:
+      - src/*
+    exclude:
+      - tests/
+      - vendor/
+settings:
+    bootstrap: _bootstrap.php
+    colors: true
+    memory_limit: 1024M
+modules:
+  enabled:
+    - Lumen:
+        bootstrap: tests/app/bootstrap/app.php
+        environment_file: .env.testing
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
