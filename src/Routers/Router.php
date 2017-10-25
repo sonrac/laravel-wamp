@@ -9,14 +9,16 @@
 namespace sonrac\WAMP\Routers;
 
 use sonrac\WAMP\Contracts\WAMPRouterInterface;
-
+use Thruway\Peer\Router as PeerRouter;
 /**
  * Class Router
  *
  * @package sonrac\WAMP\Routers
  */
-class Router extends BaseRouter implements WAMPRouterInterface
+class Router extends PeerRouter implements WAMPRouterInterface
 {
+    use RouterTrait;
+
     /**
      * RPC router
      *
@@ -31,15 +33,30 @@ class Router extends BaseRouter implements WAMPRouterInterface
      */
     protected $pubSubRouter;
 
+    protected $loop;
     /**
-     * @inheritDoc
+     * Routes
+     *
+     * @var array
+     */
+    protected $routes = [];
+
+    /**
+     * Router constructor.
+     *
+     * @param \sonrac\WAMP\Contracts\RPCRouterInterface    $RPCRouter
+     * @param \sonrac\WAMP\Contracts\PubSubRouterInterface $pubSubRouter
+     * @param \React\EventLoop\LoopInterface|null          $loop
      */
     public function __construct(
         \sonrac\WAMP\Contracts\RPCRouterInterface $RPCRouter,
-        \sonrac\WAMP\Contracts\PubSubRouterInterface $pubSubRouter
+        \sonrac\WAMP\Contracts\PubSubRouterInterface $pubSubRouter,
+        \React\EventLoop\LoopInterface $loop = null
     ) {
         $this->rpcRouter = $RPCRouter;
         $this->pubSubRouter = $pubSubRouter;
+
+        parent::__construct($loop);
     }
 
     /**
@@ -47,7 +64,16 @@ class Router extends BaseRouter implements WAMPRouterInterface
      */
     public function dispatch()
     {
-        // TODO: Implement dispatch() method.
+
+    }
+
+    /**
+     * @param string          $path     Route path
+     * @param \Closure|string $callback Handler
+     */
+    public function addRoute($path, $callback)
+    {
+        $this->routes[$path] = $callback;
     }
 
 }

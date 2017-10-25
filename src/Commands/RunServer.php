@@ -10,6 +10,7 @@ namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
+use Thruway\Transport\RatchetTransportProvider;
 
 /**
  * Class RunServer
@@ -24,7 +25,7 @@ class RunServer extends Command
      *
      * @var string
      */
-    protected $host;
+    protected $host = '127.0.0.1';
 
     /**
      * Wamp realm to used
@@ -45,66 +46,95 @@ class RunServer extends Command
      *
      * @var int
      */
-    protected $port;
+    protected $port = '9090';
 
     /**
      * Run in debug mode. If `in-background` option is disable, logging to storage_path('server-{pid}.log')
      *
      * @var bool
      */
-    protected $debug = false;
+    protected $noDebug = false;
 
     /**
      * Run command in background
      *
      * @var bool
      */
-    protected $inBackground = false;
+    protected $noInBackground = false;
 
-    protected $name = 'Run WAMP server';
+    /**
+     * Run in loop or once
+     *
+     * @var bool
+     */
+    protected $runOnce = false;
+
+    /**
+     * Specify the router protocol as wss
+     *
+     * @var bool
+     */
+    protected $tls = false;
+
+    /**
+     * @var null|string
+     */
+    protected $path = null;
+
+    protected $name = 'run:wamp-server {--realm=?} {--host=?} {--port=?} {--tls?} {--path=?} {--providers=*?} 
+    {--no-loop?} {--debug?} {--in-background?}';
+    protected $signature = 'run:wamp-server
+                                {--realm= : Specify WAMP realm to be used}
+                                {--host= : Specify the router host}
+                                {--port= : Specify the router port}
+                                {--tls : Specify the router protocol as wss}
+                                {--path= : Specify the router path component}
+                                {--providers=* : Register provider classes},
+                                {--no-debug : Disable debug mode.}
+                                {--no-loop : Disable loop runner}
+                                {--no-in-background : Run in background mode with save process pid}
+                                ';
     protected $description = 'Run wamp server';
 
     /**
-     * {@inheritdoc}
+     * Wamp server
+     *
+     * @var null|\sonrac\WAMP\Routers\Router
      */
-    protected function getOptions()
-    {
-        return [
-            ['realm', null, InputOption::VALUE_OPTIONAL, 'Specify WAMP realm to be used'],
-            ['host', null, InputOption::VALUE_OPTIONAL, 'Specify the router host'],
-            ['port', null, InputOption::VALUE_OPTIONAL, 'Specify the router port'],
-            ['tls', null, InputOption::VALUE_NONE, 'Specify the router protocol as wss'],
-            ['path', null, InputOption::VALUE_OPTIONAL, 'Specify the router path component'],
-            ['providers', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Register provider classes'],
-            ['debug', null, InputOption::VALUE_NONE, 'Run in debug mode outputting all trasport messages.'],
-            [
-                'in-background',
-                null,
-                InputOption::VALUE_NONE | InputOption::VALUE_OPTIONAL,
-                'Run in background mode with save process pid'
-            ]
-        ];
-    }
+    protected $WAMPServer = null;
 
     /**
      * Run server handle
+     *
+     * @throws \Exception
      */
-    protected function handle()
+    public function handle()
     {
         $this->parseOptions();
+
+        $this->WAMPServer = app()->wampRouter;
+        $transportProvider = new RatchetTransportProvider($this->host, $this->port);
+
+        $this->WAMPServer->addTransportProvider($transportProvider);
+
+        $this->WAMPServer->start(!$this->runOnce);
     }
 
     /**
      * Merge config & input options
      */
-    protected function parseOptions() {
-        $this->host = $this->getOptionFromInput('host') ?? $this->getConfig('host');
-        $this->port = $this->getOptionFromInput('port') ?? $this->getConfig('port');
-        $this->realm = $this->getOptionFromInput('realm') ?? $this->getConfig('realm');
-        $this->providers = $this->getOptionFromInput('providers') ?? $this->getConfig('providers');
-        $this->tls = $this->getOptionFromInput('tls') ?? $this->getConfig('tls');
-        $this->debug = $this->getOptionFromInput('debug') ?? $this->debug;
-        $this->inBackground = $this->getOptionFromInput('in-background') ?? $this->inBackground;
+    protected function parseOptions()
+    {
+        $this->host = $this->getOptionFromInput('host') ?? $this->getConfig('host', $this->host);
+        $this->port = $this->getOptionFromInput('port') ?? $this->getConfig('port', $this->port);
+        $this->path = $this->getOptionFromInput('path') ?? $this->getConfig('path', $this->path);
+        $this->realm = $this->getOptionFromInput('realm') ?? $this->getConfig('realm', $this->realm);
+        $this->providers = $this->getOptionFromInput('providers') ?? $this->getConfig('providers', $this->providers);
+        $this->tls = $this->getOptionFromInput('tls') ?? $this->getConfig('tls', $this->tls);
+
+        $this->noDebug = $this->getOptionFromInput('no-debug') ?? $this->noDebug;
+        $this->noInBackground = $this->getOptionFromInput('no-in-background') ?? $this->inBackground;
+        $this->runOnce = $this->getOptionFromInput('no-loop') ?? $this->runOnce;
     }
 
     /**
@@ -114,9 +144,10 @@ class RunServer extends Command
      *
      * @return array|null|string
      */
-    protected function getOptionFromInput(string $optionName) {
-        if (!$this->hasOption($optionName)) {
-            return null;
+    protected function getOptionFromInput(string $optionName, $default = null)
+    {
+        if (null === $this->input->getOption($optionName)) {
+            return $default;
         }
 
         return $this->option($optionName);
@@ -126,10 +157,11 @@ class RunServer extends Command
      * Get minion config
      *
      * @param string|null $optName Option name
+     * @param mixed       $default Default value
      *
      * @return array|string|int|null
      */
-    protected function getConfig($optName = null)
+    protected function getConfig($optName = null, $default = null)
     {
         $options = config('minion') ?? [];
 
@@ -137,6 +169,6 @@ class RunServer extends Command
             return $options ?? [];
         }
 
-        return isset($options[$optName]) ? $options[$optName] : null;
+        return isset($options[$optName]) ? $options[$optName] : $default;
     }
 }

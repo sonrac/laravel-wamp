@@ -1,0 +1,26 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: conci
+ * Date: 10/25/17
+ * Time: 2:15 PM
+ */
+
+namespace sonrac\WAMP\Abstracts;
+
+/**
+ * Interface BaseWAMPRouterInterface
+ * Base WAMP router implements
+ *
+ * @package sonrac\WAMP\Abstracts
+ */
+interface BaseWAMPRouterInterface
+{
+    /**
+     * @param array    $config Route config
+     * @param \Closure $runner Callback
+     *
+     * @return mixed
+     */
+    public function group(array $config, \Closure $runner);
+}

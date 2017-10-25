@@ -24,5 +24,5 @@ interface RPCRouterInterface extends WAMPRouterInterface
      *
      * @return mixed
      */
-    public function group(array $config, $runner);
+    public function group(array $config, \Closure $runner);
 }

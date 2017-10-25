@@ -8,7 +8,7 @@
 
 namespace sonrac\WAMP\Contracts;
 
-use Thruway\Peer\RouterInterface as BaseWAMPRouterInterface;
+use sonrac\WAMP\Abstracts\BaseWAMPRouterInterface;
 
 /**
  * Interface RouterInterface
@@ -18,8 +18,4 @@ use Thruway\Peer\RouterInterface as BaseWAMPRouterInterface;
  */
 interface WAMPRouterInterface extends BaseWAMPRouterInterface
 {
-    /**
-     * Dispatch route
-     */
-    public function dispatch();
 }

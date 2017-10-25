@@ -72,6 +72,8 @@ class WAMP
      */
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
 
+    public $router = null;
+
     /**
      * WAMP constructor.
      *
@@ -112,6 +114,24 @@ class WAMP
         ) {
             throw new InvalidWampTransportProvider();
         }
+    }
+
+    /**
+     * Get router
+     *
+     * @return mixed|null|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
+     */
+    public function getRouter() {
+        return $this->router ?? $this->setupRouter();
+    }
+
+    /**
+     * Setup router
+     *
+     * @return mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
+     */
+    protected function setupRouter() {
+        return $this->router = app()->wampRouter;
     }
 
     /**

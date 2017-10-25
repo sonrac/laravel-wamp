@@ -9,7 +9,6 @@
 namespace sonrac\WAMP;
 
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Thruway\Logging\Logger;
 
@@ -44,23 +43,21 @@ class WAMPServiceProvider extends ServiceProvider
          */
         foreach ([
                      'rpcRouter'    => [
-                         'sonrac\WAMP\Contracts\RpcRouterInterface',
+                         'sonrac\WAMP\Contracts\RPCRouterInterface',
                          'sonrac\WAMP\Routers\RPCRouter'
                      ],
                      'pubSubRouter' => [
                          'sonrac\WAMP\Contracts\PubSubRouterInterface',
                          'sonrac\WAMP\Routers\PubSubRouter'
                      ],
-                     'wampRouter' => [
+                     'wampRouter'   => [
                          'sonrac\WAMP\Contracts\WAMPRouterInterface',
                          'sonrac\WAMP\Routers\Router'
                      ]
                  ] as $alias => $abstract) {
 
-            $this->app->singleton($abstract[0], $abstract[1]);
-            $this->app->singleton($alias, function () use ($abstract) {
-                return app()->make($abstract[0]);
-            });
+            $this->app->bind($abstract[0], $abstract[1]);
+            $this->app->alias($abstract[0], $alias);
         }
 
         /**
