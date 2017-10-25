@@ -8,6 +8,9 @@ sudo: true
 cache:
   directories:
     - vendor
+before_install:
+  - sudo pip install codecov
+
 install:
   - travis_retry composer self-update && composer --version
   - travis_retry composer global require "fxp/composer-asset-plugin:~1.0"
@@ -15,6 +18,8 @@ install:
   - travis_retry composer install --prefer-dist --no-interaction
 script:
   - bash run-tests.sh
+after_success:
+  - codecov
 after_script:
   - travis_retry wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage/coverage.clover

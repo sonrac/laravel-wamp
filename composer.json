@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "voryx/thruway": "^0.4.2",
+        "voryx/thruway": "0.5.*",
         "illuminate/console": "5.*",
         "illuminate/support": "5.*"
     },
