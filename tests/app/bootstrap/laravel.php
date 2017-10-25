@@ -19,7 +19,7 @@ $app->singleton(
 
 $app->singleton(
     \Illuminate\Contracts\Console\Kernel::class,
-    \Illuminate\Foundation\Console\Kernel::class
+    \sonrac\WAMP\tests\app\LaravelKernel::class
 );
 
 $app->singleton(

@@ -8,6 +8,8 @@
 
 namespace sonrac\WAMP\Abstracts;
 
+use sonrac\WAMP\Contracts\WAMPRouterInterface;
+
 /**
  * Interface WAMPMiddlewareInterface
  * WAMP middleware implements
@@ -19,8 +21,8 @@ interface WAMPMiddlewareInterface
     /**
      * Handle middleware
      *
-     * @param RouterInterface $router Router
-     * @param \Closure        $next   Next route
+     * @param \sonrac\WAMP\Contracts\WAMPRouterInterface $router Router
+     * @param \Closure                                   $next   Next route
      */
-    public function handle(RouterInterface $router, \Closure $next);
+    public function handle(WAMPRouterInterface $router, \Closure $next);
 }

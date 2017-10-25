@@ -15,17 +15,17 @@ $app->instance('path.storage', app()->basePath() . DIRECTORY_SEPARATOR . 'storag
 
 $app->singleton(
     \Illuminate\Contracts\Http\Kernel::class,
-    \Illuminate\Foundation\Http\Kernel::class
-);
-
-$app->singleton(
-    \Illuminate\Contracts\Console\Kernel::class,
     \Laravel\Lumen\Console\Kernel::class
 );
 
 $app->singleton(
+    \Illuminate\Contracts\Console\Kernel::class,
+    \sonrac\WAMP\tests\app\LumenKernel::class
+);
+
+$app->singleton(
     \Illuminate\Contracts\Debug\ExceptionHandler::class,
-    \Illuminate\Foundation\Exceptions\Handler::class
+    \Laravel\Lumen\Exceptions\Handler::class
 );
 
 return $app;

@@ -12,32 +12,42 @@ namespace Laravel\Lumen {
      *
      * @property \sonrac\WAMP\Contracts\RPCRouterInterface|\sonrac\WAMP\Contracts\RPCRouterInterface $rpcRouter
      * @property \sonrac\WAMP\Contracts\PubSubRouterInterface|\sonrac\WAMP\Routers\PubSubRouter      $pubSubRouter
-     * @property \sonrac\WAMP\WAMP                                                                   $wamp WAMP main
-     *           extractor
+     * @property \sonrac\WAMP\WAMP                                                                   $wamp       WAMP
+     *           main extractor
+     * @property \sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router              $wampRouter WAMP
+     *           complex router
      *
      * @package Laravel\Lumen
      */
-    class Application extends \Illuminate\Container\Container {}
+    class Application extends \Illuminate\Container\Container
+    {
+    }
 }
 
 namespace Illuminate\Foundation {
+
     /**
      * Class Application
      * Laravel Application
      *
      * @property \sonrac\WAMP\Contracts\RPCRouterInterface|\sonrac\WAMP\Contracts\RPCRouterInterface $rpcRouter
      * @property \sonrac\WAMP\Contracts\PubSubRouterInterface|\sonrac\WAMP\Routers\PubSubRouter      $pubSubRouter
-     * @property \sonrac\WAMP\WAMP                                                                   $wamp WAMP main
-     *           extractor
+     * @property \sonrac\WAMP\WAMP                                                                   $wamp       WAMP
+     *           main extractor
+     * @property \sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router              $wampRouter WAMP
+     *           complex router
      *
      * @package Laravel\Lumen
      */
-    class Application extends \Illuminate\Container\Container {}
+    class Application extends \Illuminate\Container\Container
+    {
+    }
 }
 
 namespace sonrac\WAMP {
+
     /**
-     * Interface GroupsConfig
+     * Interface GroupsConfigInterface
      *
      * @property array    $middleware Middleware list
      * @property string   $prefix     Route prefix
@@ -46,5 +56,7 @@ namespace sonrac\WAMP {
      *
      * @package sonrac\WAMP\Routers
      */
-    interface GroupsConfig {}
+    interface GroupsConfigInterface
+    {
+    }
 }

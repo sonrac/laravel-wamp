@@ -62,9 +62,7 @@ class RunServer extends Command
     protected $inBackground = false;
 
     protected $name = 'Run WAMP server';
-    protected $signature = 'wamp:run-server {--host=?} {--debud} {--in-background}';
-    protected $description = 'Run wamp server
-                                {}';
+    protected $description = 'Run wamp server';
 
     /**
      * {@inheritdoc}
@@ -93,6 +91,52 @@ class RunServer extends Command
      */
     protected function handle()
     {
+        $this->parseOptions();
+    }
 
+    /**
+     * Merge config & input options
+     */
+    protected function parseOptions() {
+        $this->host = $this->getOptionFromInput('host') ?? $this->getConfig('host');
+        $this->port = $this->getOptionFromInput('port') ?? $this->getConfig('port');
+        $this->realm = $this->getOptionFromInput('realm') ?? $this->getConfig('realm');
+        $this->providers = $this->getOptionFromInput('providers') ?? $this->getConfig('providers');
+        $this->tls = $this->getOptionFromInput('tls') ?? $this->getConfig('tls');
+        $this->debug = $this->getOptionFromInput('debug') ?? $this->debug;
+        $this->inBackground = $this->getOptionFromInput('in-background') ?? $this->inBackground;
+    }
+
+    /**
+     * Get option value from input
+     *
+     * @param string $optionName
+     *
+     * @return array|null|string
+     */
+    protected function getOptionFromInput(string $optionName) {
+        if (!$this->hasOption($optionName)) {
+            return null;
+        }
+
+        return $this->option($optionName);
+    }
+
+    /**
+     * Get minion config
+     *
+     * @param string|null $optName Option name
+     *
+     * @return array|string|int|null
+     */
+    protected function getConfig($optName = null)
+    {
+        $options = config('minion') ?? [];
+
+        if (null === $optName) {
+            return $options ?? [];
+        }
+
+        return isset($options[$optName]) ? $options[$optName] : null;
     }
 }

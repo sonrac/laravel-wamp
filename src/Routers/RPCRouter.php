@@ -9,6 +9,7 @@
 namespace sonrac\WAMP\Routers;
 
 use sonrac\WAMP\Contracts\RPCRouterInterface;
+use Thruway\Peer\Router as PeerRouter;
 
 /**
  * Class RPCRouterInterface
@@ -16,7 +17,7 @@ use sonrac\WAMP\Contracts\RPCRouterInterface;
  *
  * @package sonrac\WAMP
  */
-class RPCRouter extends Router implements RPCRouterInterface
+class RPCRouter extends PeerRouter implements RPCRouterInterface
 {
     /**
      * @inheritDoc

@@ -8,15 +8,13 @@
 
 namespace sonrac\WAMP\Contracts;
 
-use sonrac\WAMP\Abstracts\RouterInterface;
-
 /**
  * Interface RPCRouterInterface
  * RCP router implements
  *
  * @package sonrac\WAMP\Contracts
  */
-interface PubSubRouterInterface extends RouterInterface
+interface PubSubRouterInterface extends WAMPRouterInterface
 {
     /**
      * @param array    $config Route config

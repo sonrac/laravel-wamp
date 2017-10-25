@@ -9,6 +9,7 @@
 namespace sonrac\WAMP\Routers;
 
 use sonrac\WAMP\Contracts\PubSubRouterInterface;
+use Thruway\Peer\Router as PeerRouter;
 
 /**
  * Class PubSubRouter
@@ -16,8 +17,10 @@ use sonrac\WAMP\Contracts\PubSubRouterInterface;
  *
  * @package sonrac\WAMP
  */
-class PubSubRouter extends Router implements PubSubRouterInterface
+class PubSubRouter extends PeerRouter implements PubSubRouterInterface
 {
+    use RouterTrait;
+
     /**
      * @inheritDoc
      */

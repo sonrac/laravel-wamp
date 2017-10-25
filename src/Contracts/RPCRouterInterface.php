@@ -8,7 +8,7 @@
 
 namespace sonrac\WAMP\Contracts;
 
-use sonrac\WAMP\Abstracts\RouterInterface;
+use sonrac\WAMP\Contracts\WAMPRouterInterface;
 
 /**
  * Interface RPCRouterInterface
@@ -16,7 +16,7 @@ use sonrac\WAMP\Abstracts\RouterInterface;
  *
  * @package sonrac\WAMP\Contracts
  */
-interface RPCRouterInterface extends RouterInterface
+interface RPCRouterInterface extends WAMPRouterInterface
 {
     /**
      * @param array   $config

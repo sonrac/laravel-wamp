@@ -6,7 +6,9 @@
  * Time: 11:14 AM
  */
 
-namespace sonrac\WAMP\Abstracts;
+namespace sonrac\WAMP\Contracts;
+
+use Thruway\Peer\RouterInterface as BaseWAMPRouterInterface;
 
 /**
  * Interface RouterInterface
@@ -14,7 +16,7 @@ namespace sonrac\WAMP\Abstracts;
  *
  * @package sonrac\WAMP
  */
-interface RouterInterface
+interface WAMPRouterInterface extends BaseWAMPRouterInterface
 {
     /**
      * Dispatch route

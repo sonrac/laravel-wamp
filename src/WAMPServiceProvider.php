@@ -9,7 +9,9 @@
 namespace sonrac\WAMP;
 
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Thruway\Logging\Logger;
 
 /**
  * Class WAMPServiceProvider
@@ -23,7 +25,7 @@ class WAMPServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        app()->configure('minion');
+        app()->configure('wamp');
         /**
          * Register facade alias
          */
@@ -48,6 +50,10 @@ class WAMPServiceProvider extends ServiceProvider
                      'pubSubRouter' => [
                          'sonrac\WAMP\Contracts\PubSubRouterInterface',
                          'sonrac\WAMP\Routers\PubSubRouter'
+                     ],
+                     'wampRouter' => [
+                         'sonrac\WAMP\Contracts\WAMPRouterInterface',
+                         'sonrac\WAMP\Routers\Router'
                      ]
                  ] as $alias => $abstract) {
 
@@ -57,5 +63,11 @@ class WAMPServiceProvider extends ServiceProvider
             });
         }
 
+        /**
+         * Set logging
+         */
+        if (null !== ($log = config('wamp.log'))) {
+            Logger::set(app($log));
+        }
     }
 }

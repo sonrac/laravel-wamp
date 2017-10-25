@@ -8,6 +8,13 @@
 
 require __DIR__ . '/../../../vendor/autoload.php';
 
+use sonrac\WAMP\WAMPServiceProvider;
+
 $isLumen = class_exists('\Laravel\Lumen\Application');
 
-return require ($isLumen ? __DIR__ . '/lumen.php' : __DIR__ . '/laravel.php');
+/** @var \Laravel\Lumen\Application|\Illuminate\Foundation\Application $app */
+$app = require ($isLumen ? __DIR__ . '/lumen.php' : __DIR__ . '/laravel.php');
+
+$app->register(WAMPServiceProvider::class);
+
+return $app;
