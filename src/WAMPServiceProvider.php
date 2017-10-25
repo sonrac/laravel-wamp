@@ -24,7 +24,10 @@ class WAMPServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        app()->configure('wamp');
+        // Configure wamp config for lumen
+        if (class_exists('\Laravel\Lumen\Application')) {
+            app()->configure('wamp');
+        }
         /**
          * Register facade alias
          */
@@ -63,8 +66,8 @@ class WAMPServiceProvider extends ServiceProvider
         /**
          * Set logging
          */
-        if (null !== ($log = config('wamp.log'))) {
-            Logger::set(app($log));
-        }
+//        if (null !== ($log = config('wamp.log'))) {
+//            Logger::set(app($log));
+//        }
     }
 }
