@@ -29,7 +29,6 @@
     "require-dev": {
         "codeception/codeception": "^2.3",
         "phpunit/phpunit": "^6.4",
-        "phpunit/php-code-coverage": "^5.2",
-        "laravel/lumen-framework": "^5.5"
+        "phpunit/php-code-coverage": "^5.2"
     }
 }
