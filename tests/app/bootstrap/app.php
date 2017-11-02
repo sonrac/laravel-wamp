@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: conci
+ * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/23/17
  * Time: 4:18 PM
  */
@@ -16,5 +16,7 @@ $isLumen = class_exists('\Laravel\Lumen\Application');
 $app = require ($isLumen ? __DIR__ . '/lumen.php' : __DIR__ . '/laravel.php');
 
 $app->register(WAMPServiceProvider::class);
+
+$app->router->onOpen();
 
 return $app;

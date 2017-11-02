@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: conci
+ * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 11:08 AM
  */
@@ -13,6 +13,7 @@ use Thruway\Transport\TransportProviderInterface;
 
 /**
  * Class WAMP
+ * @summary WAMP Server adapter for lumen|laravel
  *
  * @package sonrac\WAMP
  */
@@ -68,10 +69,19 @@ class WAMP
     protected $tls = false;
 
     /**
+     * Transport provider class
+     *
      * @var \Thruway\Transport\TransportInterface
      */
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
 
+    /**
+     * WAMP router
+     *
+     * @var mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
     public $router = null;
 
     /**
@@ -86,7 +96,7 @@ class WAMP
      * @param bool                                  $inBackground      WAMP in background mode.
      * @param \Thruway\Transport\TransportInterface $transportProvider Transport provider class
      *
-     * @thrown InvalidWampTransportProvider
+     * @throws InvalidWampTransportProvider
      */
     public function __construct(
         $host = null,

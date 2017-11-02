@@ -32,8 +32,8 @@ or add to your composer.json in section autoload
 
 Test running for laravel & lumen both from script `run-tests.sh`
 
-Run command (not usage `sh`!!!):
+Run command:
 
 ```bash
-bash run-tests.sh
+sh run-tests.sh
 ```

@@ -15,4 +15,14 @@ $app->singleton(
     \sonrac\WAMP\tests\app\LaravelKernel::class
 );
 
+$app->singleton(
+    \Illuminate\Contracts\Http\Kernel::class,
+    \Illuminate\Foundation\Http\Kernel::class
+);
+
+$app->singleton(
+    \Illuminate\Contracts\Debug\ExceptionHandler::class,
+    \Illuminate\Foundation\Exceptions\Handler::class
+);
+
 return $app;

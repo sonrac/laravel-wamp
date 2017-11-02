@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: conci
+ * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 10:32 AM
  */
@@ -80,5 +80,26 @@ return [
     | Custom log for WAMP server & client
     |
     */
-    'logger' => null
+    'pathLogFile' => null,
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Transport provider class
+    |--------------------------------------------------------------------------
+    |
+    | Transport provider class for WAMP server. By default is RatchetTransportProvider
+    |
+    */
+    'transportProvider' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | WAMP routers path
+    |--------------------------------------------------------------------------
+    |
+    | Path to entry point
+    |
+    */
+    'routePath' => null
 ];

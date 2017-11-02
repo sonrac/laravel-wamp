@@ -1,7 +1,8 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: conci
+ *
+ * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/23/17
  * Time: 3:41 PM
  */
@@ -10,7 +11,10 @@ namespace sonrac\WAMP;
 
 
 use Illuminate\Support\ServiceProvider;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
 use Thruway\Logging\Logger;
+use Monolog\Logger as MonologLogger;
 
 /**
  * Class WAMPServiceProvider
@@ -24,10 +28,19 @@ class WAMPServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Configure wamp config for lumen
+        $config = require __DIR__ . '/../config/wamp.php';
+        $file = base_path('config/wamp.php');
         if (class_exists('\Laravel\Lumen\Application')) {
+            // Configure wamp config for lumen
             app()->configure('wamp');
+            $config = config('wamp') ?? $config;
+        } else {
+            if (file_exists($file)) {
+                // Get laravel config for WAMP
+                $config = require $file;
+            }
         }
+
         /**
          * Register facade alias
          */
@@ -47,16 +60,16 @@ class WAMPServiceProvider extends ServiceProvider
         foreach ([
                      'rpcRouter'    => [
                          'sonrac\WAMP\Contracts\RPCRouterInterface',
-                         'sonrac\WAMP\Routers\RPCRouter'
+                         'sonrac\WAMP\Routers\RPCRouter',
                      ],
                      'pubSubRouter' => [
                          'sonrac\WAMP\Contracts\PubSubRouterInterface',
-                         'sonrac\WAMP\Routers\PubSubRouter'
+                         'sonrac\WAMP\Routers\PubSubRouter',
                      ],
                      'wampRouter'   => [
                          'sonrac\WAMP\Contracts\WAMPRouterInterface',
-                         'sonrac\WAMP\Routers\Router'
-                     ]
+                         'sonrac\WAMP\Routers\Router',
+                     ],
                  ] as $alias => $abstract) {
 
             $this->app->bind($abstract[0], $abstract[1]);
@@ -66,8 +79,13 @@ class WAMPServiceProvider extends ServiceProvider
         /**
          * Set logging
          */
-//        if (null !== ($log = config('wamp.log'))) {
-//            Logger::set(app($log));
-//        }
+        if (isset($config['pathLogFile']) && null !== $config['pathLogFile']) {
+            $handler = (new StreamHandler($config['pathLogFile'], MonologLogger::DEBUG))
+                ->setFormatter(new LineFormatter(null, null, true, true));
+
+            $logger = new MonologLogger('wamp-server', [$handler]);
+
+            Logger::set($logger);
+        }
     }
 }

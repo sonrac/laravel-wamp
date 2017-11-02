@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: conci
+ * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 11:15 AM
  */

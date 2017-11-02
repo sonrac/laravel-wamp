@@ -1,7 +1,8 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: conci
+ *
+ * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 10:33 AM
  */
@@ -9,8 +10,7 @@
 namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Thruway\Transport\RatchetTransportProvider;
+use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 
 /**
  * Class RunServer
@@ -56,13 +56,6 @@ class RunServer extends Command
     protected $noDebug = false;
 
     /**
-     * Run command in background
-     *
-     * @var bool
-     */
-    protected $noInBackground = false;
-
-    /**
      * Run in loop or once
      *
      * @var bool
@@ -81,8 +74,17 @@ class RunServer extends Command
      */
     protected $path = null;
 
-    protected $name = 'run:wamp-server {--realm=?} {--host=?} {--port=?} {--tls?} {--path=?} {--providers=*?} 
-    {--no-loop?} {--debug?} {--in-background?}';
+    /**
+     * Transport provider class
+     *
+     * @var string|\Thruway\Transport\RatchetTransportProvider|null
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
+
+    protected $name = 'run:wamp-server {--realm=?} {--host=?} {--port=?} {--tls?} {--path=?} {--providers=*?} {--transportProvider}
+    {--no-loop?} {--debug?}';
     protected $signature = 'run:wamp-server
                                 {--realm= : Specify WAMP realm to be used}
                                 {--host= : Specify the router host}
@@ -92,7 +94,7 @@ class RunServer extends Command
                                 {--providers=* : Register provider classes},
                                 {--no-debug : Disable debug mode.}
                                 {--no-loop : Disable loop runner}
-                                {--no-in-background : Run in background mode with save process pid}
+                                {--transportProvider : Transport provider class}
                                 ';
     protected $description = 'Run wamp server';
 
@@ -113,7 +115,7 @@ class RunServer extends Command
         $this->parseOptions();
 
         $this->WAMPServer = app()->wampRouter;
-        $transportProvider = new RatchetTransportProvider($this->host, $this->port);
+        $transportProvider = $this->getTransportProvider();
 
         $this->WAMPServer->addTransportProvider($transportProvider);
 
@@ -131,10 +133,37 @@ class RunServer extends Command
         $this->realm = $this->getOptionFromInput('realm') ?? $this->getConfig('realm', $this->realm);
         $this->providers = $this->getOptionFromInput('providers') ?? $this->getConfig('providers', $this->providers);
         $this->tls = $this->getOptionFromInput('tls') ?? $this->getConfig('tls', $this->tls);
+        $this->transportProvider = $this->getOptionFromInput('transportProvider') ?? $this->getConfig('transportProvider',
+                $this->transportProvider);
 
         $this->noDebug = $this->getOptionFromInput('no-debug') ?? $this->noDebug;
-        $this->noInBackground = $this->getOptionFromInput('no-in-background') ?? $this->inBackground;
         $this->runOnce = $this->getOptionFromInput('no-loop') ?? $this->runOnce;
+    }
+
+    /**
+     * Get WAMP server transport provider
+     *
+     * @return null|string|\Thruway\Transport\RatchetTransportProvider
+     *
+     * @throws InvalidWampTransportProvider
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function getTransportProvider()
+    {
+        if (is_object($this->transportProvider)) {
+            return $this->transportProvider;
+        }
+
+        if (is_null($this->transportProvider) || empty($this->transportProvider)) {
+            $this->transportProvider = 'Thruway\Transport\RatchetTransportProvider';
+        }
+
+        if (is_string($this->transportProvider)) {
+            return $this->transportProvider = new $this->transportProvider($this->host, $this->port);
+        }
+
+        throw new InvalidWampTransportProvider();
     }
 
     /**
