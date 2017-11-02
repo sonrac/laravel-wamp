@@ -21,6 +21,7 @@ checks:
 filter:
   excluded_paths:
     - vendor/*
+    - tests/*
 tools:
     php_sim: false
     php_cpd: false
