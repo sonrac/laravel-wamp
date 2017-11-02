@@ -91,10 +91,10 @@ class Router extends PeerRouter implements WAMPRouterInterface
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected static $events = [
-        self::EVENT_CONNECTION_OPEN  => ['', 10],
-        self::EVENT_CONNECTION_CLOSE => ['', 10],
-        self::EVENT_ROUTER_START     => ['', 10],
-        self::EVENT_ROUTER_STOP      => ['', 10],
+        self::EVENT_CONNECTION_OPEN  => [['handleConnectionOpen', 10]],
+        self::EVENT_CONNECTION_CLOSE => [['handleConnectionClose', 10]],
+        self::EVENT_ROUTER_START     => [['handleRouterStart', 10]],
+        self::EVENT_ROUTER_STOP      => [['handleRouterStop', 10]],
     ];
 
     /**
@@ -145,31 +145,101 @@ class Router extends PeerRouter implements WAMPRouterInterface
     /**
      * Add open event listener
      *
-     * @param \Closure|string $callback
+     * @param \Closure|string $callback Callback
+     * @param int             $priority Callback priority
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function onConnectionOpen($callback, $priority = 0)
+    {
+        $this->addEvent($callback, self::EVENT_CONNECTION_OPEN, $priority);
+    }
+
+    /**
+     * Add open event listener
+     *
+     * @param \Closure|string $callback Callback
+     * @param int             $priority Callback priority
      *
      * @throws \Exception
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public static function onOpen($callback)
+    public function onRouterStart($callback, $priority = 0)
     {
-        static::checkEventKeyExistsOrCreate(self::EVENT_CONNECTION_OPEN);
+        $this->addEvent($callback, self::EVENT_ROUTER_START, $priority);
+    }
+
+    /**
+     * Add stop router event listener
+     *
+     * @param \Closure|string $callback Callback
+     * @param int             $priority Callback priority
+     *
+     * @throws \Exception
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function onRouterStop($callback, $priority = 0)
+    {
+        $this->addEvent($callback, self::EVENT_ROUTER_STOP, $priority);
+    }
+
+    /**
+     * Add connection close event listener
+     *
+     * @param \Closure|string $callback Callback
+     * @param int             $priority Callback priority
+     *
+     * @throws \Exception
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function onConnectionClose($callback, $priority = 0)
+    {
+        $this->addEvent($callback, self::EVENT_CONNECTION_CLOSE, $priority);
+    }
+
+    /**
+     * Handle start router
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public static function handleRouterStart()
+    {
+
+    }
+
+    /**
+     * Handle start router
+     */
+    public static function handleRouterStop()
+    {
+
+    }
+
+    /**
+     * Add event
+     *
+     * @param \Closure|string $callback  Callback
+     * @param string          $eventName Event name
+     * @param int             $priority  Priority
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function addEvent($callback, $eventName, $priority)
+    {
+        static::checkEventKeyExistsOrCreate($eventName);
 
         if (is_string($callback)) {
             list($class, $method) = explode('&', $callback);
 
             $callback = function (ConnectionOpenEvent $event) use ($class, $method) {
-                $class = app()->make($class);
-
-                return $class->{$method}($event);
+                return $class::{$method}($event);
             };
         }
 
-        if (!($callback instanceof \Closure)) {
-            throw new \Exception('Invalid callback');
-        }
-
-        static::$events[self::EVENT_CONNECTION_OPEN][] = [$callback, 10];
+        $this->getEventDispatcher()->addListener($eventName, $callback, $priority);
     }
 
     /**

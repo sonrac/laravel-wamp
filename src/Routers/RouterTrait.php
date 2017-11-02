@@ -8,6 +8,8 @@
 
 namespace sonrac\WAMP\Routers;
 
+use Thruway\Peer\RouterInterface;
+
 /**
  * Trait RouterTrait
  * Base router trait
@@ -22,7 +24,21 @@ trait RouterTrait
     protected $groups = null;
 
     /**
-     * @inheritDoc
+     * Main router
+     *
+     * @var null|\Thruway\Peer\RouterInterface|\sonrac\WAMP\Routers\Router
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $router = null;
+
+    /**
+     * Group routes
+     *
+     * @param array    $config Group config
+     * @param \Closure $runner Closure runner group
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
      */
     public function group(array $config, \Closure $runner)
     {
@@ -36,4 +52,14 @@ trait RouterTrait
             'callback'   => $runner
         ];
     }
+
+    /**
+     * Set router
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setRouter(RouterInterface $router) {
+        $this->router = $router;
+    }
+
 }

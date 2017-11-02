@@ -80,7 +80,7 @@ return [
     | Custom log for WAMP server & client
     |
     */
-    'pathLogFile' => storage_path('logs'),
+    'pathLogFile' => storage_path('logs/wamp.log'),
 
 
     /*

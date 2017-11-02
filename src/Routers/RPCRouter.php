@@ -20,11 +20,4 @@ class RPCRouter implements RPCRouterInterface
 {
     use RouterTrait;
 
-    /**
-     * @inheritDoc
-     */
-    public function dispatch()
-    {
-    }
-
 }

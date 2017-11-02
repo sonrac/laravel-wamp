@@ -31,13 +31,4 @@ class PubSubRouter implements PubSubRouterInterface
     {
 
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function dispatch()
-    {
-
-    }
-
 }

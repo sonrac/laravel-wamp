@@ -72,7 +72,7 @@ class WAMPServiceProvider extends ServiceProvider
                      ],
                  ] as $alias => $abstract) {
 
-            $this->app->bind($abstract[0], $abstract[1]);
+            $this->app->singleton($abstract[0], $abstract[1]);
             $this->app->alias($abstract[0], $alias);
         }
 
