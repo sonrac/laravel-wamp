@@ -50,9 +50,36 @@ class Router extends PeerRouter implements WAMPRouterInterface
 {
     use RouterTrait;
 
+    /**
+     * Connection open event name
+     *
+     * @type string
+     * @const
+     */
     const EVENT_CONNECTION_OPEN = 'connection_open';
+
+    /**
+     * Connection close event name
+     *
+     * @type string
+     * @const
+     */
     const EVENT_CONNECTION_CLOSE = 'connection_close';
+
+    /**
+     * Router start event name
+     *
+     * @type string
+     * @const
+     */
     const EVENT_ROUTER_START = 'router.start';
+
+    /**
+     * Router stop event name
+     *
+     * @type string
+     * @const
+     */
     const EVENT_ROUTER_STOP = 'router.stop';
 
     /**
@@ -87,18 +114,11 @@ class Router extends PeerRouter implements WAMPRouterInterface
     /**
      * Peer client
      *
-     * @var array
+     * @var \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected $client = null;
-
-    /**
-     * @var array
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected $session = [];
 
     /**
      * Events
@@ -122,7 +142,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
      * @param \React\EventLoop\LoopInterface|null          $loop         Loop object
      */
     public function __construct(
-        string $realm,
         \sonrac\WAMP\Contracts\RPCRouterInterface $RPCRouter,
         \sonrac\WAMP\Contracts\PubSubRouterInterface $pubSubRouter,
         \React\EventLoop\LoopInterface $loop = null
@@ -130,18 +149,16 @@ class Router extends PeerRouter implements WAMPRouterInterface
         $this->rpcRouter = $RPCRouter;
         $this->pubSubRouter = $pubSubRouter;
         $this->loop = $loop;
-        $this->session = $session;
         parent::__construct($loop);
     }
 
     /**
-     * Set client session
+     * Register all events, subscribers, publisher & procedures
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function setSession(\Thruway\ClientSession $session)
-    {
-        $this->session = $session;
+    public function register() {
+
     }
 
     /**
@@ -167,7 +184,16 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public function addRPCRoute($path, $callback)
     {
-        $this->routes[$path] = $callback;
+        $this->getClient()->getSession()->subscribe($path, $callback);
+    }
+
+    /**
+     * Add procedure
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function addRoute($name, $procedure) {
+        $this->getClient()->getSession()->register($name, $procedure);
     }
 
     /**
@@ -232,18 +258,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Set peer client
-     *
-     * @param \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client $client
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function setClient(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
-
-    /**
      * Add open event listener
      *
      * @param \Closure|string $callback Callback
@@ -280,6 +294,29 @@ class Router extends PeerRouter implements WAMPRouterInterface
         }
 
         $this->getEventDispatcher()->addListener($eventName, $callback, $priority);
+    }
+
+    /**
+     * Set client
+     *
+     * @param \Thruway\Peer\ClientInterface $client Client
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setClient(ClientInterface $client) {
+        $this->client = $client;
+        $this->client->start();
+    }
+
+    /**
+     * Get client
+     *
+     * @return \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function getClient() {
+        return $this->client;
     }
 
     /**

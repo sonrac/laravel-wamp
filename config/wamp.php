@@ -88,7 +88,8 @@ return [
     | Transport provider class
     |--------------------------------------------------------------------------
     |
-    | Transport provider class for WAMP server. By default is RatchetTransportProvider
+    | Transport provider class for WAMP server. By default is
+    | \Thruway\Transport\ClientTransportProviderInterface
     |
     */
     'transportProvider' => null,

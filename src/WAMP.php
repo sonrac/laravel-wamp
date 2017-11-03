@@ -218,7 +218,10 @@ class WAMP
      */
     protected function setupRouter()
     {
-        return $this->router = app()->wampRouter;
+        $this->router = app()->wampRouter;
+        $this->router->setClient($this->getClient());
+        $this->router->register();
+        return $this->router;
     }
 
     /**

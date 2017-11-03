@@ -15,6 +15,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Thruway\Logging\Logger;
+use Thruway\Transport\RawSocketClientTransportProvider;
 
 /**
  * Class WAMPServiceProvider
@@ -54,6 +55,10 @@ class WAMPServiceProvider extends ServiceProvider
          */
         $this->app->singleton('sonrac.wamp.run', '\sonrac\WAMP\Commands\RunServer');
 
+        $this->app->singleton('wampClient', function () use ($config) {
+            return new Client($config['realm']);
+        });
+
         /**
          * Register routers
          */
@@ -75,6 +80,10 @@ class WAMPServiceProvider extends ServiceProvider
             $this->app->singleton($abstract[0], $abstract[1]);
             $this->app->alias($abstract[0], $alias);
         }
+
+        $this->app->singleton('sonrac\WAMP\Contracts\ClientTransportServiceProvider', function () use ($config) {
+            return new RawSocketClientTransportProvider($config['host'], $config['port']);
+        });
 
         /**
          * Set logging
