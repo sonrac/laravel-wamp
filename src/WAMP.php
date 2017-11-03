@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 11:08 AM
@@ -9,10 +10,12 @@
 namespace sonrac\WAMP;
 
 use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
+use Thruway\Peer\Client;
 use Thruway\Transport\TransportProviderInterface;
 
 /**
  * Class WAMP
+ *
  * @summary WAMP Server adapter for lumen|laravel
  *
  * @package sonrac\WAMP
@@ -76,6 +79,15 @@ class WAMP
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
 
     /**
+     * Clients
+     *
+     * @var array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $clients = [];
+
+    /**
      * WAMP router
      *
      * @var mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
@@ -131,17 +143,48 @@ class WAMP
      *
      * @return mixed|null|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
      */
-    public function getRouter() {
+    public function getRouter()
+    {
         return $this->router ?? $this->setupRouter();
     }
 
     /**
-     * Setup router
+     * Get client
      *
-     * @return mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
+     * @param string|null $realm Realm
+     *
+     * @return \sonrac\WAMP\Client|\Thruway\Peer\ClientInterface
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected function setupRouter() {
-        return $this->router = app()->wampRouter;
+    public function getClient($realm = null)
+    {
+        $realm = $realm ?? $this->realm;
+        if (!isset($this->clients[$realm])) {
+            $this->clients[$realm] = new Client($realm);
+        }
+
+        return $this->clients[$realm];
+    }
+
+    /**
+     * Create and get client with new realm
+     *
+     * @param null|string $realm
+     *
+     * @return mixed|\sonrac\WAMP\Client|\Thruway\Peer\ClientInterface
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function createClient($realm = null)
+    {
+        $realm = $realm ?? $this->realm;
+
+        if ($realm === $this->realm && isset($this->clients[$realm])) {
+            return $this->clients[$realm];
+        }
+
+        return $this->clients[$realm] = new Client($realm);
     }
 
     /**
@@ -166,6 +209,16 @@ class WAMP
         }
 
         return $this->{$propName};
+    }
+
+    /**
+     * Setup router
+     *
+     * @return mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
+     */
+    protected function setupRouter()
+    {
+        return $this->router = app()->wampRouter;
     }
 
     /**

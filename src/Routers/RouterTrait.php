@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/25/17
  * Time: 11:57 AM
@@ -58,7 +59,8 @@ trait RouterTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function setRouter(RouterInterface $router) {
+    public function setRouter(RouterInterface $router)
+    {
         $this->router = $router;
     }
 

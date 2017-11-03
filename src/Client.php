@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * @author Donii Sergii <doniysa@gmail.com>
- * Date: 10/25/17
- * Time: 12:18 PM
+ * User: Donii Sergii <doniysa@gmail.com>
+ * Date: 11/3/17
+ * Time: 2:08 PM
  */
 
 namespace sonrac\WAMP;
@@ -11,10 +11,10 @@ namespace sonrac\WAMP;
 use Thruway\Peer\Client as PeerClient;
 
 /**
- * Class Client
- * Client class
+ * @class  Client
+ * <summary>
  *
- * @author  Donii Sergii <doniysa@gmail.com>
+ * @author Donii Sergii <doniysa@gmail.com>
  */
 class Client extends PeerClient
 {

@@ -11,6 +11,7 @@ namespace sonrac\WAMP\Routers;
 
 use sonrac\WAMP\Contracts\WAMPRouterInterface;
 use Thruway\Event\ConnectionOpenEvent;
+use Thruway\Peer\ClientInterface;
 use Thruway\Peer\Router as PeerRouter;
 
 /**
@@ -84,6 +85,22 @@ class Router extends PeerRouter implements WAMPRouterInterface
     protected $routes = [];
 
     /**
+     * Peer client
+     *
+     * @var array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $client = null;
+
+    /**
+     * @var array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $session = [];
+
+    /**
      * Events
      *
      * @var array
@@ -105,6 +122,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
      * @param \React\EventLoop\LoopInterface|null          $loop         Loop object
      */
     public function __construct(
+        string $realm,
         \sonrac\WAMP\Contracts\RPCRouterInterface $RPCRouter,
         \sonrac\WAMP\Contracts\PubSubRouterInterface $pubSubRouter,
         \React\EventLoop\LoopInterface $loop = null
@@ -112,8 +130,18 @@ class Router extends PeerRouter implements WAMPRouterInterface
         $this->rpcRouter = $RPCRouter;
         $this->pubSubRouter = $pubSubRouter;
         $this->loop = $loop;
-
+        $this->session = $session;
         parent::__construct($loop);
+    }
+
+    /**
+     * Set client session
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setSession(\Thruway\ClientSession $session)
+    {
+        $this->session = $session;
     }
 
     /**
@@ -153,21 +181,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
     public function onConnectionOpen($callback, $priority = 0)
     {
         $this->addEvent($callback, self::EVENT_CONNECTION_OPEN, $priority);
-    }
-
-    /**
-     * Add open event listener
-     *
-     * @param \Closure|string $callback Callback
-     * @param int             $priority Callback priority
-     *
-     * @throws \Exception
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function onRouterStart($callback, $priority = 0)
-    {
-        $this->addEvent($callback, self::EVENT_ROUTER_START, $priority);
     }
 
     /**
@@ -216,6 +229,33 @@ class Router extends PeerRouter implements WAMPRouterInterface
     public static function handleRouterStop()
     {
 
+    }
+
+    /**
+     * Set peer client
+     *
+     * @param \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client $client
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setClient(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * Add open event listener
+     *
+     * @param \Closure|string $callback Callback
+     * @param int             $priority Callback priority
+     *
+     * @throws \Exception
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function onRouterStart($callback, $priority = 0)
+    {
+        $this->addEvent($callback, self::EVENT_ROUTER_START, $priority);
     }
 
     /**

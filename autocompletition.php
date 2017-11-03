@@ -16,6 +16,8 @@ namespace Laravel\Lumen {
      *           main extractor
      * @property \sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router              $wampRouter WAMP
      *           complex router
+     * @property \sonrac\WAMP\Client                                                                 $wampClient Wamp
+     *           client
      *
      * @package Laravel\Lumen
      */

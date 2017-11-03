@@ -10,6 +10,7 @@
 namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
+use sonrac\WAMP\Client;
 use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 
 /**
@@ -114,10 +115,11 @@ class RunServer extends Command
     {
         $this->parseOptions();
 
-        $this->WAMPServer = app()->wampRouter;
+        $this->WAMPServer = app()->wampClient;
         $transportProvider = $this->getTransportProvider();
 
         $this->WAMPServer->addTransportProvider($transportProvider);
+        $this->WAMPServer->setClient(new Client($this->realm));
 
         $this->WAMPServer->start(!$this->runOnce);
     }

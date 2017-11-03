@@ -13,8 +13,8 @@ namespace sonrac\WAMP;
 use Illuminate\Support\ServiceProvider;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
-use Thruway\Logging\Logger;
 use Monolog\Logger as MonologLogger;
+use Thruway\Logging\Logger;
 
 /**
  * Class WAMPServiceProvider
@@ -28,7 +28,7 @@ class WAMPServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $config = require __DIR__ . '/../config/wamp.php';
+        $config = require __DIR__.'/../config/wamp.php';
         $file = base_path('config/wamp.php');
         if (class_exists('\Laravel\Lumen\Application')) {
             // Configure wamp config for lumen
