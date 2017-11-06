@@ -10,6 +10,7 @@
 [![Monthly Downloads](https://poser.pugx.org/sonrac/wamp-server/d/monthly)](https://packagist.org/packages/sonrac/wamp-server)
 [![Daily Downloads](https://poser.pugx.org/sonrac/wamp-server/d/daily)](https://packagist.org/packages/sonrac/wamp-server)
 [![composer.lock](https://poser.pugx.org/sonrac/wamp-server/composerlock)](https://packagist.org/packages/sonrac/wamp-server)
+[![Build Status](https://travis-ci.org/sonrac/laravel-wamp.svg?branch=master)](https://travis-ci.org/sonrac/laravel-wamp)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/779eb389-8271-4690-8457-89fe4f379783/big.png)](https://insight.sensiolabs.com/projects/779eb389-8271-4690-8457-89fe4f379783)
 
