@@ -8,9 +8,9 @@
 
 namespace sonrac\WAMP\tests\Modules;
 
+use Codeception\Lib\Connector\Laravel5 as LaravelConnector;
 use Codeception\Module\Laravel5;
 use Codeception\TestInterface;
-use Codeception\Lib\Connector\Laravel5 as LaravelConnector;
 
 /**
  * @class  LumenModule
