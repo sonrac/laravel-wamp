@@ -27,9 +27,10 @@ class WampTestController implements WAMPControllerInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function testMessage(ClientSession $session, Client $client) {
+    public function testMessage(ClientSession $session, Client $client)
+    {
         return [
-            'message' => 'message'
+            'message' => 'message',
         ];
     }
 }

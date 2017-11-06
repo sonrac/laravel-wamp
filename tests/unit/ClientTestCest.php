@@ -35,7 +35,8 @@ class ClientTestCest
         require __DIR__.'/../_data/routes.php';
     }
 
-    public function testClientRoutesInPath(UnitTester $tester) {
+    public function testClientRoutesInPath(UnitTester $tester)
+    {
         $this->client->setRoutePath(__DIR__.'/../_data/routes');
 
         $this->client->onSessionStart($this->session, $this->transport);
@@ -43,7 +44,8 @@ class ClientTestCest
         $tester->assertEquals(app()->wampRouter->getClient(), $this->client);
     }
 
-    public function testClientRoutesInFile(UnitTester $tester) {
+    public function testClientRoutesInFile(UnitTester $tester)
+    {
         $this->client->setRoutePath(__DIR__.'/../_data/routes/routes-main.php');
 
         $this->client->onSessionStart($this->session, $this->transport);
