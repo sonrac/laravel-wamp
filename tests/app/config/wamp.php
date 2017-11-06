@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 10:32 AM
@@ -81,7 +82,6 @@ return [
     |
     */
     'pathLogFile' => storage_path('logs'),
-
 
     /*
     |--------------------------------------------------------------------------

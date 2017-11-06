@@ -15,7 +15,7 @@ use Thruway\Peer\Router as PeerRouter;
 
 /**
  * Class Router
- * Router class
+ * Router class.
  *
  * <h2>Events list</h2>
  * <table class="table table-bordered table-stripped table-hover table-responsive">
@@ -42,8 +42,6 @@ use Thruway\Peer\Router as PeerRouter;
  * <code>
  * $app->router->onOpen()
  * </code>
- *
- * @package sonrac\WAMP\Routers
  */
 class Router extends PeerRouter implements WAMPRouterInterface
 {
@@ -55,21 +53,21 @@ class Router extends PeerRouter implements WAMPRouterInterface
     const EVENT_ROUTER_STOP = 'router.stop';
 
     /**
-     * RPC router
+     * RPC router.
      *
      * @var \sonrac\WAMP\Contracts\RPCRouterInterface
      */
     protected $rpcRouter;
 
     /**
-     * Publisher/subscription router
+     * Publisher/subscription router.
      *
      * @var \sonrac\WAMP\Contracts\PubSubRouterInterface
      */
     protected $pubSubRouter;
 
     /**
-     * Loop object
+     * Loop object.
      *
      * @var null|\React\EventLoop\LoopInterface
      *
@@ -77,14 +75,14 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     protected $loop;
     /**
-     * Routes
+     * Routes.
      *
      * @var array
      */
     protected $routes = [];
 
     /**
-     * Events
+     * Events.
      *
      * @var array
      *
@@ -125,14 +123,14 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function dispatch()
     {
     }
 
     /**
-     * Add route to RPC router
+     * Add route to RPC router.
      *
      * @param string          $path     Route path
      * @param \Closure|string $callback Handler
@@ -143,7 +141,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add open event listener
+     * Add open event listener.
      *
      * @param \Closure|string $callback
      *
@@ -173,7 +171,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Check event exists in array or exists
+     * Check event exists in array or exists.
      *
      * @param string $key     Key
      * @param mixed  $default Default value

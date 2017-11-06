@@ -9,26 +9,23 @@
 
 namespace sonrac\WAMP;
 
-
 use Illuminate\Support\ServiceProvider;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
-use Thruway\Logging\Logger;
 use Monolog\Logger as MonologLogger;
+use Thruway\Logging\Logger;
 
 /**
- * Class WAMPServiceProvider
- *
- * @package sonrac\WAMP
+ * Class WAMPServiceProvider.
  */
 class WAMPServiceProvider extends ServiceProvider
 {
     /**
-     * Register WAMP
+     * Register WAMP.
      */
     public function register()
     {
-        $config = require __DIR__ . '/../config/wamp.php';
+        $config = require __DIR__.'/../config/wamp.php';
         $file = base_path('config/wamp.php');
         if (class_exists('\Laravel\Lumen\Application')) {
             // Configure wamp config for lumen
@@ -41,24 +38,24 @@ class WAMPServiceProvider extends ServiceProvider
             }
         }
 
-        /**
+        /*
          * Register facade alias
          */
         $this->app->alias('WAMP', '\sonrac\WAMP\Facades\WAMP');
-        /**
+        /*
          * Register main
          */
         $this->app->singleton('sonrac.wamp', '\sonrac\WAMP\WAMP');
-        /**
+        /*
          * Register console command
          */
         $this->app->singleton('sonrac.wamp.run', '\sonrac\WAMP\Commands\RunServer');
 
-        /**
+        /*
          * Register routers
          */
         foreach ([
-                     'rpcRouter'    => [
+                     'rpcRouter' => [
                          'sonrac\WAMP\Contracts\RPCRouterInterface',
                          'sonrac\WAMP\Routers\RPCRouter',
                      ],
@@ -66,17 +63,16 @@ class WAMPServiceProvider extends ServiceProvider
                          'sonrac\WAMP\Contracts\PubSubRouterInterface',
                          'sonrac\WAMP\Routers\PubSubRouter',
                      ],
-                     'wampRouter'   => [
+                     'wampRouter' => [
                          'sonrac\WAMP\Contracts\WAMPRouterInterface',
                          'sonrac\WAMP\Routers\Router',
                      ],
                  ] as $alias => $abstract) {
-
             $this->app->bind($abstract[0], $abstract[1]);
             $this->app->alias($abstract[0], $alias);
         }
 
-        /**
+        /*
          * Set logging
          */
         if (isset($config['pathLogFile']) && null !== $config['pathLogFile']) {

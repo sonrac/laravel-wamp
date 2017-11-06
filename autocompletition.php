@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Autocompletition for lumen/laravel applicaton with wamp
+ * Autocompletition for lumen/laravel applicaton with wamp.
  */
 
 namespace Laravel\Lumen {
 
     /**
      * Class Application
-     * Lumen application
+     * Lumen application.
      *
      * @property \sonrac\WAMP\Contracts\RPCRouterInterface|\sonrac\WAMP\Contracts\RPCRouterInterface $rpcRouter
      * @property \sonrac\WAMP\Contracts\PubSubRouterInterface|\sonrac\WAMP\Routers\PubSubRouter      $pubSubRouter
@@ -16,8 +16,6 @@ namespace Laravel\Lumen {
      *           main extractor
      * @property \sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router              $wampRouter WAMP
      *           complex router
-     *
-     * @package Laravel\Lumen
      */
     class Application extends \Illuminate\Container\Container
     {
@@ -28,7 +26,7 @@ namespace Illuminate\Foundation {
 
     /**
      * Class Application
-     * Laravel Application
+     * Laravel Application.
      *
      * @property \sonrac\WAMP\Contracts\RPCRouterInterface|\sonrac\WAMP\Contracts\RPCRouterInterface $rpcRouter
      * @property \sonrac\WAMP\Contracts\PubSubRouterInterface|\sonrac\WAMP\Routers\PubSubRouter      $pubSubRouter
@@ -36,8 +34,6 @@ namespace Illuminate\Foundation {
      *           main extractor
      * @property \sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router              $wampRouter WAMP
      *           complex router
-     *
-     * @package Laravel\Lumen
      */
     class Application extends \Illuminate\Container\Container
     {
@@ -47,14 +43,12 @@ namespace Illuminate\Foundation {
 namespace sonrac\WAMP {
 
     /**
-     * Interface GroupsConfigInterface
+     * Interface GroupsConfigInterface.
      *
      * @property array    $middleware Middleware list
      * @property string   $prefix     Route prefix
      * @property \Closure $callback   Groups runner
      * @property string   $namespace  Controllers namespace
-     *
-     * @package sonrac\WAMP\Routers
      */
     interface GroupsConfigInterface
     {
