@@ -19,7 +19,18 @@ class RPCRouter implements RPCRouterInterface
 {
     use RouterTrait;
 
-    public function addRoute($path, $publisher, $callback)
+    /**
+     * Add new procedure.
+     *
+     * @param string          $path
+     * @param string|\Closure $callback
+     *
+     * @return \React\Promise\Promise
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function addRoute($path, $callback)
     {
+        return $this->getClientSession()->register($path, $this->parseCallback($callback));
     }
 }

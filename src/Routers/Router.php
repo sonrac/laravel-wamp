@@ -126,16 +126,15 @@ class Router extends PeerRouter implements WAMPRouterInterface
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected static $events = [
-        self::EVENT_ROUTER_START     => [['handleRouterStart', 10]],
-        self::EVENT_ROUTER_STOP      => [['handleRouterStop', 10]],
     ];
 
     /**
      * Router constructor.
      *
-     * @param \sonrac\WAMP\Contracts\RPCRouterInterface    $RPCRouter    RPC router
-     * @param \sonrac\WAMP\Contracts\PubSubRouterInterface $pubSubRouter Publisher/subscription router
-     * @param \React\EventLoop\LoopInterface|null          $loop         Loop object
+     * @param \sonrac\WAMP\Contracts\RPCRouterInterface|\sonrac\WAMP\Routers\RPCRouter       $RPCRouter    RPC router
+     * @param \sonrac\WAMP\Contracts\PubSubRouterInterface|\sonrac\WAMP\Routers\PubSubRouter $pubSubRouter Publisher/subscription
+     *                                                                                                     router
+     * @param \React\EventLoop\LoopInterface|null                                            $loop         Loop object
      */
     public function __construct(
         \sonrac\WAMP\Contracts\RPCRouterInterface $RPCRouter,
@@ -150,41 +149,31 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Register all events, subscribers, publisher & procedures.
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function register()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return static::$events;
-    }
-
-    /**
-     * Add route to RPC router.
+     * Add subscriber.
      *
      * @param string          $path     Route path
      * @param \Closure|string $callback Handler
+     *
+     * @return \React\Promise\Promise
      */
-    public function addRPCRoute($path, $callback)
+    public function addSubscriber($path, $callback)
     {
-        $this->getClient()->getSession()->subscribe($path, $callback);
+        return $this->pubSubRouter->addRoute($path, $callback);
     }
 
     /**
      * Add procedure.
      *
+     * @param string          $name      Name
+     * @param string|\Closure $procedure Procedure
+     *
+     * @return \React\Promise\Promise
+     *
      * @author Donii Sergii <doniysa@gmail.com>
      */
     public function addRoute($name, $procedure)
     {
-        $this->getClient()->getSession()->register($name, $procedure);
+        return $this->rpcRouter->addRoute($name, $procedure);
     }
 
     /**
@@ -242,25 +231,9 @@ class Router extends PeerRouter implements WAMPRouterInterface
     {
         $this->getEventDispatcher()->removeListener($eventName, $callback);
 
-        if (count(static::$events[$eventName]) === 0) {
+        if (isset(static::$events[$eventName]) && count(static::$events[$eventName]) === 0) {
             unset(static::$events[$eventName]);
         }
-    }
-
-    /**
-     * Handle start router.
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public static function handleRouterStart()
-    {
-    }
-
-    /**
-     * Handle start router.
-     */
-    public static function handleRouterStop()
-    {
     }
 
     /**
@@ -289,8 +262,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     protected function addEvent($callback, $eventName, $priority)
     {
-        $this->checkEventKeyExistsOrCreate($eventName);
-
         if (is_string($callback)) {
             list($class, $method) = explode('&', $callback);
 
@@ -324,20 +295,5 @@ class Router extends PeerRouter implements WAMPRouterInterface
     public function setClient(ClientInterface $client)
     {
         $this->client = $client;
-    }
-
-    /**
-     * Check event exists in array or exists.
-     *
-     * @param string $key     Key
-     * @param mixed  $default Default value
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    private function checkEventKeyExistsOrCreate($key, $default = null)
-    {
-        if (!isset(static::$events[$key])) {
-            static::$events[$key] = $default ? [$default] : [];
-        }
     }
 }

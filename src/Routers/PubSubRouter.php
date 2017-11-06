@@ -20,13 +20,17 @@ class PubSubRouter implements PubSubRouterInterface
     use RouterTrait;
 
     /**
-     * @param string          $path      Route path
-     * @param \Closure|string $callback  Callback
-     * @param string          $eventName Event name in dispatcher
+     * Add subscriber.
+     *
+     * @param string          $path     Route path
+     * @param \Closure|string $callback Callback
+     *
+     * @return \React\Promise\Promise
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function addRoute($path, $callback, $eventName)
+    public function addRoute($path, $callback)
     {
+        return $this->getClientSession()->subscribe($path, $callback);
     }
 }

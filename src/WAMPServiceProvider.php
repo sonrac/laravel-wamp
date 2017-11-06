@@ -42,15 +42,12 @@ class WAMPServiceProvider extends ServiceProvider
         /*
          * Register facade alias
          */
-        $this->app->alias('WAMP', '\sonrac\WAMP\Facades\WAMP');
-        /*
-         * Register main
-         */
-        $this->app->singleton('sonrac.wamp', '\sonrac\WAMP\WAMP');
+        $this->app->alias('wamp', '\sonrac\WAMP\Facades\WAMP');
+
         /*
          * Register console command
          */
-        $this->app->singleton('sonrac.wamp.run', '\sonrac\WAMP\Commands\RunServer');
+        $this->app->singleton('wamp.run', '\sonrac\WAMP\Commands\RunServer');
 
         $this->app->singleton('wampClient', function () use ($config) {
             return new Client($config['realm']);

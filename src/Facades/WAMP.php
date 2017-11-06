@@ -15,6 +15,6 @@ class WAMP extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'sonrac.wamp';
+        return 'wampRouter';
     }
 }
