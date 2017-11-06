@@ -1,4 +1,15 @@
 ignore:
   - "tests"
   - "Example"
+  - "config"
   - "autocompletition.php"
+coverage:
+  notify:
+    slack:
+      default:
+        url: "https://hooks.slack.com/services/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"
+        threshold: 1%
+        only_pulls: false
+        branches: null
+        flags: null
+        paths: null

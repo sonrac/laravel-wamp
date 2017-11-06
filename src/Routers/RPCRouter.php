@@ -18,4 +18,8 @@ use sonrac\WAMP\Contracts\RPCRouterInterface;
 class RPCRouter implements RPCRouterInterface
 {
     use RouterTrait;
+
+    public function addRoute($path, $publisher, $callback) {
+
+    }
 }

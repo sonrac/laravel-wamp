@@ -29,11 +29,4 @@ class PubSubRouter implements PubSubRouterInterface
     public function addRoute($path, $callback, $eventName)
     {
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dispatch()
-    {
-    }
 }
