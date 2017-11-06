@@ -9,6 +9,7 @@
 namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
+use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 
 
 /**
@@ -22,19 +23,19 @@ class RegisterRoutes extends Command
     use WAMPCommandTrait;
 
     /**
-     * WAMP routes path
+     * Transport provider class
      *
-     * @var string
+     * @var string|\Thruway\Transport\ClientTransportProviderInterface|null
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected $routePath = null;
-
+    protected $transportProvider = '\Thruway\Transport\PawlTransportProvider';
 
     /**
      * {@inheritdoc}
      */
-    protected $name = 'wamp:register-routes';
+    protected $name = 'wamp:register-routes {--realm=?} {--host=?} {--port=?} {--tls?} {--transport-provider=?}
+                {--no-loop?} {--debug?} {--route=path=?}';
 
     /**
      * {@inheritdoc}
@@ -44,14 +45,16 @@ class RegisterRoutes extends Command
     /**
      * {@inheritdoc}
      */
-    protected $signature = 'run:wamp-server
+    protected $signature = 'wamp:register-routes
                                 {--realm= : Specify WAMP realm to be used}
                                 {--host= : Specify the router host}
                                 {--port= : Specify the router port}
                                 {--path= : Specify the router path component}
                                 {--no-debug : Disable debug mode.}
                                 {--no-loop : Disable loop runner}
-                                {--transportProvider : Transport provider class}';
+                                {--route-path=? : Path to routes config}
+                                {--tls : Specify the router protocol as wss}
+                                {--transport-provider=? : Transport provider class}';
 
     /**
      * Register wamp routes
@@ -62,6 +65,12 @@ class RegisterRoutes extends Command
     {
         $this->changeWampLogger();
         $this->parseOptions();
+
+        $client = app()->wampClient;
+
+        $client->addTransportProvider($this->getTransportProvider());
+        $client->setRoutePath($this->routePath);
+        $client->start();
     }
 
     /**
@@ -80,5 +89,40 @@ class RegisterRoutes extends Command
     protected function parseOptions()
     {
         $this->parseBaseOptions();
+    }
+
+    /**
+     * Get WAMP client transport provider
+     *
+     * @return null|string|\Thruway\Transport\ClientTransportProviderInterface
+     *
+     * @throws \sonrac\WAMP\Exceptions\InvalidWampTransportProvider
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function getTransportProvider()
+    {
+        if (is_object($this->transportProvider)) {
+            return $this->transportProvider;
+        }
+
+        if (is_null($this->transportProvider) || empty($this->transportProvider)) {
+            $this->transportProvider = '\Thruway\Transport\PawlTransportProvider';
+        }
+
+        if (is_string($this->transportProvider)) {
+            return $this->transportProvider = new $this->transportProvider($this->getTransportURI());
+        }
+
+        throw new InvalidWampTransportProvider();
+    }
+
+    /**
+     * Get transport url
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function getTransportURI() {
+        return ($this->tls ? 'wss://' : 'ws://') . $this->host . ':' . $this->port;
     }
 }

@@ -50,7 +50,7 @@ trait RouterTrait
             'middleware' => $middleware,
             'namespace'  => $namespace,
             'prefix'     => isset($config['prefix']) ? $config['prefix'] : '',
-            'callback'   => $runner
+            'callback'   => $runner,
         ];
     }
 

@@ -15,7 +15,7 @@ use Thruway\Transport\ClientTransportProviderInterface as BaseClientTransportPro
  * @interface  ClientTransportProvider
  * Client transport provider contract
  *
- * @author Donii Sergii <doniysa@gmail.com>
+ * @author     Donii Sergii <doniysa@gmail.com>
  */
 interface ClientTransportProviderInterface extends BaseClientTransportProviderInterface
 {

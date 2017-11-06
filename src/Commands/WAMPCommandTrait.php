@@ -11,6 +11,7 @@ namespace sonrac\WAMP\Commands;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
+use Thruway\Logging\ConsoleLogger;
 use Thruway\Logging\Logger;
 
 /**
@@ -63,6 +64,15 @@ trait WAMPCommandTrait
     protected $tls = false;
 
     /**
+     * WAMP routes path
+     *
+     * @var string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $routePath = null;
+
+    /**
      * Get option value from input
      *
      * @param string $optionName
@@ -104,7 +114,7 @@ trait WAMPCommandTrait
             return;
         }
 
-        $path = $this->getConfig('pathLogFile') ?? storage_path('logs/'.$fileName);
+        $path = $this->getConfig('pathLogFile') ?? storage_path('logs/' . $fileName);
 
         $handler = (new StreamHandler($path, MonologLogger::DEBUG))
             ->setFormatter(new LineFormatter(null, null, true, true));
@@ -119,14 +129,24 @@ trait WAMPCommandTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected function parseBaseOptions() {
+    protected function parseBaseOptions()
+    {
         $this->host = $this->getOptionFromInput('host') ?? $this->getConfig('host', $this->host);
         $this->port = $this->getOptionFromInput('port') ?? $this->getConfig('port', $this->port);
         $this->realm = $this->getOptionFromInput('realm') ?? $this->getConfig('realm', $this->realm);
         $this->tls = $this->getOptionFromInput('tls') ?? $this->getConfig('tls', $this->tls);
+        $this->transportProvider = $this->getOptionFromInput('transport-provider') ?? $this->getConfig('transportProvider',
+                $this->transportProvider);
 
         $this->noDebug = $this->getOptionFromInput('no-debug') ?? $this->noDebug;
         $this->runOnce = $this->getOptionFromInput('no-loop') ?? $this->runOnce;
+
+        $this->routePath = $this->getOptionFromInput('route-path') ?? $this->getConfig('routePath', $this->routePath);
+        $this->routePath = is_string($this->routePath) ? realpath($this->routePath) : null;
+
+        if (!$this->noDebug) {
+            Logger::set(new ConsoleLogger());
+        }
     }
 
     /**
@@ -137,4 +157,13 @@ trait WAMPCommandTrait
      * @author Donii Sergii <doniysa@gmail.com>
      */
     abstract protected function parseOptions();
+
+    /**
+     * Get transport provider
+     *
+     * @return mixed
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    abstract protected function getTransportProvider();
 }

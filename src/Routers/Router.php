@@ -157,7 +157,8 @@ class Router extends PeerRouter implements WAMPRouterInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function register() {
+    public function register()
+    {
 
     }
 
@@ -167,13 +168,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
     public static function getSubscribedEvents()
     {
         return static::$events;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function dispatch()
-    {
     }
 
     /**
@@ -192,7 +186,8 @@ class Router extends PeerRouter implements WAMPRouterInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function addRoute($name, $procedure) {
+    public function addRoute($name, $procedure)
+    {
         $this->getClient()->getSession()->register($name, $procedure);
     }
 
@@ -297,26 +292,27 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Set client
-     *
-     * @param \Thruway\Peer\ClientInterface $client Client
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function setClient(ClientInterface $client) {
-        $this->client = $client;
-        $this->client->start();
-    }
-
-    /**
      * Get client
      *
      * @return \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function getClient() {
+    public function getClient()
+    {
         return $this->client;
+    }
+
+    /**
+     * Set client
+     *
+     * @param \Thruway\Peer\ClientInterface $client Client
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setClient(ClientInterface $client)
+    {
+        $this->client = $client;
     }
 
     /**

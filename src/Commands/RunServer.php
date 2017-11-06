@@ -22,6 +22,38 @@ class RunServer extends Command
 {
     use WAMPCommandTrait;
 
+    protected $name = 'wamp:run-server {--realm=?} {--host=?} {--port=?} {--tls?} {--transport-provider=?}
+    {--no-loop?} {--no-debug?} {--in-background?} {--client-transport-provider=?} {--route-path=?}';
+    protected $signature = 'wamp:run-server
+                                {--realm= : Specify WAMP realm to be used}
+                                {--host= : Specify the router host}
+                                {--port= : Specify the router port}
+                                {--tls : Specify the router protocol as wss}
+                                {--no-debug : Disable debug mode.}
+                                {--no-loop : Disable loop runner}
+                                {--transport-provider : Transport provider class}
+                                {--route-path=? : Path to routes config}
+                                {--client-transport-provider=? : Client transport provider class}
+                                {--in-background : Run task in background}
+                                ';
+    protected $description = 'Run wamp server';
+
+    /**
+     * Run in background
+     *
+     * @var bool
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $runInBackground = false;
+
+    /**
+     * Wamp server
+     *
+     * @var \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
+     */
+    protected $WAMPServer = null;
+
     /**
      * Transport provider class
      *
@@ -31,25 +63,24 @@ class RunServer extends Command
      */
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
 
-    protected $name = 'wamp:run-server {--realm=?} {--host=?} {--port=?} {--tls?} {--transportProvider}
-    {--no-loop?} {--debug?}';
-    protected $signature = 'run:wamp-server
-                                {--realm= : Specify WAMP realm to be used}
-                                {--host= : Specify the router host}
-                                {--port= : Specify the router port}
-                                {--tls : Specify the router protocol as wss}
-                                {--no-debug : Disable debug mode.}
-                                {--no-loop : Disable loop runner}
-                                {--transportProvider : Transport provider class}
-                                ';
-    protected $description = 'Run wamp server';
+    /**
+     * Client transport provider class
+     *
+     * @var null|string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $clientTransportProvider = null;
+
 
     /**
-     * Wamp server
+     * No loop runner
      *
-     * @var \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
+     * @var bool
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected $WAMPServer = null;
+    protected $noLoop = false;
 
     /**
      * Run server handle
@@ -61,11 +92,55 @@ class RunServer extends Command
         $this->parseOptions();
         $this->changeWampLogger();
 
-        $this->WAMPServer = app()->wampRouter;
+        $clientCommand = 'php artisan wamp:register-routes' . $this->getCommandLineOptions();
 
-        $this->WAMPServer->addTransportProvider($this->getTransportProvider());
+        if ($this->clientTransportProvider) {
+            $clientCommand .= ' --transport-provider=' . $this->clientTransportProvider;
+        }
 
-        $this->WAMPServer->start(!$this->runOnce);
+        RunCommandInBackground::factory($clientCommand)->runInBackground();
+
+        if (!$this->runInBackground) {
+            $this->WAMPServer = app()->wampRouter;
+            $this->WAMPServer->registerModule($this->getTransportProvider());
+            $this->WAMPServer->start(!$this->runOnce);
+        } else {
+            $serverCommand = 'php artisan wamp:run-server ' . $this->getCommandLineOptions();
+
+            if ($this->clientTransportProvider) {
+                $serverCommand .= ' --client-transport-provider=' . $this->clientTransportProvider;
+            }
+
+            RunCommandInBackground::factory($serverCommand)->runInBackground();
+        }
+    }
+
+    protected function getCommandLineOptions() {
+        $command = ' --port=' . $this->port .
+            ' --host=' . $this->host .
+            ' --realm=' . $this->realm;
+
+        if ($this->clientTransportProvider) {
+            $command .= ' --transport-provider=' . $this->clientTransportProvider;
+        }
+
+        if ($this->noDebug) {
+            $command .= ' --no-debug';
+        }
+
+        if ($this->tls) {
+            $command .= ' --tls';
+        }
+
+        if ($this->routePath) {
+            $command .= ' --route-path=' . $this->routePath;
+        }
+
+        if ($this->noLoop) {
+            $command .= ' --no-loop';
+        }
+
+        return $command;
     }
 
     /**
@@ -84,16 +159,15 @@ class RunServer extends Command
     protected function parseOptions()
     {
         $this->parseBaseOptions();
-        $this->transportProvider = $this->getOptionFromInput('transportProvider') ?? $this->getConfig('transportProvider',
-                $this->transportProvider);
+        $this->runInBackground = $this->getOptionFromInput('in-background') ?? false;
     }
 
     /**
-     * Get WAMP server transport provider
+     * Get WAMP client transport provider
      *
      * @return null|string|\Thruway\Transport\RatchetTransportProvider
      *
-     * @throws InvalidWampTransportProvider
+     * @throws \sonrac\WAMP\Exceptions\InvalidWampTransportProvider
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
