@@ -7,7 +7,7 @@
  * Time: 4:47 PM
  */
 $app = new \Laravel\Lumen\Application(
-    __DIR__.'/../'
+    __DIR__.'/..'
 );
 
 $app->instance('path.config', app()->basePath().DIRECTORY_SEPARATOR.'config');
