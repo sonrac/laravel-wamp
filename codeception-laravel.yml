@@ -28,6 +28,7 @@ modules:
     - Laravel5:
         bootstrap: /bootstrap/app.php
         root: tests/app/
+        cleanup: false
         vendor_dir: ../../vendor
         environment_file: .env.testing
 extensions:

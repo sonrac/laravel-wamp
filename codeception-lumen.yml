@@ -24,6 +24,7 @@ settings:
     colors: true
     memory_limit: 1024M
 modules:
+  config:
   enabled:
     - Lumen:
         bootstrap: tests/app/bootstrap/app.php
