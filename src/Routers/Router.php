@@ -126,8 +126,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected static $events = [
-        self::EVENT_CONNECTION_OPEN  => [['handleConnectionOpen', 10]],
-        self::EVENT_CONNECTION_CLOSE => [['handleConnectionClose', 10]],
         self::EVENT_ROUTER_START     => [['handleRouterStart', 10]],
         self::EVENT_ROUTER_STOP      => [['handleRouterStop', 10]],
     ];
@@ -199,7 +197,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public function onConnectionOpen($callback, $priority = 0)
     {
-        $this->addEvent($callback, self::EVENT_CONNECTION_OPEN, $priority);
+        $this->addEvent($callback, static::EVENT_CONNECTION_OPEN, $priority);
     }
 
     /**
@@ -214,7 +212,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public function onRouterStop($callback, $priority = 0)
     {
-        $this->addEvent($callback, self::EVENT_ROUTER_STOP, $priority);
+        $this->addEvent($callback, static::EVENT_ROUTER_STOP, $priority);
     }
 
     /**
@@ -229,7 +227,24 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public function onConnectionClose($callback, $priority = 0)
     {
-        $this->addEvent($callback, self::EVENT_CONNECTION_CLOSE, $priority);
+        $this->addEvent($callback, static::EVENT_CONNECTION_CLOSE, $priority);
+    }
+
+    /**
+     * Remove event listener.
+     *
+     * @param string $eventName Event name
+     * @param mixed  $callback  Callback
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function removeEvent($eventName, $callback)
+    {
+        $this->getEventDispatcher()->removeListener($eventName, $callback);
+
+        if (count(static::$events[$eventName]) === 0) {
+            unset(static::$events[$eventName]);
+        }
     }
 
     /**
@@ -260,7 +275,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public function onRouterStart($callback, $priority = 0)
     {
-        $this->addEvent($callback, self::EVENT_ROUTER_START, $priority);
+        $this->addEvent($callback, static::EVENT_ROUTER_START, $priority);
     }
 
     /**
@@ -274,7 +289,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     protected function addEvent($callback, $eventName, $priority)
     {
-        static::checkEventKeyExistsOrCreate($eventName);
+        $this->checkEventKeyExistsOrCreate($eventName);
 
         if (is_string($callback)) {
             list($class, $method) = explode('&', $callback);
@@ -319,7 +334,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    private static function checkEventKeyExistsOrCreate($key, $default = null)
+    private function checkEventKeyExistsOrCreate($key, $default = null)
     {
         if (!isset(static::$events[$key])) {
             static::$events[$key] = $default ? [$default] : [];
