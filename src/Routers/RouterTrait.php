@@ -47,7 +47,7 @@ trait RouterTrait
         $middleware = isset($config['middleware']) ? explode('|', $config['middleware']) : [];
         $namespace = isset($config['namespace']) ? $config['namespace'] : 'App\Controllers\WAMP';
 
-        $this->groups[] = (object)[
+        $this->groups[] = (object) [
             'middleware' => $middleware,
             'namespace'  => $namespace,
             'prefix'     => isset($config['prefix']) ? $config['prefix'] : '',
@@ -62,7 +62,8 @@ trait RouterTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function getGroups() {
+    public function getGroups()
+    {
         return $this->groups;
     }
 
