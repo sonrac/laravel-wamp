@@ -58,7 +58,7 @@ class Client extends PeerClient
         $session = $this->session = $session;
         $client = $this;
 
-        /** @scrutinizer ignore-call */
+        /* @scrutinizer ignore-call */
         app()->wampRouter->setClient($client);
 
         if (is_file($this->routePath)) {
