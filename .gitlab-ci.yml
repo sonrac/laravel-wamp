@@ -1,4 +1,4 @@
-image: registry.conci.info/jobsy/backend/fpm:master
+image: registry.conci.info/jobsy/backend/base:master
 
 before_script:
   - cp codeception-lumen.yml codeception.yml
