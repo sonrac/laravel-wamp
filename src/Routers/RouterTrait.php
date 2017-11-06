@@ -63,5 +63,4 @@ trait RouterTrait
     {
         $this->router = $router;
     }
-
 }

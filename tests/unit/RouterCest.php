@@ -1,7 +1,5 @@
 <?php
 
-use Codeception\Util\Stub;
-use sonrac\WAMP\Routers\Router;
 
 class RouterCest
 {
@@ -23,6 +21,5 @@ class RouterCest
     // tests
     public function testRouterEvents(UnitTester $I)
     {
-
     }
 }

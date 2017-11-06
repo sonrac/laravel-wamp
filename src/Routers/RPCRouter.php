@@ -18,5 +18,4 @@ use sonrac\WAMP\Contracts\RPCRouterInterface;
 class RPCRouter implements RPCRouterInterface
 {
     use RouterTrait;
-
 }

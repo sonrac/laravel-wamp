@@ -51,7 +51,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     /**
      * Connection open event name.
      *
-     * @type string
+     * @var string
      * @const
      */
     const EVENT_CONNECTION_OPEN = 'connection_open';
@@ -59,7 +59,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     /**
      * Connection close event name.
      *
-     * @type string
+     * @var string
      * @const
      */
     const EVENT_CONNECTION_CLOSE = 'connection_close';
@@ -67,7 +67,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     /**
      * Router start event name.
      *
-     * @type string
+     * @var string
      * @const
      */
     const EVENT_ROUTER_START = 'router.start';
@@ -75,7 +75,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     /**
      * Router stop event name.
      *
-     * @type string
+     * @var string
      * @const
      */
     const EVENT_ROUTER_STOP = 'router.stop';
@@ -158,7 +158,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public function register()
     {
-
     }
 
     /**
@@ -240,7 +239,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public static function handleRouterStart()
     {
-
     }
 
     /**
@@ -248,7 +246,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public static function handleRouterStop()
     {
-
     }
 
     /**

@@ -10,7 +10,6 @@ namespace sonrac\WAMP\Contracts;
 
 use Thruway\Transport\ClientTransportProviderInterface as BaseClientTransportProviderInterface;
 
-
 /**
  * @interface  ClientTransportProvider
  * Client transport provider contract
@@ -19,5 +18,4 @@ use Thruway\Transport\ClientTransportProviderInterface as BaseClientTransportPro
  */
 interface ClientTransportProviderInterface extends BaseClientTransportProviderInterface
 {
-
 }
