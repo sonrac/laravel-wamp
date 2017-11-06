@@ -14,6 +14,9 @@
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/779eb389-8271-4690-8457-89fe4f379783/big.png)](https://insight.sensiolabs.com/projects/779eb389-8271-4690-8457-89fe4f379783)
 
+[![pipeline status](https://git.conci.info/conci/service/lib/wamp-server/badges/master/pipeline.svg)](https://git.conci.info/conci/service/lib/wamp-server/commits/master)
+[![coverage report](https://git.conci.info/conci/service/lib/wamp-server/badges/master/coverage.svg)](https://git.conci.info/conci/service/lib/wamp-server/commits/master)
+
 
 # Wamp server for lumen/laravel
 

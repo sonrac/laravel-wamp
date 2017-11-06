@@ -1,18 +1,6 @@
-image: php:7.1
-
-cache:
-  paths:
-    - vendor/
+image: registry.conci.info/jobsy/backend/fpm:master
 
 before_script:
-  # Install all project dependencies
-  # Install git and unzip (composer will need them)
-  - apt-get update && apt-get install -qqy git unzip
-  - pecl install xdebug
-  - docker-php-ext-enable xdebug
-  # Install composer
-  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-  # Install all project dependencies
   - cp codeception-lumen.yml codeception.yml
   - composer install
   - composer require --dev laravel/lumen-framework:5.* --no-interaction
@@ -20,4 +8,4 @@ before_script:
 # Test
 test:
   script:
-    - vendor/bin/codecept run --coverage
+    - php -dzend_extension=xdebug.so ./vendor/bin/codecept run  --coverage --coverage-text --coverage-xml
