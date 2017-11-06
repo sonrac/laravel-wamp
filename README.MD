@@ -27,7 +27,7 @@ composer require sonrac/wamp-server
 or add to your composer.json in section autoload
 
 ```
-"sonrac/wamp-server": "1.*"
+"sonrac/wamp-server": "0.1.*"
 ```
 
 Register service provider:
