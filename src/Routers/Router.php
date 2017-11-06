@@ -16,7 +16,7 @@ use Thruway\Peer\Router as PeerRouter;
 
 /**
  * Class Router
- * Router class
+ * Router class.
  *
  * <h2>Events list</h2>
  * <table class="table table-bordered table-stripped table-hover table-responsive">
@@ -43,15 +43,13 @@ use Thruway\Peer\Router as PeerRouter;
  * <code>
  * $app->router->onOpen()
  * </code>
- *
- * @package sonrac\WAMP\Routers
  */
 class Router extends PeerRouter implements WAMPRouterInterface
 {
     use RouterTrait;
 
     /**
-     * Connection open event name
+     * Connection open event name.
      *
      * @type string
      * @const
@@ -59,7 +57,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     const EVENT_CONNECTION_OPEN = 'connection_open';
 
     /**
-     * Connection close event name
+     * Connection close event name.
      *
      * @type string
      * @const
@@ -67,7 +65,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     const EVENT_CONNECTION_CLOSE = 'connection_close';
 
     /**
-     * Router start event name
+     * Router start event name.
      *
      * @type string
      * @const
@@ -75,7 +73,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     const EVENT_ROUTER_START = 'router.start';
 
     /**
-     * Router stop event name
+     * Router stop event name.
      *
      * @type string
      * @const
@@ -83,21 +81,21 @@ class Router extends PeerRouter implements WAMPRouterInterface
     const EVENT_ROUTER_STOP = 'router.stop';
 
     /**
-     * RPC router
+     * RPC router.
      *
      * @var \sonrac\WAMP\Contracts\RPCRouterInterface
      */
     protected $rpcRouter;
 
     /**
-     * Publisher/subscription router
+     * Publisher/subscription router.
      *
      * @var \sonrac\WAMP\Contracts\PubSubRouterInterface
      */
     protected $pubSubRouter;
 
     /**
-     * Loop object
+     * Loop object.
      *
      * @var null|\React\EventLoop\LoopInterface
      *
@@ -105,14 +103,14 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     protected $loop;
     /**
-     * Routes
+     * Routes.
      *
      * @var array
      */
     protected $routes = [];
 
     /**
-     * Peer client
+     * Peer client.
      *
      * @var \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
      *
@@ -121,7 +119,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     protected $client = null;
 
     /**
-     * Events
+     * Events.
      *
      * @var array
      *
@@ -149,11 +147,12 @@ class Router extends PeerRouter implements WAMPRouterInterface
         $this->rpcRouter = $RPCRouter;
         $this->pubSubRouter = $pubSubRouter;
         $this->loop = $loop;
+
         parent::__construct($loop);
     }
 
     /**
-     * Register all events, subscribers, publisher & procedures
+     * Register all events, subscribers, publisher & procedures.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -171,7 +170,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add route to RPC router
+     * Add route to RPC router.
      *
      * @param string          $path     Route path
      * @param \Closure|string $callback Handler
@@ -182,7 +181,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add procedure
+     * Add procedure.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -192,7 +191,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add open event listener
+     * Add open event listener.
      *
      * @param \Closure|string $callback Callback
      * @param int             $priority Callback priority
@@ -205,7 +204,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add stop router event listener
+     * Add stop router event listener.
      *
      * @param \Closure|string $callback Callback
      * @param int             $priority Callback priority
@@ -220,7 +219,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add connection close event listener
+     * Add connection close event listener.
      *
      * @param \Closure|string $callback Callback
      * @param int             $priority Callback priority
@@ -235,7 +234,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Handle start router
+     * Handle start router.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -245,7 +244,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Handle start router
+     * Handle start router.
      */
     public static function handleRouterStop()
     {
@@ -253,7 +252,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add open event listener
+     * Add open event listener.
      *
      * @param \Closure|string $callback Callback
      * @param int             $priority Callback priority
@@ -268,7 +267,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add event
+     * Add event.
      *
      * @param \Closure|string $callback  Callback
      * @param string          $eventName Event name
@@ -292,7 +291,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Get client
+     * Get client.
      *
      * @return \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
      *
@@ -316,7 +315,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Check event exists in array or exists
+     * Check event exists in array or exists.
      *
      * @param string $key     Key
      * @param mixed  $default Default value

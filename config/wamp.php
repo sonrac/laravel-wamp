@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 10:32 AM
@@ -82,7 +83,6 @@ return [
     */
     'pathLogFile' => null,
 
-
     /*
     |--------------------------------------------------------------------------
     | Transport provider class
@@ -102,5 +102,5 @@ return [
     | Path to entry point
     |
     */
-    'routePath' => null
+    'routePath' => null,
 ];

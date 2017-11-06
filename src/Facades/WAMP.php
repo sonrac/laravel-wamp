@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * Class WAMP
- * WAMP facade
- *
- * @package sonrac\WAMP\Facades
+ * WAMP facade.
  */
 class WAMP extends Facade
 {

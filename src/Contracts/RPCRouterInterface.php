@@ -11,9 +11,7 @@ namespace sonrac\WAMP\Contracts;
 
 /**
  * Interface RPCRouterInterface
- * RCP router implements
- *
- * @package sonrac\WAMP\Contracts
+ * RCP router implements.
  */
 interface RPCRouterInterface extends WAMPRouterInterface
 {

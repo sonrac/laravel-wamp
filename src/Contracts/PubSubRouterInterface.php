@@ -13,9 +13,7 @@ use sonrac\WAMP\Abstracts\BaseWAMPRouterInterface;
 
 /**
  * Interface RPCRouterInterface
- * RCP router implements
- *
- * @package sonrac\WAMP\Contracts
+ * RCP router implements.
  */
 interface PubSubRouterInterface extends BaseWAMPRouterInterface
 {

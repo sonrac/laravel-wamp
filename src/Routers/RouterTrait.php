@@ -12,14 +12,14 @@ namespace sonrac\WAMP\Routers;
 use Thruway\Peer\RouterInterface;
 
 /**
- * Trait RouterTrait
- * Base router trait
- *
- * @package sonrac\WAMP\Routers
+ * Trait RouterTrait.
+ * Base router trait.
  */
 trait RouterTrait
 {
     /**
+     * Router groups.
+     *
      * @var null|\sonrac\WAMP\GroupsConfigInterface[]
      */
     protected $groups = null;
@@ -46,7 +46,7 @@ trait RouterTrait
         $middleware = isset($config['middleware']) ? explode('|', $config['middleware']) : [];
         $namespace = isset($config['namespace']) ? $config['namespace'] : 'App\Controllers\WAMP';
 
-        $this->groups[] = (object)[
+        $this->groups[] = (object) [
             'middleware' => $middleware,
             'namespace'  => $namespace,
             'prefix'     => isset($config['prefix']) ? $config['prefix'] : '',
@@ -55,7 +55,7 @@ trait RouterTrait
     }
 
     /**
-     * Set router
+     * Set router.
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */

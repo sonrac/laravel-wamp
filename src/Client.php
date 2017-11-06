@@ -13,7 +13,7 @@ use Thruway\Peer\Client as PeerClient;
 
 /**
  * Class Client
- * Client class
+ * Client class.
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */

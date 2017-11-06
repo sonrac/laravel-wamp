@@ -13,9 +13,7 @@ use sonrac\WAMP\Contracts\RPCRouterInterface;
 
 /**
  * Class RPCRouterInterface
- * WAMP RPC router
- *
- * @package sonrac\WAMP
+ * WAMP RPC router.
  */
 class RPCRouter implements RPCRouterInterface
 {

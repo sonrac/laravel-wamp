@@ -11,9 +11,7 @@ namespace sonrac\WAMP\Abstracts;
 
 /**
  * Interface WAMPControllerInterface
- * WAMP controller implements
- *
- * @package sonrac\WAMP
+ * WAMP controller implements.
  */
 interface WAMPControllerInterface
 {

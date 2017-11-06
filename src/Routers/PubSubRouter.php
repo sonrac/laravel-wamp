@@ -13,9 +13,7 @@ use sonrac\WAMP\Contracts\PubSubRouterInterface;
 
 /**
  * Class PubSubRouter
- * Publisher/subscribers router
- *
- * @package sonrac\WAMP
+ * Publisher/subscribers router.
  */
 class PubSubRouter implements PubSubRouterInterface
 {
@@ -30,6 +28,12 @@ class PubSubRouter implements PubSubRouterInterface
      */
     public function addRoute($path, $callback, $eventName)
     {
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function dispatch()
+    {
     }
 }

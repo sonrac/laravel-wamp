@@ -14,13 +14,17 @@ use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 
 /**
  * Class RunServer
- * Run WAMP server command
- *
- * @package sonrac\WAMP\Commands
+ * Run WAMP server command.
  */
 class RunServer extends Command
 {
     use WAMPCommandTrait;
+    /**
+     * WAMP router host.
+     *
+     * @var string
+     */
+    protected $host = '127.0.0.1';
 
     protected $name = 'wamp:run-server {--realm=?} {--host=?} {--port=?} {--tls?} {--transport-provider=?}
     {--no-loop?} {--no-debug?} {--in-background?} {--client-transport-provider=?} {--route-path=?}';
@@ -39,7 +43,7 @@ class RunServer extends Command
     protected $description = 'Run wamp server';
 
     /**
-     * Run in background
+     * Run in background.
      *
      * @var bool
      *
@@ -48,14 +52,14 @@ class RunServer extends Command
     protected $runInBackground = false;
 
     /**
-     * Wamp server
+     * Wamp server.
      *
      * @var \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
      */
     protected $WAMPServer = null;
 
     /**
-     * Transport provider class
+     * Transport provider class.
      *
      * @var string|\Thruway\Transport\RatchetTransportProvider|null
      *
@@ -64,7 +68,7 @@ class RunServer extends Command
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
 
     /**
-     * Client transport provider class
+     * Client transport provider class.
      *
      * @var null|string
      *
@@ -83,7 +87,7 @@ class RunServer extends Command
     protected $noLoop = false;
 
     /**
-     * Run server handle
+     * Run server handle.
      *
      * @throws \Exception
      */
@@ -154,7 +158,7 @@ class RunServer extends Command
     }
 
     /**
-     * Merge config & input options
+     * Merge config & input options.
      */
     protected function parseOptions()
     {
@@ -163,7 +167,7 @@ class RunServer extends Command
     }
 
     /**
-     * Get WAMP client transport provider
+     * Get WAMP server transport provider.
      *
      * @return null|string|\Thruway\Transport\RatchetTransportProvider
      *

@@ -13,9 +13,7 @@ use sonrac\WAMP\Abstracts\BaseWAMPRouterInterface;
 
 /**
  * Interface RouterInterface
- * RouterInterface interface
- *
- * @package sonrac\WAMP
+ * RouterInterface interface.
  */
 interface WAMPRouterInterface extends BaseWAMPRouterInterface
 {

@@ -14,72 +14,70 @@ use Thruway\Peer\Client;
 use Thruway\Transport\TransportProviderInterface;
 
 /**
- * Class WAMP
+ * Class WAMP.
  *
  * @summary WAMP Server adapter for lumen|laravel
- *
- * @package sonrac\WAMP
  */
 class WAMP
 {
     /**
-     * WAMP host
+     * WAMP host.
      *
      * @var string
      */
     protected $host;
 
     /**
-     * WAMP realm
+     * WAMP realm.
      *
      * @var string
      */
     protected $realm;
 
     /**
-     * WAMP port
+     * WAMP port.
      *
      * @var string
      */
     protected $port;
 
     /**
-     * WAMP path
+     * WAMP path.
      *
      * @var int|string
      */
     protected $path;
 
     /**
-     * Debug mode is enabled
+     * Debug mode is enabled.
      *
      * @var bool
      */
     protected $debug = false;
 
     /**
-     * In background run mode is enable
+     * In background run mode is enable.
      *
      * @var bool
      */
     protected $inBackground = false;
 
     /**
-     * Use WAMP security connection
+     * Use WAMP security connection.
      *
      * @var bool
      */
     protected $tls = false;
 
     /**
-     * Transport provider class
+     * Transport provider class.
      *
      * @var \Thruway\Transport\TransportInterface
      */
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
 
     /**
-     * Clients
+     * Clients.
      *
      * @var array
      *
@@ -88,7 +86,7 @@ class WAMP
     protected $clients = [];
 
     /**
-     * WAMP router
+     * WAMP router.
      *
      * @var mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
      *
@@ -139,7 +137,7 @@ class WAMP
     }
 
     /**
-     * Get router
+     * Get router.
      *
      * @return mixed|null|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
      */
@@ -149,7 +147,7 @@ class WAMP
     }
 
     /**
-     * Get client
+     * Get client.
      *
      * @param string|null $realm Realm
      *
@@ -168,7 +166,7 @@ class WAMP
     }
 
     /**
-     * Create and get client with new realm
+     * Create and get client with new realm.
      *
      * @param null|string $realm
      *
@@ -188,7 +186,7 @@ class WAMP
     }
 
     /**
-     * Get value from config
+     * Get value from config.
      *
      * @param string      $name     Option name
      * @param null|string $propName Property name
@@ -212,7 +210,7 @@ class WAMP
     }
 
     /**
-     * Setup router
+     * Setup router.
      *
      * @return mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
      */
@@ -225,7 +223,7 @@ class WAMP
     }
 
     /**
-     * Get transport provider
+     * Get transport provider.
      *
      * @return \Thruway\Transport\TransportProviderInterface
      */

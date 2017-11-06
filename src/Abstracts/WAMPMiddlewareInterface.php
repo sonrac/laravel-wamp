@@ -13,14 +13,12 @@ use sonrac\WAMP\Contracts\WAMPRouterInterface;
 
 /**
  * Interface WAMPMiddlewareInterface
- * WAMP middleware implements
- *
- * @package sonrac\WAMP
+ * WAMP middleware implements.
  */
 interface WAMPMiddlewareInterface
 {
     /**
-     * Handle middleware
+     * Handle middleware.
      *
      * @param \sonrac\WAMP\Contracts\WAMPRouterInterface $router Router
      * @param \Closure                                   $next   Next route

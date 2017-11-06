@@ -1,17 +1,17 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/23/17
  * Time: 4:47 PM
  */
-
 $app = new \Laravel\Lumen\Application(
-    __DIR__ . '/../'
+    __DIR__.'/../'
 );
 
-$app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
-$app->instance('path.storage', app()->basePath() . DIRECTORY_SEPARATOR . 'storage');
+$app->instance('path.config', app()->basePath().DIRECTORY_SEPARATOR.'config');
+$app->instance('path.storage', app()->basePath().DIRECTORY_SEPARATOR.'storage');
 
 $app->singleton(
     \Illuminate\Contracts\Http\Kernel::class,

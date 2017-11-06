@@ -11,9 +11,7 @@ namespace sonrac\WAMP\Abstracts;
 
 /**
  * Interface BaseWAMPRouterInterface
- * Base WAMP router implements
- *
- * @package sonrac\WAMP\Abstracts
+ * Base WAMP router implements.
  */
 interface BaseWAMPRouterInterface
 {
