@@ -230,7 +230,6 @@ trait RouterTrait
     protected function prepareCallback($callback)
     {
         $namespace = $this->groupControllerNamespace ?? $this->getRouter()->getControllerNamespace();
-        $callbackAdditional = null;
         if ($this->groupControllerNamespace && $this->groupControllerNamespace
             && is_string($callback) && count(explode('&', $callback)) === 2) {
             $callback = rtrim($namespace, '\\').$callback;
