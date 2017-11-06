@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 10:25 AM
@@ -12,19 +13,16 @@ use sonrac\WAMP\Contracts\RPCRouterInterface;
 
 /**
  * Class RPCRouterInterface
- * WAMP RPC router
- *
- * @package sonrac\WAMP
+ * WAMP RPC router.
  */
 class RPCRouter implements RPCRouterInterface
 {
     use RouterTrait;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function dispatch()
     {
     }
-
 }

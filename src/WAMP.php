@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 11:08 AM
@@ -12,71 +13,70 @@ use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 use Thruway\Transport\TransportProviderInterface;
 
 /**
- * Class WAMP
- * @summary WAMP Server adapter for lumen|laravel
+ * Class WAMP.
  *
- * @package sonrac\WAMP
+ * @summary WAMP Server adapter for lumen|laravel
  */
 class WAMP
 {
     /**
-     * WAMP host
+     * WAMP host.
      *
      * @var string
      */
     protected $host;
 
     /**
-     * WAMP realm
+     * WAMP realm.
      *
      * @var string
      */
     protected $realm;
 
     /**
-     * WAMP port
+     * WAMP port.
      *
      * @var string
      */
     protected $port;
 
     /**
-     * WAMP path
+     * WAMP path.
      *
      * @var int|string
      */
     protected $path;
 
     /**
-     * Debug mode is enabled
+     * Debug mode is enabled.
      *
      * @var bool
      */
     protected $debug = false;
 
     /**
-     * In background run mode is enable
+     * In background run mode is enable.
      *
      * @var bool
      */
     protected $inBackground = false;
 
     /**
-     * Use WAMP security connection
+     * Use WAMP security connection.
      *
      * @var bool
      */
     protected $tls = false;
 
     /**
-     * Transport provider class
+     * Transport provider class.
      *
      * @var \Thruway\Transport\TransportInterface
      */
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
 
     /**
-     * WAMP router
+     * WAMP router.
      *
      * @var mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
      *
@@ -127,25 +127,27 @@ class WAMP
     }
 
     /**
-     * Get router
+     * Get router.
      *
      * @return mixed|null|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
      */
-    public function getRouter() {
+    public function getRouter()
+    {
         return $this->router ?? $this->setupRouter();
     }
 
     /**
-     * Setup router
+     * Setup router.
      *
      * @return mixed|\sonrac\WAMP\Contracts\WAMPRouterInterface|\sonrac\WAMP\Routers\Router
      */
-    protected function setupRouter() {
+    protected function setupRouter()
+    {
         return $this->router = app()->wampRouter;
     }
 
     /**
-     * Get value from config
+     * Get value from config.
      *
      * @param string      $name     Option name
      * @param null|string $propName Property name
@@ -169,7 +171,7 @@ class WAMP
     }
 
     /**
-     * Get transport provider
+     * Get transport provider.
      *
      * @return \Thruway\Transport\TransportProviderInterface
      */

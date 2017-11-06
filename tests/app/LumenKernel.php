@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 12:29 PM
@@ -14,6 +15,6 @@ use sonrac\WAMP\Commands\RunServer;
 class LumenKernel extends Kernel
 {
     protected $commands = [
-        RunServer::class
+        RunServer::class,
     ];
 }

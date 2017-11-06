@@ -14,56 +14,54 @@ use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 
 /**
  * Class RunServer
- * Run WAMP server command
- *
- * @package sonrac\WAMP\Commands
+ * Run WAMP server command.
  */
 class RunServer extends Command
 {
     /**
-     * WAMP router host
+     * WAMP router host.
      *
      * @var string
      */
     protected $host = '127.0.0.1';
 
     /**
-     * Wamp realm to used
+     * Wamp realm to used.
      *
      * @var string
      */
     protected $realm;
 
     /**
-     * Providers list
+     * Providers list.
      *
      * @var array
      */
     protected $providers = [];
 
     /**
-     * WAMP router port
+     * WAMP router port.
      *
      * @var int
      */
     protected $port = '9090';
 
     /**
-     * Run in debug mode. If `in-background` option is disable, logging to storage_path('server-{pid}.log')
+     * Run in debug mode. If `in-background` option is disable, logging to storage_path('server-{pid}.log').
      *
      * @var bool
      */
     protected $noDebug = false;
 
     /**
-     * Run in loop or once
+     * Run in loop or once.
      *
      * @var bool
      */
     protected $runOnce = false;
 
     /**
-     * Specify the router protocol as wss
+     * Specify the router protocol as wss.
      *
      * @var bool
      */
@@ -75,7 +73,7 @@ class RunServer extends Command
     protected $path = null;
 
     /**
-     * Transport provider class
+     * Transport provider class.
      *
      * @var string|\Thruway\Transport\RatchetTransportProvider|null
      *
@@ -99,14 +97,14 @@ class RunServer extends Command
     protected $description = 'Run wamp server';
 
     /**
-     * Wamp server
+     * Wamp server.
      *
      * @var null|\sonrac\WAMP\Routers\Router
      */
     protected $WAMPServer = null;
 
     /**
-     * Run server handle
+     * Run server handle.
      *
      * @throws \Exception
      */
@@ -123,7 +121,7 @@ class RunServer extends Command
     }
 
     /**
-     * Merge config & input options
+     * Merge config & input options.
      */
     protected function parseOptions()
     {
@@ -141,11 +139,11 @@ class RunServer extends Command
     }
 
     /**
-     * Get WAMP server transport provider
-     *
-     * @return null|string|\Thruway\Transport\RatchetTransportProvider
+     * Get WAMP server transport provider.
      *
      * @throws InvalidWampTransportProvider
+     *
+     * @return null|string|\Thruway\Transport\RatchetTransportProvider
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -167,7 +165,7 @@ class RunServer extends Command
     }
 
     /**
-     * Get option value from input
+     * Get option value from input.
      *
      * @param string $optionName
      *
@@ -183,7 +181,7 @@ class RunServer extends Command
     }
 
     /**
-     * Get minion config
+     * Get minion config.
      *
      * @param string|null $optName Option name
      * @param mixed       $default Default value

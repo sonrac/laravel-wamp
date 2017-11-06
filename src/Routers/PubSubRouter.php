@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 11:05 AM
@@ -12,9 +13,7 @@ use sonrac\WAMP\Contracts\PubSubRouterInterface;
 
 /**
  * Class PubSubRouter
- * Publisher/subscribers router
- *
- * @package sonrac\WAMP
+ * Publisher/subscribers router.
  */
 class PubSubRouter implements PubSubRouterInterface
 {
@@ -29,15 +28,12 @@ class PubSubRouter implements PubSubRouterInterface
      */
     public function addRoute($path, $callback, $eventName)
     {
-
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function dispatch()
     {
-
     }
-
 }

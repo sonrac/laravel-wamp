@@ -1,6 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
+ *
  * @author Donii Sergii <doniysa@gmail.com>
  * Date: 10/24/17
  * Time: 2:59 PM
@@ -8,7 +9,7 @@
 
 namespace sonrac\WAMP\Exceptions;
 
-use \Exception;
+use Exception;
 
 class InvalidClientException extends Exception
 {
