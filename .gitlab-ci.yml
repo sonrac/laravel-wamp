@@ -8,4 +8,4 @@ before_script:
 # Test
 test:
   script:
-    - php -dzend_extension=xdebug.so ./vendor/bin/codecept run  --coverage --coverage-text --coverage-xml
+    - php -dzend_extension=xdebug.so ./vendor/bin/codecept run --coverage-text
