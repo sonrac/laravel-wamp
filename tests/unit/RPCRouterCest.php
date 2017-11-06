@@ -63,9 +63,10 @@ class RPCRouterCest
         $tester->assertInstanceOf(\React\Promise\Promise::class, $promise);
     }
 
-    public function testAddRoutesGroups(UnitTester $tester) {
+    public function testAddRoutesGroups(UnitTester $tester)
+    {
         app()->rpcRouter->group([
-            'namespace' => '\test'
+            'namespace' => '\test',
         ], function ($session, $client) use ($tester) {
             return null; //app()->rpcRouter->addRoute('test', 'HomeController@index');
         });
@@ -83,12 +84,14 @@ class RPCRouterCest
         $tester->assertCount(1, $callbacks);
     }
 
-    public function parseCallbackTest(UnitTester $tester) {
+    public function parseCallbackTest(UnitTester $tester)
+    {
         $callback = $this->router->parseCallback('Test');
 
         $tester->assertInstanceOf(\Closure::class, $callback);
 
-        $callback = $this->router->parseCallback($origCallback = function () {});
+        $callback = $this->router->parseCallback($origCallback = function () {
+        });
 
         $tester->assertInstanceOf(\Closure::class, $callback);
         $tester->assertEquals($origCallback, $callback);

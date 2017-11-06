@@ -240,7 +240,7 @@ trait RouterTrait
             'prefix'     => $this->prefix,
             'namespace'  => $namespace,
             'callback'   => $this->parseCallback($callback, $namespace),
-            'middleware' => $this->middleware
+            'middleware' => $this->middleware,
         ];
     }
 }
