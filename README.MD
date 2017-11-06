@@ -77,6 +77,50 @@ Usage help for get options help
 php artisan register-routes
 ```
 
+Register service provider:
+```
+\sonrac\WAMP\WAMPServiceProvider
+```
+
+Add console commands to you `Kernel.php`:
+```
+'\sonrac\WAMP\Commands\RunServer',
+'\sonrac\WAMP\Commands\RegisterRoutes',
+```
+
+## Add subscriber:
+
+```php
+app()->wampRouter->addSubscriber('com2.hello', function ($clientSession, $client) {
+    return 123;
+});
+```
+
+## Add procedure: 
+```php
+app()->wampRouter->addRoute('com1.hello', function ($clientSession, $client) {
+    return 123;
+})
+```
+
+## Start server:
+
+Usage help for get options help
+
+```bash
+php artisan wamp:run-server
+```
+
+This command let start server with registering predefined routes with client
+
+## Register routes:
+
+Usage help for get options help
+
+```bash
+php artisan register-routes
+```
+
 ## Run tests
 
 Test running for laravel & lumen both from script `run-tests.sh`
