@@ -51,7 +51,9 @@ class RPCRouterCest
         $session = Mockery::mock(\Thruway\ClientSession::class);
 
         $session->shouldReceive('register')
-            ->andReturn(new \React\Promise\Promise(function () use ($callback) {return $callback;}));
+            ->andReturn(new \React\Promise\Promise(function () use ($callback) {
+                return $callback;
+            }));
 
         $client->shouldReceive('getSession')
             ->andReturn($session);
