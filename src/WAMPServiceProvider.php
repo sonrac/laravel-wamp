@@ -56,7 +56,7 @@ class WAMPServiceProvider extends ServiceProvider
             return new Client($config['realm']);
         });
 
-        /**
+        /*
          * Register routers
          */
         foreach ([
@@ -73,7 +73,6 @@ class WAMPServiceProvider extends ServiceProvider
                          'sonrac\WAMP\Routers\Router',
                      ],
                  ] as $alias => $abstract) {
-
             $this->app->singleton($abstract[0], $abstract[1]);
             $this->app->alias($abstract[0], $alias);
         }

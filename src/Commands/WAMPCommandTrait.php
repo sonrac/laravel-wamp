@@ -125,7 +125,6 @@ trait WAMPCommandTrait
      */
     protected function changeWampLogger($fileName = 'wamp-server.log')
     {
-
         if (!$this->noDebug) {
             return;
         }

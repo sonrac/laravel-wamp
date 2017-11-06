@@ -11,7 +11,6 @@ namespace sonrac\WAMP\Commands;
 use Illuminate\Console\Command;
 use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 
-
 /**
  * @class  RegisterRoutes
  * <summary>
@@ -75,7 +74,7 @@ class RegisterRoutes extends Command
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function parseOptions()
     {
@@ -113,7 +112,8 @@ class RegisterRoutes extends Command
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected function getTransportURI() {
+    protected function getTransportURI()
+    {
         return ($this->tls ? 'wss://' : 'ws://') . $this->host . ':' . $this->port;
     }
 }

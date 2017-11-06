@@ -102,5 +102,5 @@ return [
     | Path to entry point
     |
     */
-    'routePath' => null
+    'routePath' => null,
 ];

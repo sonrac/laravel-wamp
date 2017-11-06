@@ -109,7 +109,8 @@ class RunServer extends Command
         }
     }
 
-    protected function getCommandLineOptions() {
+    protected function getCommandLineOptions()
+    {
         $command = ' --port=' . $this->port .
             ' --host=' . $this->host .
             ' --realm=' . $this->realm;
