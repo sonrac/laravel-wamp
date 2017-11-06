@@ -25,7 +25,7 @@ settings:
     memory_limit: 1024M
 modules:
   enabled:
-    - Laravel5:
+    - sonrac\WAMP\tests\Modules\LaravelModuleWithoutDatabase:
         bootstrap: /bootstrap/app.php
         root: tests/app/
         cleanup: false

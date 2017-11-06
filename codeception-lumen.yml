@@ -24,9 +24,8 @@ settings:
     colors: true
     memory_limit: 1024M
 modules:
-  config:
   enabled:
-    - Lumen:
+    - sonrac\WAMP\tests\Modules\LumenModuleWithoutDatabase:
         bootstrap: tests/app/bootstrap/app.php
         environment_file: .env.testing
 extensions:
