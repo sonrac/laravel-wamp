@@ -28,7 +28,7 @@ class PubSubRouterCest
         $client = Mockery::mock(\sonrac\WAMP\Client::class);
         $session = Mockery::mock(\Thruway\ClientSession::class);
 
-        $session->shouldReceive('register')
+        $session->shouldReceive('subscribe')
             ->andReturn(new \React\Promise\Promise($callback));
 
         $client->shouldReceive('getSession')

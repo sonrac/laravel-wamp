@@ -149,12 +149,12 @@ class RouterCest
         $tester->assertCount(1, app()->rpcRouter->getGroups());
     }
 
-    public function testSetGetClient()
+    public function testSetGetClient(UnitTester $tester)
     {
         $client = Mockery::mock(\sonrac\WAMP\Client::class);
         app()->wampRouter->setClient($client);
 
-        $this->assertEquals($client, app()->wampRouter->getClient());
+        $tester->assertEquals($client, app()->wampRouter->getClient());
     }
 
     public function testSetRouter(UnitTester $tester)
