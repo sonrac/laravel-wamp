@@ -1,6 +1,7 @@
 image: registry.conci.info/conci/image/base:master
 
 before_script:
+  - pecl install pdo sqlite3
   - cp codeception-lumen.yml codeception.yml
   - composer install
   - composer require --dev laravel/lumen-framework:5.* --no-interaction
