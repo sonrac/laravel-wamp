@@ -1,8 +1,8 @@
 <?php
 
 use sonrac\WAMP\Routers\Router;
-use Thruway\Event\ConnectionOpenEvent;
 use Thruway\Event\ConnectionCloseEvent;
+use Thruway\Event\ConnectionOpenEvent;
 use Thruway\Event\RouterStartEvent;
 use Thruway\Event\RouterStopEvent;
 
@@ -139,22 +139,26 @@ class RouterCest
         $tester->assertCount(2, $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_OPEN));
     }
 
-    public function testGroupRoutes(UnitTester $tester) {
+    public function testGroupRoutes(UnitTester $tester)
+    {
         app()->rpcRouter->group([
-            'namespace' => 'test'
-        ], function ($clientSession, $client) {});
+            'namespace' => 'test',
+        ], function ($clientSession, $client) {
+        });
 
         $tester->assertCount(1, app()->rpcRouter->getGroups());
     }
 
-    public function testSetGetClient() {
+    public function testSetGetClient()
+    {
         $client = Mockery::mock(\sonrac\WAMP\Client::class);
         app()->wampRouter->setClient($client);
 
         $this->assertEquals($client, app()->wampRouter->getClient());
     }
 
-    public function testSetRouter(UnitTester $tester) {
+    public function testSetRouter(UnitTester $tester)
+    {
         $this->router->setRouter(app()->wampRouter);
 
         $tester->assertEquals(app()->wampRouter, $this->router->getRouter());
