@@ -1,0 +1,4 @@
+ignore:
+  - "tests"
+  - "Example"
+  - "autocompletition.php"
