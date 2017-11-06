@@ -1,4 +1,11 @@
 ignore:
+  - "src/WAMPServiceProvider.php"
+  - "src/Abstracts/*"
+  - "src/Contracts/*"
+  - "src/Facades/*"
+  - "src/Commands/RegisterRoutes.php"
+  - "src/Commands/RunServer.php"
+  - "src/Commands/WAMPCommandTrait.php"
   - "tests"
   - "Example"
   - "config"
