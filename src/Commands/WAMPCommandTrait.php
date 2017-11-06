@@ -22,49 +22,49 @@ use Thruway\Logging\Logger;
 trait WAMPCommandTrait
 {
     /**
-     * WAMP router host
+     * WAMP router host.
      *
      * @var string
      */
     protected $host = '127.0.0.1';
 
     /**
-     * Wamp realm to used
+     * Wamp realm to used.
      *
      * @var string
      */
     protected $realm;
 
     /**
-     * WAMP router port
+     * WAMP router port.
      *
      * @var int
      */
     protected $port = '9090';
 
     /**
-     * Run in debug mode. Echo output to console
+     * Run in debug mode. Echo output to console.
      *
      * @var bool
      */
     protected $noDebug = false;
 
     /**
-     * Run in loop or once
+     * Run in loop or once.
      *
      * @var bool
      */
     protected $runOnce = false;
 
     /**
-     * Specify the router protocol as wss
+     * Specify the router protocol as wss.
      *
      * @var bool
      */
     protected $tls = false;
 
     /**
-     * WAMP routes path
+     * WAMP routes path.
      *
      * @var string
      *
@@ -73,7 +73,16 @@ trait WAMPCommandTrait
     protected $routePath = null;
 
     /**
-     * Get option value from input
+     * Transport provider class.
+     *
+     * @var string|\Thruway\Transport\RatchetTransportProvider|null
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
+
+    /**
+     * Get option value from input.
      *
      * @param string $optionName
      *
@@ -89,7 +98,7 @@ trait WAMPCommandTrait
     }
 
     /**
-     * Get minion config
+     * Get minion config.
      *
      * @param string|null $optName Option name
      * @param mixed       $default Default value
@@ -107,6 +116,13 @@ trait WAMPCommandTrait
         return isset($options[$optName]) ? $options[$optName] : $default;
     }
 
+    /**
+     * Change WAMP logger
+     *
+     * @param string $fileName
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
     protected function changeWampLogger($fileName = 'wamp-server.log')
     {
 

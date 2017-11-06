@@ -59,15 +59,6 @@ class RunServer extends Command
     protected $WAMPServer = null;
 
     /**
-     * Transport provider class.
-     *
-     * @var string|\Thruway\Transport\RatchetTransportProvider|null
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
-
-    /**
      * Client transport provider class.
      *
      * @var null|string
@@ -75,7 +66,6 @@ class RunServer extends Command
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected $clientTransportProvider = null;
-
 
     /**
      * No loop runner

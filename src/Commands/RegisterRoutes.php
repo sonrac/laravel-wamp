@@ -23,15 +23,6 @@ class RegisterRoutes extends Command
     use WAMPCommandTrait;
 
     /**
-     * Transport provider class
-     *
-     * @var string|\Thruway\Transport\ClientTransportProviderInterface|null
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected $transportProvider = '\Thruway\Transport\PawlTransportProvider';
-
-    /**
      * {@inheritdoc}
      */
     protected $name = 'wamp:register-routes {--realm=?} {--host=?} {--port=?} {--tls?} {--transport-provider=?}
