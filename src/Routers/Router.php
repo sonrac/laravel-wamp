@@ -119,6 +119,15 @@ class Router extends PeerRouter implements WAMPRouterInterface
     protected $client = null;
 
     /**
+     * Default controller namespaces.
+     *
+     * @var null|string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $controllerNamespace = null;
+
+    /**
      * Events.
      *
      * @var array
@@ -174,6 +183,28 @@ class Router extends PeerRouter implements WAMPRouterInterface
     public function addRoute($name, $procedure)
     {
         return $this->rpcRouter->addRoute($name, $procedure);
+    }
+
+    /**
+     * Set default controller namespace.
+     *
+     * @param string $namespace
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setControllerNamespace($namespace) {
+        $this->controllerNamespace = $namespace;
+    }
+
+    /**
+     * Get default controller namespace.
+     *
+     * @return null|string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function getControllerNamespace() {
+        return $this->controllerNamespace;
     }
 
     /**
@@ -252,28 +283,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Add event.
-     *
-     * @param \Closure|string $callback  Callback
-     * @param string          $eventName Event name
-     * @param int             $priority  Priority
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected function addEvent($callback, $eventName, $priority)
-    {
-        if (is_string($callback)) {
-            list($class, $method) = explode('&', $callback);
-
-            $callback = function (ConnectionOpenEvent $event) use ($class, $method) {
-                return $class::{$method}($event);
-            };
-        }
-
-        $this->getEventDispatcher()->addListener($eventName, $callback, $priority);
-    }
-
-    /**
      * Get client.
      *
      * @return \Thruway\Peer\ClientInterface|\sonrac\WAMP\Client
@@ -295,5 +304,36 @@ class Router extends PeerRouter implements WAMPRouterInterface
     public function setClient(ClientInterface $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseGroups()
+    {
+        $this->rpcRouter->parseGroups();
+        $this->pubSubRouter->parseGroups();
+    }
+
+    /**
+     * Add event.
+     *
+     * @param \Closure|string $callback  Callback
+     * @param string          $eventName Event name
+     * @param int             $priority  Priority
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function addEvent($callback, $eventName, $priority)
+    {
+        if (is_string($callback)) {
+            list($class, $method) = explode('&', $callback);
+
+            $callback = function (ConnectionOpenEvent $event) use ($class, $method) {
+                return $class::{$method}($event);
+            };
+        }
+
+        $this->getEventDispatcher()->addListener($eventName, $callback, $priority);
     }
 }

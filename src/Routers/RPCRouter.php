@@ -31,6 +31,7 @@ class RPCRouter implements RPCRouterInterface
      */
     public function addRoute($path, $callback)
     {
-        return $this->getClientSession()->register($path, $this->parseCallback($callback));
+        $data = $this->prepareCallback($callback);
+        return $this->getClientSession()->register($data-['prefix'].$path, $data['callback']);
     }
 }

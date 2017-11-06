@@ -42,6 +42,15 @@ class Client extends PeerClient
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function start($startLoop = true)
+    {
+        app()->router->parseGroups();
+        parent::start($startLoop);
+    }
+
+    /**
      * Include routes
      *
      * @param \Thruway\ClientSession                $session   Client session
