@@ -19,7 +19,7 @@ class RPCRouter implements RPCRouterInterface
 {
     use RouterTrait;
 
-    public function addRoute($path, $publisher, $callback) {
-
+    public function addRoute($path, $publisher, $callback)
+    {
     }
 }

@@ -2,7 +2,6 @@
 
 use sonrac\WAMP\Routers\Router;
 use Thruway\Event\ConnectionOpenEvent;
-use Thruway\Session;
 
 class RouterCest
 {
@@ -43,15 +42,18 @@ class RouterCest
             ->dispatch(Router::EVENT_CONNECTION_OPEN, new ConnectionOpenEvent($session)));
     }
 
-    public function testRemoveEventCallback(UnitTester $tester) {
-        $callback = function () {};
+    public function testRemoveEventCallback(UnitTester $tester)
+    {
+        $callback = function () {
+        };
         $this->router->onConnectionOpen($callback);
         $tester->assertCount(2, $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_OPEN));
         $this->router->removeEvent(Router::EVENT_CONNECTION_OPEN, $callback);
         $tester->assertCount(1, $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_OPEN));
     }
 
-    public function testRemoveEvent(UnitTester $tester) {
+    public function testRemoveEvent(UnitTester $tester)
+    {
         $tester->assertCount(1, $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_OPEN));
         $this->router->onConnectionOpen(['handleConnectionOpen', 10]);
         $tester->assertCount(2, $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_OPEN));

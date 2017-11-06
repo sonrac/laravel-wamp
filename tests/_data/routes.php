@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \UnitTester $tester
+ * @var \UnitTester
  * @var \Thruway\Session $session
  * @var \sonrac\WAMP\Client $client
  *
