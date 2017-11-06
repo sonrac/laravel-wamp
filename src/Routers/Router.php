@@ -192,7 +192,8 @@ class Router extends PeerRouter implements WAMPRouterInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function setControllerNamespace($namespace) {
+    public function setControllerNamespace($namespace)
+    {
         $this->controllerNamespace = $namespace;
     }
 
@@ -203,7 +204,8 @@ class Router extends PeerRouter implements WAMPRouterInterface
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function getControllerNamespace() {
+    public function getControllerNamespace()
+    {
         return $this->controllerNamespace;
     }
 
