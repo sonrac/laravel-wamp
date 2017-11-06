@@ -1,4 +1,4 @@
-image: registry.conci.info/jobsy/backend/base:master
+image: registry.conci.info/conci/image/base:master
 
 before_script:
   - cp codeception-lumen.yml codeception.yml
