@@ -1,5 +1,5 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sonrac/laravel-wamp/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sonrac/laravel-wamp/?branch=master)
-[![StyleCI](https://styleci.io/repos/107981288/shield?branch=master&style=flat)](https://styleci.io/repos/107981288)
+[![StyleCI](https://styleci.io/repos/105322873/shield?branch=master&style=flat)](https://styleci.io/repos/105322873)
 [![Code Coverage](https://scrutinizer-ci.com/g/sonrac/laravel-wamp/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/sonrac/laravel-wamp/?branch=master)
 [![Build Status](https://travis-ci.org/sonrac/laravel-wamp.svg?branch=master)](https://travis-ci.org/sonrac/laravel-wamp)
 [![codecov](https://codecov.io/gh/sonrac/laravel-wamp/branch/master/graph/badge.svg)](https://codecov.io/gh/sonrac/laravel-wamp)
