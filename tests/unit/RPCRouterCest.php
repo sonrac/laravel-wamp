@@ -60,9 +60,6 @@ class RPCRouterCest
 
         $this->router->setClient($client);
 
-        $promise = $this->router->getClient()->getSession()->register('asd', $callback);
-
-        $tester->assertInstanceOf(\React\Promise\Promise::class, $promise);
         $tester->assertInstanceOf(\React\Promise\Promise::class, $this->router->addRoute('asd', $callback));
         $tester->assertInstanceOf(\React\Promise\Promise::class, app()->rpcRouter->addRoute('asd', $callback));
     }
