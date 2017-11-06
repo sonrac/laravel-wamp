@@ -164,7 +164,8 @@ class RouterCest
         $tester->assertEquals(app()->wampRouter, $this->router->getRouter());
     }
 
-    public function testControllerNamespace(UnitTester $tester) {
+    public function testControllerNamespace(UnitTester $tester)
+    {
         app()->wampRouter->setControllerNamespace('\test');
 
         $tester->assertEquals('\test', app()->wampRouter->getControllerNamespace());
