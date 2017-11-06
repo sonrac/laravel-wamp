@@ -8,9 +8,9 @@
 
 namespace sonrac\WAMP\tests\Modules;
 
+use Codeception\Lib\Connector\Lumen as LumenConnector;
 use Codeception\Module\Lumen;
 use Codeception\TestInterface;
-use Codeception\Lib\Connector\Lumen as LumenConnector;
 
 /**
  * @class  LumenModule
