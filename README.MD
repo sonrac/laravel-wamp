@@ -83,5 +83,3 @@ Run command:
 ```bash
 sh run-tests.sh
 ```
-
-## Usages

@@ -42,13 +42,16 @@ namespace Illuminate\Foundation {
 
 namespace sonrac\WAMP {
 
+    use Thruway\ClientSession;
+
     /**
      * Interface GroupsConfigInterface.
      *
-     * @property array    $middleware Middleware list
-     * @property string   $prefix     Route prefix
-     * @property \Closure $callback   Groups runner
-     * @property string   $namespace  Controllers namespace
+     * @property array  $middleware Middleware list
+     * @property string $prefix     Route prefix
+     * @property string $namespace  Controllers namespace
+     * @method void|\sonrac\WAMP\GroupsConfigInterface callback(ClientSession $clientSession, Client $client) Groups
+     *         runner
      */
     interface GroupsConfigInterface
     {

@@ -31,6 +31,7 @@ class PubSubRouter implements PubSubRouterInterface
      */
     public function addRoute($path, $callback)
     {
-        return $this->getClientSession()->subscribe($path, $callback);
+        $data = $this->prepareCallback($callback);
+        return $this->getClientSession()->subscribe($data['prefix'].$path, $data['callback']);
     }
 }

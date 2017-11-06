@@ -39,8 +39,6 @@ class RPCRouterCest
         $promise = $this->router->getClient()->getSession()->register('asd', $callback);
 
         $tester->assertInstanceOf(\React\Promise\Promise::class, $promise);
-        $tester->assertInstanceOf(\React\Promise\Promise::class, $this->router->addRoute('asd', $callback));
-        $tester->assertInstanceOf(\React\Promise\Promise::class, app()->rpcRouter->addRoute('asd', $callback));
     }
 
     // tests
@@ -60,7 +58,39 @@ class RPCRouterCest
 
         $this->router->setClient($client);
 
-        $tester->assertInstanceOf(\React\Promise\Promise::class, $this->router->addRoute('asd', $callback));
-        $tester->assertInstanceOf(\React\Promise\Promise::class, app()->rpcRouter->addRoute('asd', $callback));
+        $promise = $this->router->getClient()->getSession()->register('asd', $this->router->parseCallback($callback));
+
+        $tester->assertInstanceOf(\React\Promise\Promise::class, $promise);
+    }
+
+    public function testAddRoutesGroups(UnitTester $tester) {
+        app()->rpcRouter->group([
+            'namespace' => '\test'
+        ], function ($session, $client) use ($tester) {
+            return null; //app()->rpcRouter->addRoute('test', 'HomeController@index');
+        });
+        $router = app()->wampRouter;
+        app()->rpcRouter->setRouter($router);
+        $session = Mockery::mock(\Thruway\Session::class);
+        $session->shouldReceive('register');
+        $client = Mockery::mock(\sonrac\WAMP\Client::class);
+        $client->shouldReceive('getSession')
+            ->andReturn($session);
+        $router->setClient($client);
+
+        $callbacks = app()->rpcRouter->parseGroups();
+
+        $tester->assertCount(1, $callbacks);
+    }
+
+    public function parseCallbackTest(UnitTester $tester) {
+        $callback = $this->router->parseCallback('Test');
+
+        $tester->assertInstanceOf(\Closure::class, $callback);
+
+        $callback = $this->router->parseCallback($origCallback = function () {});
+
+        $tester->assertInstanceOf(\Closure::class, $callback);
+        $tester->assertEquals($origCallback, $callback);
     }
 }

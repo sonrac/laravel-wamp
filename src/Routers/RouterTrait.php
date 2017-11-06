@@ -19,9 +19,18 @@ use Thruway\Peer\RouterInterface;
 trait RouterTrait
 {
     /**
+     * Controllers list
+     *
+     * @var \sonrac\WAMP\Abstracts\WAMPControllerInterface[]
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $controllers;
+
+    /**
      * Router groups.
      *
-     * @var null|\sonrac\WAMP\GroupsConfigInterface[]
+     * @var null|array
      */
     protected $groups = null;
 
@@ -35,7 +44,34 @@ trait RouterTrait
     protected $router = null;
 
     /**
-     * Group routes
+     * Route path prefix.
+     *
+     * @var string|null
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    private $prefix = null;
+
+    /**
+     * Controller namespace.
+     *
+     * @var string|null
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    private $groupControllerNamespace = null;
+
+    /**
+     * Middleware list.
+     *
+     * @var null|array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    private $middleware = null;
+
+    /**
+     * Group routes.
      *
      * @param array    $config Group config
      * @param \Closure $runner Closure runner group
@@ -47,12 +83,43 @@ trait RouterTrait
         $middleware = isset($config['middleware']) ? explode('|', $config['middleware']) : [];
         $namespace = isset($config['namespace']) ? $config['namespace'] : 'App\Controllers\WAMP';
 
-        $this->groups[] = (object) [
+        $this->groups[] = [
             'middleware' => $middleware,
             'namespace'  => $namespace,
             'prefix'     => isset($config['prefix']) ? $config['prefix'] : '',
             'callback'   => $runner,
         ];
+    }
+
+    /**
+     * Parse groups
+     *
+     * @return \sonrac\WAMP\GroupsConfigInterface[]|\stdClass[]
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function parseGroups()
+    {
+        gc_enable();
+        $callbacks = [];
+        foreach ($this->groups as $group) {
+            $this->prefix = $group['prefix'];
+            $this->groupControllerNamespace = $group['namespace'];
+            $this->middleware = $group['middleware'];
+            $callbacks[] = $group['callback']($this->getClientSession(), $this->getClient());
+        }
+
+        $this->groups = null;
+        unset($this->groups);
+        $this->groups = [];
+
+        $this->prefix = null;
+        $this->groupControllerNamespace = null;
+
+        gc_collect_cycles();
+        gc_disable();
+
+        return $callbacks;
     }
 
     /**
@@ -123,24 +190,57 @@ trait RouterTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected function parseCallback($callback, $namespace = null)
+    public function parseCallback($callback, $namespace = null)
     {
         if ($callback instanceof \Closure) {
             return $callback;
         }
 
-        $namespace = $namespace ? $namespace . '\\' : '';
+        $namespace = $namespace ? $namespace.'\\' : '';
 
         $callback = explode('&', $callback);
         $self = $this;
+
         return function (ClientSession $clientSession) use ($callback, $namespace, $self) {
             if (count($callback) === 1) {
                 return $this->{$callback[0]}($clientSession, $self->getClient());
             }
 
-            $class = app()->make($namespace . $callback[0]);
+            if (!isset($this->controllers[$callback[0]])) {
+                return $this->controllers[$callback[0]]->{$callback[1]}($clientSession, $this->getClient());
+            }
 
-            return $class->{$callback[1]}($clientSession, $self->getClient());
+            $className = class_exists($callback[0]) ? $callback[0] : $namespace.$callback[0];
+
+            $this->controllers[$callback[0]] = app()->make($className);
+
+            return $this->controllers[$callback[0]]->{$callback[1]}($clientSession, $self->getClient());
         };
+    }
+
+    /**
+     * Prepare path.
+     *
+     * @param \Closure|string $callback Callback
+     *
+     * @return array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function prepareCallback($callback)
+    {
+        $namespace = $this->groupControllerNamespace ?? $this->getRouter()->getControllerNamespace();
+        $callbackAdditional = null;
+        if ($this->groupControllerNamespace && $this->groupControllerNamespace
+            && is_string($callback) && count(explode('&', $callback)) === 2) {
+            $callback = rtrim($namespace, '\\').$callback;
+        }
+
+        return [
+            'prefix'     => $this->prefix,
+            'namespace'  => $namespace,
+            'callback'   => $this->parseCallback($callback, $namespace),
+            'middleware' => $this->middleware
+        ];
     }
 }
