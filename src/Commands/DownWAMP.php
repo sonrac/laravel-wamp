@@ -10,7 +10,6 @@ namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
 
-
 /**
  * @class  DownWAMP
  * Down WAMP servers & clients command.
@@ -37,7 +36,8 @@ class DownWAMP extends Command
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function fire() {
+    public function fire()
+    {
         $clientsOnly = $this->option('client-only');
         $serversOnly = $this->option('server-only');
 
@@ -55,11 +55,13 @@ class DownWAMP extends Command
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function handle() {
+    public function handle()
+    {
         $this->fire();
     }
 
-    private function stopInstances($file) {
+    private function stopInstances($file)
+    {
         if (file_exists($file)) {
             $content = explode(PHP_EOL, file_get_contents($file));
 
@@ -75,7 +77,5 @@ class DownWAMP extends Command
                 exec('rm ' . $file);
             }
         }
-
     }
-
 }

@@ -1,9 +1,9 @@
 <?php
 
 use sonrac\WAMP\Commands\DownWAMP;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class DownTestCest
@@ -27,11 +27,11 @@ class DownTestCest
                 '--client-only',
                 '-c',
                 InputOption::VALUE_NONE | InputOption::VALUE_OPTIONAL
-            )
+            ),
         ]);
         $input = new ArgvInput([
             '',
-            '--client-only'
+            '--client-only',
         ], $inputDefinition);
         $output = new ConsoleOutput();
 
@@ -53,11 +53,11 @@ class DownTestCest
                 '--server-only',
                 '-s',
                 InputOption::VALUE_NONE | InputOption::VALUE_OPTIONAL
-            )
+            ),
         ]);
         $input = new ArgvInput([
             '',
-            '--server-only'
+            '--server-only',
         ], $inputDefinition);
         $output = new ConsoleOutput();
 

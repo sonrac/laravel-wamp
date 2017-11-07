@@ -209,7 +209,8 @@ trait WAMPCommandTrait
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    protected function addPidToLog($pid, $fileName = 'server.pids') {
+    protected function addPidToLog($pid, $fileName = 'server.pids')
+    {
         $fileName = storage_path($fileName);
         if (!file_exists(storage_path($fileName))) {
             file_put_contents($fileName, $pid);
