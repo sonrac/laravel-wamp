@@ -53,7 +53,6 @@ class ClientTestCest
 
     public function testStart(UnitTester $tester)
     {
-
         $calls = false;
 
         $callback = function ($session, $client) use (&$calls, $tester) {

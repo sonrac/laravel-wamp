@@ -13,9 +13,9 @@ class RoutesRunCest extends BaseStartCommand
     protected $fileName = 'clients.pids';
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    function getCommand(): \Illuminate\Console\Command
+    public function getCommand(): \Illuminate\Console\Command
     {
         return new RegisterRoutes();
     }
@@ -29,11 +29,11 @@ class RoutesRunCest extends BaseStartCommand
                 '-i',
                 InputOption::VALUE_NONE | InputOption::VALUE_OPTIONAL,
                 'Run in background'
-            )
+            ),
         ]);
         $input = new ArgvInput([
             '',
-            '--in-background'
+            '--in-background',
         ], $inputDefinition);
         $output = new ConsoleOutput();
 

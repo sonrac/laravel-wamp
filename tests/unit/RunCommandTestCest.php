@@ -2,11 +2,11 @@
 
 require_once __DIR__.'/BaseStartCommand.php';
 
+use sonrac\WAMP\Commands\RunServer;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use sonrac\WAMP\Commands\RunServer;
 
 /**
  * Class RunCommandTestCest
@@ -25,11 +25,11 @@ class RunCommandTestCest extends BaseStartCommand
                 '-i',
                 InputOption::VALUE_NONE | InputOption::VALUE_OPTIONAL,
                 'Run in background'
-            )
+            ),
         ]);
         $input = new ArgvInput([
             '',
-            '--in-background'
+            '--in-background',
         ], $inputDefinition);
         $output = new ConsoleOutput();
 
@@ -39,9 +39,9 @@ class RunCommandTestCest extends BaseStartCommand
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    function getCommand(): \Illuminate\Console\Command
+    public function getCommand(): \Illuminate\Console\Command
     {
         return new RunServer();
     }

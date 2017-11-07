@@ -41,7 +41,7 @@ abstract class BaseStartCommand
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    abstract function getCommand(): \Illuminate\Console\Command;
+    abstract public function getCommand(): \Illuminate\Console\Command;
 
     public function _before(UnitTester $I)
     {
@@ -67,5 +67,4 @@ abstract class BaseStartCommand
             }
         }
     }
-
 }
