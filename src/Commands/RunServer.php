@@ -26,8 +26,15 @@ class RunServer extends Command
      */
     protected $host = '127.0.0.1';
 
+    /**
+     * {@inheritdoc}
+     */
     protected $name = 'wamp:run-server {--realm=?} {--host=?} {--port=?} {--tls?} {--transport-provider=?}
     {--no-loop?} {--no-debug?} {--in-background?} {--client-transport-provider=?} {--route-path=?}';
+
+    /**
+     * {@inheritdoc}
+     */
     protected $signature = 'wamp:run-server
                                 {--realm= : Specify WAMP realm to be used}
                                 {--host= : Specify the router host}
@@ -36,20 +43,15 @@ class RunServer extends Command
                                 {--no-debug : Disable debug mode.}
                                 {--no-loop : Disable loop runner}
                                 {--transport-provider : Transport provider class}
-                                {--route-path=? : Path to routes config}
-                                {--client-transport-provider=? : Client transport provider class}
+                                {--route-path= : Path to routes config}
+                                {--client-transport-provider= : Client transport provider class}
                                 {--in-background : Run task in background}
                                 ';
-    protected $description = 'Run wamp server';
 
     /**
-     * Run in background.
-     *
-     * @var bool
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
+     * {@inheritdoc}
      */
-    protected $runInBackground = false;
+    protected $description = 'Run wamp server';
 
     /**
      * Wamp server.
@@ -66,15 +68,6 @@ class RunServer extends Command
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected $clientTransportProvider = null;
-
-    /**
-     * No loop runner
-     *
-     * @var bool
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected $noLoop = false;
 
     /**
      * Run server handle.
@@ -105,10 +98,17 @@ class RunServer extends Command
                 $serverCommand .= ' --client-transport-provider=' . $this->clientTransportProvider;
             }
 
-            RunCommandInBackground::factory($serverCommand)->runInBackground();
+            $this->addPidToLog(RunCommandInBackground::factory($serverCommand)->runInBackground(), 'servers.pids');
         }
     }
 
+    /**
+     * Get commandline options for background command
+     *
+     * @return string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
     protected function getCommandLineOptions()
     {
         $command = ' --port=' . $this->port .
@@ -153,8 +153,8 @@ class RunServer extends Command
      */
     protected function parseOptions()
     {
+        $this->clientTransportProvider = $this->getOptionFromInput('client-transport-provider');
         $this->parseBaseOptions();
-        $this->runInBackground = $this->getOptionFromInput('in-background') ?? false;
     }
 
     /**

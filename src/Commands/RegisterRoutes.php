@@ -44,6 +44,7 @@ class RegisterRoutes extends Command
                                 {--no-loop : Disable loop runner}
                                 {--route-path=? : Path to routes config}
                                 {--tls : Specify the router protocol as wss}
+                                {--in-background : Run client in background}
                                 {--transport-provider=? : Transport provider class}';
 
     /**
@@ -56,11 +57,38 @@ class RegisterRoutes extends Command
         $this->changeWampLogger();
         $this->parseOptions();
 
-        $client = app()->wampClient;
+        if (!$this->runInBackground) {
+            $client = app()->wampClient;
 
-        $client->addTransportProvider($this->getTransportProvider());
-        $client->setRoutePath($this->routePath);
-        $client->start();
+            $client->addTransportProvider($this->getTransportProvider());
+            $client->setRoutePath($this->routePath);
+            $client->start();
+        } else {
+            $command = ' --port=' . $this->port .
+                ' --host=' . $this->host .
+                ' --realm=' . $this->realm;
+
+            if ($this->transportProvider) {
+                $command .= ' --transport-provider=' . $this->transportProvider;
+            }
+
+            if ($this->noDebug) {
+                $command .= ' --no-debug';
+            }
+
+            if ($this->tls) {
+                $command .= ' --tls';
+            }
+
+            if ($this->routePath) {
+                $command .= ' --route-path=' . $this->routePath;
+            }
+
+            if ($this->noLoop) {
+                $command .= ' --no-loop';
+            }
+            $this->addPidToLog(RunCommandInBackground::factory($command)->runInBackground(), 'clients.pids');
+        }
     }
 
     /**

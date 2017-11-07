@@ -100,6 +100,9 @@ trait RouterTrait
      */
     public function parseGroups()
     {
+        if (!is_array($this->groups) || !count($this->groups)) {
+            return;
+        }
         gc_enable();
         $callbacks = [];
         foreach ($this->groups as $group) {

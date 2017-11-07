@@ -1,7 +1,5 @@
 <?php
 
-use Mockery;
-
 /**
  * Class ClientTestCest
  * Client test
@@ -51,5 +49,27 @@ class ClientTestCest
         $this->client->onSessionStart($this->session, $this->transport);
 
         $tester->assertEquals(app()->wampRouter->getClient(), $this->client);
+    }
+
+    public function testStart(UnitTester $tester)
+    {
+
+        $calls = false;
+
+        $callback = function ($session, $client) use (&$calls, $tester) {
+            $calls = true;
+            $tester->assertEquals(1, $session);
+            $tester->assertEquals(2, $client);
+        };
+
+        app()->wampClient->on('open', $callback);
+        app()->wampClient->addTransportProvider(
+            new \Thruway\Transport\RawSocketClientTransportProvider()
+        );
+
+        app()->wampClient->start(false);
+        app()->wampClient->emit('open', [1, 2]);
+
+        $tester->assertTrue($calls);
     }
 }

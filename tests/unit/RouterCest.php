@@ -31,7 +31,8 @@ class RouterCest
             return '123';
         });
 
-        $this->router->removeEvent(Router::EVENT_CONNECTION_OPEN, $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_OPEN)[0]);
+        $this->router->removeEvent(Router::EVENT_CONNECTION_OPEN,
+            $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_OPEN)[0]);
 
         $session = Mockery::mock(\Thruway\Session::class);
         $session->shouldReceive('getSessionId')->andReturn(123);
@@ -59,7 +60,8 @@ class RouterCest
             return '123';
         });
 
-        $this->router->removeEvent(Router::EVENT_CONNECTION_CLOSE, $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_CLOSE)[0]);
+        $this->router->removeEvent(Router::EVENT_CONNECTION_CLOSE,
+            $this->router->getEventDispatcher()->getListeners(Router::EVENT_CONNECTION_CLOSE)[0]);
 
         $session = Mockery::mock(\Thruway\Session::class);
         $session->shouldReceive('getSessionId')->andReturn(123);

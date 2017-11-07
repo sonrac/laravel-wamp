@@ -46,7 +46,7 @@ class Client extends PeerClient
      */
     public function start($startLoop = true)
     {
-        app()->router->parseGroups();
+        app()->wampRouter->parseGroups();
         parent::start($startLoop);
     }
 
@@ -84,7 +84,7 @@ class Client extends PeerClient
                 }
 
                 if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                    require $this->routePath . DIRECTORY_SEPARATOR . $file;
+                    require $this->routePath.DIRECTORY_SEPARATOR.$file;
                 }
             }
         }
