@@ -5,7 +5,7 @@ require_once __DIR__.'/../_support/CallTest.php';
 class RoutesCallCest
 {
     /**
-     * @var \UnitTester $tester
+     * @var \UnitTester
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -60,19 +60,17 @@ class RoutesCallCest
     {
 //        Artisan::call('wamp:stop');
         register_shutdown_function(function () {
-
         });
     }
 
     public function callProcedure(UnitTester $tester)
     {
-
         app()->wampClient->addTransportProvider(new \Thruway\Transport\PawlTransportProvider(
             'ws://127.0.0.1:9090'
         ));
         app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
             $this->promise = $session->call('test')->then(function (\Thruway\CallResult $res) use ($session) {
-                app()->wampClient->onClose('Done',false);
+                app()->wampClient->onClose('Done', false);
                 app()->wampClient->getLoop()->stop();
                 $session->getLoop()->stop();
                 $this->data = $res;
@@ -84,7 +82,7 @@ class RoutesCallCest
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
                 $this->error = $error;
                 $this->start = true;
-                app()->wampClient->onClose('Done',false);
+                app()->wampClient->onClose('Done', false);
                 app()->wampClient->getLoop()->stop();
                 $session->getLoop()->stop();
                 \React\Promise\resolve($this->promise);
@@ -118,12 +116,11 @@ class RoutesCallCest
 //        $loop->run();
     }
 
-    protected function killProcess() {
-
+    protected function killProcess()
+    {
     }
 
-    protected function test() {
-
-
+    protected function test()
+    {
     }
 }

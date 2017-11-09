@@ -30,7 +30,8 @@ class CallTest extends Codeception\TestCase\Test
         $this->_data = $data;
     }
 
-    public function testClientCall() {
+    public function testClientCall()
+    {
         if (isset($this->_data['error'])) {
             $this->assertInstanceOf(\Thruway\Message\ErrorMessage::class, $this->_data['error']);
             $this->assertEquals(48, $this->_data['error']->getErrorMsgCode());

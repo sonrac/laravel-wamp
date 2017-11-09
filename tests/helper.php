@@ -11,7 +11,6 @@ namespace Ratchet\Client {
     use React\EventLoop\Factory as ReactFactory;
     use React\EventLoop\LoopInterface;
 
-
     if (!function_exists('Ratchet\Client\connect')) {
         function connect($url, array $subProtocols = [], $headers = [], LoopInterface $loop = null)
         {
