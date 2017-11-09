@@ -25,7 +25,8 @@ class UnitTester extends \Codeception\Actor
      * Define custom actions here
      */
 
-    public function getCurrentScenario() {
+    public function getCurrentScenario()
+    {
         return $this->getScenario();
     }
 }

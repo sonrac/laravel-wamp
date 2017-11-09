@@ -54,7 +54,6 @@ class RegisterRoutes extends Command
      */
     public function fire()
     {
-
         $this->transportProvider = '\Thruway\Transport\PawlTransportProvider';
 
         $this->changeWampLogger();
