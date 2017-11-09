@@ -11,6 +11,8 @@ namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
 use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
+use sonrac\WAMP\Routers\Router;
+use Thruway\Logging\Logger;
 
 /**
  * Class RunServer
@@ -79,20 +81,13 @@ class RunServer extends Command
         $this->parseOptions();
         $this->changeWampLogger();
 
-        $clientCommand = 'php artisan wamp:register-routes' . $this->getCommandLineOptions();
-
-        if ($this->clientTransportProvider) {
-            $clientCommand .= ' --transport-provider=' . $this->clientTransportProvider;
-        }
-
-        RunCommandInBackground::factory($clientCommand)->runInBackground();
-
         if (!$this->runInBackground) {
             $this->WAMPServer = app()->wampRouter;
-            $this->WAMPServer->registerModule($this->getTransportProvider());
+            $transportProvider = $this->getTransportProvider();
+            $this->WAMPServer->registerModule($transportProvider);
             $this->WAMPServer->start(!$this->runOnce);
         } else {
-            $serverCommand = 'php artisan wamp:run-server ' . $this->getCommandLineOptions();
+            $serverCommand = ' ' . $this->getName() . $this->getCommandLineOptions();
 
             if ($this->clientTransportProvider) {
                 $serverCommand .= ' --client-transport-provider=' . $this->clientTransportProvider;

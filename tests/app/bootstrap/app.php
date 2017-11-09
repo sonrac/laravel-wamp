@@ -8,6 +8,10 @@
  */
 require __DIR__.'/../../../vendor/autoload.php';
 
+putenv('CACHE_DRIVER=array');
+putenv('SESSION_DRIVER=array');
+putenv('QUEUE_DRIVER=array');
+
 use sonrac\WAMP\WAMPServiceProvider;
 
 $isLumen = class_exists('\Laravel\Lumen\Application');

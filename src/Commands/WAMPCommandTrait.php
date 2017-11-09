@@ -33,7 +33,7 @@ trait WAMPCommandTrait
      *
      * @var string
      */
-    protected $realm;
+    protected $realm = 'realm';
 
     /**
      * WAMP router port.

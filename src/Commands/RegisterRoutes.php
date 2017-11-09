@@ -42,10 +42,10 @@ class RegisterRoutes extends Command
                                 {--path= : Specify the router path component}
                                 {--no-debug : Disable debug mode.}
                                 {--no-loop : Disable loop runner}
-                                {--route-path=? : Path to routes config}
+                                {--route-path= : Path to routes config}
                                 {--tls : Specify the router protocol as wss}
                                 {--in-background : Run client in background}
-                                {--transport-provider=? : Transport provider class}';
+                                {--transport-provider= : Transport provider class}';
 
     /**
      * Register wamp routes
@@ -54,6 +54,9 @@ class RegisterRoutes extends Command
      */
     public function fire()
     {
+
+        $this->transportProvider = '\Thruway\Transport\PawlTransportProvider';
+
         $this->changeWampLogger();
         $this->parseOptions();
 
@@ -62,14 +65,14 @@ class RegisterRoutes extends Command
 
             $client->addTransportProvider($this->getTransportProvider());
             $client->setRoutePath($this->routePath);
-            $client->start();
+            $client->start(!$this->runOnce);
         } else {
-            $command = ' --port=' . $this->port .
-                ' --host=' . $this->host .
-                ' --realm=' . $this->realm;
+            $command = $this->getName() . ($this->port ? ' --port=' . $this->port : '') .
+                ($this->host ? ' --host=' . $this->host : '') .
+                ($this->realm ? ' --realm=' . $this->realm : '');
 
             if ($this->transportProvider) {
-                $command .= ' --transport-provider=' . $this->transportProvider;
+                $command .= ' --transport-provider=' . str_replace('\\', '\\\\', $this->transportProvider);
             }
 
             if ($this->noDebug) {
