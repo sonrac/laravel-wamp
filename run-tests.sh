@@ -13,6 +13,7 @@ sleep 1
 rm -rf vendor
 rm -rf composer.lock
 composer require --dev laravel/lumen-framework:5.* --no-interaction
+php tests/replace_autoload.php
 vendor/bin/codecept run --coverage --coverage-xml
 composer remove --dev laravel/lumen-framework --no-interaction
 
@@ -25,8 +26,10 @@ sleep 1
 rm -rf vendor
 rm -rf composer.lock
 composer require --dev laravel/framework:5.* --no-interaction
+php tests/replace_autoload.php
 vendor/bin/codecept run --coverage --coverage-xml
 composer remove --dev laravel/framework --no-interaction
+
 if [[ -f "codeception.yml" ]]; then
     rm codeception.yml
 fi
