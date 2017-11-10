@@ -12,7 +12,6 @@ namespace sonrac\WAMP\Commands;
 use Illuminate\Console\Command;
 use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 use sonrac\WAMP\Routers\Router;
-use Thruway\Logging\Logger;
 
 /**
  * Class RunServer

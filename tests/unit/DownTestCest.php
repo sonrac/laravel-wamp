@@ -19,9 +19,6 @@ class DownTestCest
     // tests
     public function testDownClients(UnitTester $tester)
     {
-        $file = storage_path('clients.pids');
-        file_put_contents($file, '123123123123123123');
-
         $inputDefinition = new InputDefinition([
             new InputOption(
                 '--client-only',
@@ -45,9 +42,6 @@ class DownTestCest
     // tests
     public function testDownServers(UnitTester $tester)
     {
-        $file = storage_path('servers.pids');
-        file_put_contents($file, '123123123123123123');
-
         $inputDefinition = new InputDefinition([
             new InputOption(
                 '--server-only',

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 class RoutesCallCest
 {
     /**
-     * @var \UnitTester $tester
+     * @var \UnitTester
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -82,14 +82,5 @@ class RoutesCallCest
             });
         });
         app()->wampClient->start(true);
-    }
-
-    protected function killProcess() {
-
-    }
-
-    protected function test() {
-
-
     }
 }
