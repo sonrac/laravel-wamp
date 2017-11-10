@@ -103,7 +103,8 @@ class RoutesCallCest
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    private function closeLoop() {
+    private function closeLoop()
+    {
         app()->wampClient->onClose('Done', false);
         app()->wampClient->getLoop()->stop();
     }
