@@ -72,7 +72,6 @@ class RoutesCallCest
                 $this->start = true;
                 $this->tester->assertInstanceOf(\Thruway\CallResult::class, $this->data);
                 $this->tester->assertEquals('test_message', $this->data->getResultMessage()->getArguments()[0]);
-                $this->killProcess();
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
                 $this->error = $error;
                 $this->start = true;
