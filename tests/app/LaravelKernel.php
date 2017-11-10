@@ -9,7 +9,7 @@
 
 namespace sonrac\WAMP\tests\app;
 
-use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Foundation\Console\Kernel;
 use sonrac\WAMP\Commands\DownWAMP;
 use sonrac\WAMP\Commands\RegisterRoutes;
 use sonrac\WAMP\Commands\RunServer;
