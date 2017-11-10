@@ -90,7 +90,7 @@ class RoutesCallCest
                 $this->tester->assertInternalType('array', $res);
                 $this->tester->assertCount(4, $res);
                 $this->tester->assertCount(3, $res[0]);
-                $this->tester->assertEquals([1,2,3], $res[0]);
+                $this->tester->assertEquals([1, 2, 3], $res[0]);
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
                 app()->wampClient->onClose('Done', false);
                 app()->wampClient->getLoop()->stop();
