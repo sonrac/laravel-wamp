@@ -92,7 +92,7 @@ class RunServer extends Command
                 $serverCommand .= ' --client-transport-provider=' . $this->clientTransportProvider;
             }
 
-            $this->addPidToLog(RunCommandInBackground::factory($serverCommand)->runInBackground(), 'servers.pids');
+            $this->addPidToLog(RunCommandInBackground::factory($serverCommand)->runInBackground(), DownWAMP::SERVER_PID_FILE);
         }
     }
 

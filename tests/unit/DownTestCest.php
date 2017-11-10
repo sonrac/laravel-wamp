@@ -36,7 +36,7 @@ class DownTestCest
         $command->setLaravel(app());
         $command->run($input, $output);
 
-        $tester->assertFalse(file_exists($file));
+        $tester->assertFalse(file_exists(storage_path(DownWAMP::CLIENT_PID_FILE)));
     }
 
     // tests
@@ -59,6 +59,6 @@ class DownTestCest
         $command->setLaravel(app());
         $command->run($input, $output);
 
-        $tester->assertFalse(file_exists($file));
+        $tester->assertFalse(storage_path(DownWAMP::SERVER_PID_FILE));
     }
 }

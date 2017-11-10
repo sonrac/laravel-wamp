@@ -18,6 +18,9 @@ use Illuminate\Console\Command;
  */
 class DownWAMP extends Command
 {
+    const SERVER_PID_FILE = 'servers.pids';
+    const CLIENT_PID_FILE = 'clients.pids';
+
     /**
      * {@inheritdoc}
      */
@@ -42,11 +45,11 @@ class DownWAMP extends Command
         $serversOnly = $this->option('server-only');
 
         if (!$serversOnly) {
-            $this->stopInstances(storage_path('clients.pids'));
+            $this->stopInstances(storage_path(self::CLIENT_PID_FILE));
         }
 
         if (!$clientsOnly) {
-            $this->stopInstances(storage_path('servers.pids'));
+            $this->stopInstances(storage_path(self::SERVER_PID_FILE));
         }
     }
 

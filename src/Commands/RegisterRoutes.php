@@ -89,7 +89,7 @@ class RegisterRoutes extends Command
             if ($this->noLoop) {
                 $command .= ' --no-loop';
             }
-            $this->addPidToLog(RunCommandInBackground::factory($command)->runInBackground(), 'clients.pids');
+            $this->addPidToLog(RunCommandInBackground::factory($command)->runInBackground(), DownWAMP::CLIENT_PID_FILE);
         }
     }
 
