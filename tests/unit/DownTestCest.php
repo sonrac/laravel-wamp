@@ -10,6 +10,14 @@ class DownTestCest
 {
     public function _before(UnitTester $I)
     {
+        foreach ([
+            storage_path(DownWAMP::SERVER_PID_FILE),
+            storage_path(DownWAMP::CLIENT_PID_FILE),
+                 ] as $item) {
+            if (file_exists($item)) {
+                unlink($item);
+            }
+        }
     }
 
     public function _after(UnitTester $I)
@@ -59,6 +67,6 @@ class DownTestCest
         $command->setLaravel(app());
         $command->run($input, $output);
 
-        $tester->assertFalse(storage_path(DownWAMP::SERVER_PID_FILE));
+        $tester->assertFalse(file_exists(storage_path(DownWAMP::SERVER_PID_FILE)));
     }
 }

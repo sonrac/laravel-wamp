@@ -11,7 +11,6 @@ namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
 use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
-use sonrac\WAMP\Routers\Router;
 
 /**
  * Class RunServer
@@ -86,14 +85,25 @@ class RunServer extends Command
             $this->WAMPServer->registerModule($transportProvider);
             $this->WAMPServer->start(!$this->runOnce);
         } else {
-            $serverCommand = ' ' . $this->getName() . $this->getCommandLineOptions();
+            $serverCommand = ' '.$this->getName().$this->getCommandLineOptions();
 
             if ($this->clientTransportProvider) {
-                $serverCommand .= ' --client-transport-provider=' . $this->clientTransportProvider;
+                $serverCommand .= ' --client-transport-provider='.$this->clientTransportProvider;
             }
 
-            $this->addPidToLog(RunCommandInBackground::factory($serverCommand)->runInBackground(), DownWAMP::SERVER_PID_FILE);
+            $this->addPidToLog(RunCommandInBackground::factory($serverCommand)->runInBackground(),
+                DownWAMP::SERVER_PID_FILE);
         }
+    }
+
+    /**
+     * Run server handle
+     *
+     * @throws \Exception
+     */
+    public function fire()
+    {
+        return $this->handle();
     }
 
     /**
@@ -105,12 +115,12 @@ class RunServer extends Command
      */
     protected function getCommandLineOptions()
     {
-        $command = ' --port=' . $this->port .
-            ' --host=' . $this->host .
-            ' --realm=' . $this->realm;
+        $command = ' --port='.$this->port.
+            ' --host='.$this->host.
+            ' --realm='.$this->realm;
 
         if ($this->clientTransportProvider) {
-            $command .= ' --transport-provider=' . $this->clientTransportProvider;
+            $command .= ' --transport-provider='.$this->clientTransportProvider;
         }
 
         if ($this->noDebug) {
@@ -122,7 +132,7 @@ class RunServer extends Command
         }
 
         if ($this->routePath) {
-            $command .= ' --route-path=' . $this->routePath;
+            $command .= ' --route-path='.$this->routePath;
         }
 
         if ($this->noLoop) {
@@ -130,16 +140,6 @@ class RunServer extends Command
         }
 
         return $command;
-    }
-
-    /**
-     * Run server handle
-     *
-     * @throws \Exception
-     */
-    public function fire()
-    {
-        return $this->handle();
     }
 
     /**

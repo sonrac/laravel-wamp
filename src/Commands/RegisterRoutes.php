@@ -66,12 +66,12 @@ class RegisterRoutes extends Command
             $client->setRoutePath($this->routePath);
             $client->start(!$this->runOnce);
         } else {
-            $command = $this->getName() . ($this->port ? ' --port=' . $this->port : '') .
-                ($this->host ? ' --host=' . $this->host : '') .
-                ($this->realm ? ' --realm=' . $this->realm : '');
+            $command = $this->getName().($this->port ? ' --port='.$this->port : '').
+                ($this->host ? ' --host='.$this->host : '').
+                ($this->realm ? ' --realm='.$this->realm : '');
 
             if ($this->transportProvider) {
-                $command .= ' --transport-provider=' . str_replace('\\', '\\\\', $this->transportProvider);
+                $command .= ' --transport-provider='.str_replace('\\', '\\\\', $this->transportProvider);
             }
 
             if ($this->noDebug) {
@@ -83,7 +83,7 @@ class RegisterRoutes extends Command
             }
 
             if ($this->routePath) {
-                $command .= ' --route-path=' . $this->routePath;
+                $command .= ' --route-path='.$this->routePath;
             }
 
             if ($this->noLoop) {
@@ -144,6 +144,6 @@ class RegisterRoutes extends Command
      */
     protected function getTransportURI()
     {
-        return ($this->tls ? 'wss://' : 'ws://') . $this->host . ':' . $this->port;
+        return ($this->tls ? 'wss://' : 'ws://').$this->host.':'.$this->port;
     }
 }

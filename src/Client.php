@@ -50,11 +50,6 @@ class Client extends PeerClient
         $this->includeRoutes($session, $transport);
     }
 
-    public function setRoutePath($path)
-    {
-        $this->routePath = $path;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -86,6 +81,11 @@ class Client extends PeerClient
         return parent::retryConnection();
     }
 
+    public function setRoutePath($path)
+    {
+        $this->routePath = $path;
+    }
+
     /**
      * Include routes
      *
@@ -108,6 +108,7 @@ class Client extends PeerClient
 
         if (is_file($this->routePath)) {
             require $this->routePath;
+
             return;
         }
 

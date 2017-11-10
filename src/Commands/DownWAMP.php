@@ -70,15 +70,14 @@ class DownWAMP extends Command
 
             if (count($content)) {
                 foreach ($content as $pid) {
-                    $pid = (int) trim($pid);
+                    $pid = (int)trim($pid);
 
                     if ($pid > 0) {
-                        exec('kill ' . $pid);
+                        exec('kill '.$pid);
                     }
                 }
-
-                exec('rm ' . $file);
             }
+            exec('rm '.$file);
         }
     }
 }

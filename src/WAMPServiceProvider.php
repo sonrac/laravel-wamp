@@ -57,7 +57,7 @@ class WAMPServiceProvider extends ServiceProvider
          * Register routers
          */
         foreach ([
-                     'rpcRouter' => [
+                     'rpcRouter'    => [
                          'sonrac\WAMP\Contracts\RPCRouterInterface',
                          'sonrac\WAMP\Routers\RPCRouter',
                      ],
@@ -65,7 +65,7 @@ class WAMPServiceProvider extends ServiceProvider
                          'sonrac\WAMP\Contracts\PubSubRouterInterface',
                          'sonrac\WAMP\Routers\PubSubRouter',
                      ],
-                     'wampRouter' => [
+                     'wampRouter'   => [
                          'sonrac\WAMP\Contracts\WAMPRouterInterface',
                          'sonrac\WAMP\Routers\Router',
                      ],

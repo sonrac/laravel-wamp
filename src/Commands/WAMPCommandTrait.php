@@ -147,7 +147,7 @@ trait WAMPCommandTrait
             return;
         }
 
-        $path = $this->getConfig('pathLogFile') ?? storage_path('logs/' . $fileName);
+        $path = $this->getConfig('pathLogFile') ?? storage_path('logs/'.$fileName);
 
         $handler = (new StreamHandler($path, MonologLogger::DEBUG))
             ->setFormatter(new LineFormatter(null, null, true, true));
@@ -204,7 +204,7 @@ trait WAMPCommandTrait
     /**
      * Add pid process
      *
-     * @param int $pid Process pid
+     * @param int    $pid      Process pid
      * @param string $fileName Filename
      *
      * @author Donii Sergii <doniysa@gmail.com>
@@ -220,6 +220,6 @@ trait WAMPCommandTrait
 
         $content = file_get_contents($fileName);
 
-        file_put_contents($fileName, $content . PHP_EOL . $pid);
+        file_put_contents($fileName, $content.PHP_EOL.$pid);
     }
 }

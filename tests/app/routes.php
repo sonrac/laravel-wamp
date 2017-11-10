@@ -9,11 +9,12 @@
  * @var \sonrac\WAMP\Client $this
  */
 
-app()->wampRouter->addSubscriber('com.hello', function (\Thruway\ClientSession $clientSession, \sonrac\WAMP\Client $client) {
-    $clientSession->publish('com.test.publish', [1, 2, 3]);
+app()->wampRouter->addSubscriber('com.hello', function (...$arguments) {
+    app()->wampClient->getSession()->publish('com.test.publish', count($arguments) ? $arguments : [1, 2, 3]);
 });
 
-app()->wampRouter->addSubscriber('com.test.publish', function (\Thruway\ClientSession $clientSession, \sonrac\WAMP\Client $client) {
+app()->wampRouter->addSubscriber('com.test.publish', function ($arguments) {
+    var_dump($arguments);
     return 123;
 });
 

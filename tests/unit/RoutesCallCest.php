@@ -13,13 +13,6 @@ class RoutesCallCest
      */
     protected $tester;
 
-    /**
-     * @var \Thruway\Message\ErrorMessage
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected $error;
-
     public function _before(UnitTester $tester)
     {
         Artisan::setFacadeApplication(app());
@@ -43,42 +36,83 @@ class RoutesCallCest
         $this->tester = $tester;
     }
 
-    protected $start = false;
-
-    /**
-     * @var null|\Thruway\CallResult
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected $data = null;
-
     public function _after(UnitTester $tester)
     {
         Artisan::call('wamp:stop');
     }
 
+    /**
+     * Call procedure test
+     *
+     * @param \UnitTester $tester
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
     public function callProcedure(UnitTester $tester)
     {
-        app()->wampClient->addTransportProvider(new \Thruway\Transport\PawlTransportProvider(
-            'ws://127.0.0.1:9192'
-        ));
+        $this->prepareClient();
+
         app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
             $session->call('test')->then(function (\Thruway\CallResult $res) use ($session) {
                 app()->wampClient->onClose('Done', false);
                 app()->wampClient->getLoop()->stop();
                 $session->getLoop()->stop();
-                $this->data = $res;
-                $this->start = true;
-                $this->tester->assertInstanceOf(\Thruway\CallResult::class, $this->data);
-                $this->tester->assertEquals('test_message', $this->data->getResultMessage()->getArguments()[0]);
+                $this->tester->assertInstanceOf(\Thruway\CallResult::class, $res);
+                $this->tester->assertEquals('test_message', $res->getResultMessage()->getArguments()[0]);
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
-                $this->error = $error;
-                $this->start = true;
                 app()->wampClient->onClose('Done', false);
                 app()->wampClient->getLoop()->stop();
                 $session->getLoop()->stop();
             });
         });
         app()->wampClient->start(true);
+    }
+
+    /**
+     * Subscribe
+     *
+     * @param \UnitTester $tester
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function subscribeTest(UnitTester $tester)
+    {
+        $this->prepareClient();
+
+        var_dump(123);
+
+        app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
+            $session->subscribe('com.test.publish', function ($res, $arg = null, $arg1 = null, $arg2 = null) use ($session) {
+                app()->wampClient->onClose('Done', false);
+                app()->wampClient->getLoop()->stop();
+                $session->getLoop()->stop();
+
+                $this->tester->assertInternalType('array', $res);
+                $this->tester->assertCount(4, $res);
+                $this->tester->assertCount(3, $res[0]);
+                $this->tester->assertEquals([1,2,3], $res[0]);
+            }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
+                app()->wampClient->onClose('Done', false);
+                app()->wampClient->getLoop()->stop();
+                $session->getLoop()->stop();
+            });
+
+            $session->publish('com.hello');
+        });
+        app()->wampClient->start(true);
+    }
+
+    /**
+     * Prepare client
+     *
+     * @param string $host Wamp host
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    private function prepareClient($host = 'ws://127.0.0.1:9192')
+    {
+        app()->wampClient->addTransportProvider(new \Thruway\Transport\PawlTransportProvider(
+            $host
+        ));
     }
 }

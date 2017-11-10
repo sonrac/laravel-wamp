@@ -25,8 +25,8 @@ class RunCommandInBackground
      * RunCommandInBackground constructor.
      *
      * @param string $command
-     * @param null $before
-     * @param null $after
+     * @param null   $before
+     * @param null   $after
      */
     public function __construct($command, $before = null, $after = null)
     {
@@ -59,7 +59,7 @@ class RunCommandInBackground
     {
         exec($this->composeForRunInBackground(), $out, $pid);
 
-        return count($out) ? (int) $out[0] : null;
+        return count($out) ? (int)$out[0] : null;
     }
 
     /**
@@ -81,13 +81,14 @@ class RunCommandInBackground
     {
         $parts = [];
         if (!empty($this->before)) {
-            $parts[] = (string) $this->before;
+            $parts[] = (string)$this->before;
         }
-        $parts[] = 'cd ' . base_path();
+        $parts[] = 'cd '.base_path();
         $parts[] = "{$this->phpBinary} {$this->getArtisan()} {$this->command}";
         if (!empty($this->after)) {
-            $parts[] = (string) $this->after;
+            $parts[] = (string)$this->after;
         }
+
         return implode(' && ', $parts);
     }
 
