@@ -201,9 +201,8 @@ trait RouterTrait
         $namespace = $namespace ? $namespace.'\\' : '';
 
         $callback = explode('&', $callback);
-        $self = $this;
 
-        return function () use ($callback, $namespace, $self) {
+        return function () use ($callback, $namespace) {
             if (count($callback) === 1) {
                 return call_user_func_array([$this, $callback[0]], func_get_args());
             }
