@@ -23,7 +23,7 @@ class RoutesCallCest
             '--in-background' => '--in-background',
             '--no-debug'      => '--no-debug',
         ]);
-        sleep(2);
+        sleep(1);
         Artisan::call('wamp:register-routes', [
             '--realm'         => 'realm',
             '--host'          => '127.0.0.1',
@@ -31,7 +31,7 @@ class RoutesCallCest
             '--in-background' => '--in-background',
             '--no-debug'      => '--no-debug',
         ]);
-        sleep(3);
+        sleep(1);
 
         $this->tester = $tester;
     }
@@ -39,6 +39,7 @@ class RoutesCallCest
     public function _after(UnitTester $tester)
     {
         Artisan::call('wamp:stop');
+        sleep(1);
     }
 
     /**
@@ -54,16 +55,15 @@ class RoutesCallCest
 
         app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
             $session->call('test')->then(function (\Thruway\CallResult $res) use ($session) {
-                app()->wampClient->onClose('Done', false);
-                app()->wampClient->getLoop()->stop();
+                $this->closeLoop();
                 $session->getLoop()->stop();
                 $this->tester->assertInstanceOf(\Thruway\CallResult::class, $res);
                 $this->tester->assertEquals('test_message', $res->getResultMessage()->getArguments()[0]);
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
-                app()->wampClient->onClose('Done', false);
-                app()->wampClient->getLoop()->stop();
+                $this->closeLoop();
                 $session->getLoop()->stop();
             });
+            $this->closeLoop();
         });
         app()->wampClient->start(true);
     }
@@ -81,8 +81,7 @@ class RoutesCallCest
 
         app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
             $session->subscribe('com.test.publish', function ($res, $arg = null, $arg1 = null, $arg2 = null) use ($session) {
-                app()->wampClient->onClose('Done', false);
-                app()->wampClient->getLoop()->stop();
+                $this->closeLoop();
                 $session->getLoop()->stop();
 
                 $this->tester->assertInternalType('array', $res);
@@ -90,14 +89,23 @@ class RoutesCallCest
                 $this->tester->assertCount(3, $res[0]);
                 $this->tester->assertEquals([1, 2, 3], $res[0]);
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
-                app()->wampClient->onClose('Done', false);
-                app()->wampClient->getLoop()->stop();
+                $this->closeLoop();
                 $session->getLoop()->stop();
             });
-
             $session->publish('com.hello');
+            $this->closeLoop();
         });
         app()->wampClient->start(true);
+    }
+
+    /**
+     * Close loop
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    private function closeLoop() {
+        app()->wampClient->onClose('Done', false);
+        app()->wampClient->getLoop()->stop();
     }
 
     /**
