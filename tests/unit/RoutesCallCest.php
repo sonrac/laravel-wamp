@@ -28,7 +28,7 @@ class RoutesCallCest
             '--host'          => '127.0.0.1',
             '--port'          => 9192,
             '--in-background' => '--in-background',
-            '--no-debug'      => '--no-debug'
+            '--no-debug'      => '--no-debug',
         ]);
         sleep(2);
         Artisan::call('wamp:register-routes', [
@@ -36,7 +36,7 @@ class RoutesCallCest
             '--host'          => '127.0.0.1',
             '--port'          => 9192,
             '--in-background' => '--in-background',
-            '--no-debug'      => '--no-debug'
+            '--no-debug'      => '--no-debug',
         ]);
         sleep(3);
 
@@ -59,13 +59,12 @@ class RoutesCallCest
 
     public function callProcedure(UnitTester $tester)
     {
-
         app()->wampClient->addTransportProvider(new \Thruway\Transport\PawlTransportProvider(
             'ws://127.0.0.1:9192'
         ));
         app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
             $session->call('test')->then(function (\Thruway\CallResult $res) use ($session) {
-                app()->wampClient->onClose('Done',false);
+                app()->wampClient->onClose('Done', false);
                 app()->wampClient->getLoop()->stop();
                 $session->getLoop()->stop();
                 $this->data = $res;
@@ -76,7 +75,7 @@ class RoutesCallCest
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
                 $this->error = $error;
                 $this->start = true;
-                app()->wampClient->onClose('Done',false);
+                app()->wampClient->onClose('Done', false);
                 app()->wampClient->getLoop()->stop();
                 $session->getLoop()->stop();
             });
