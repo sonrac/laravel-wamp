@@ -14,8 +14,7 @@ app()->wampRouter->addSubscriber('com.hello', function (...$arguments) {
 });
 
 app()->wampRouter->addSubscriber('com.test.publish', function ($arguments) {
-    var_dump($arguments);
-    return 123;
+    return $arguments;
 });
 
 app()->wampRouter->addRoute('test', function () {

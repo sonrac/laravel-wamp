@@ -79,8 +79,6 @@ class RoutesCallCest
     {
         $this->prepareClient();
 
-        var_dump(123);
-
         app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
             $session->subscribe('com.test.publish', function ($res, $arg = null, $arg1 = null, $arg2 = null) use ($session) {
                 app()->wampClient->onClose('Done', false);
