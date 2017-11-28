@@ -30,6 +30,6 @@ php tests/replace_autoload.php
 vendor/bin/codecept run --coverage --coverage-xml
 composer remove --dev laravel/framework --no-interaction
 
-if [[ -f "codeception.yml" ]]; then
+if [ -f "codeception.yml" ]; then
     rm codeception.yml
 fi
