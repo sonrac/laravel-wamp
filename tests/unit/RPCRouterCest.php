@@ -68,7 +68,9 @@ class RPCRouterCest
         app()->rpcRouter->group([
             'namespace' => '\test',
         ], function ($session, $client) use ($tester) {
-            return null; //app()->rpcRouter->addRoute('test', 'HomeController@index');
+            $tester->assertInstanceOf(\Thruway\Session::class, $session);
+            $tester->assertInstanceOf(\sonrac\WAMP\Client::class, $client);
+            return null;
         });
         $router = app()->wampRouter;
         app()->rpcRouter->setRouter($router);
