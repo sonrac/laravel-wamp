@@ -19,9 +19,23 @@ use Thruway\Peer\Client as PeerClient;
  */
 class Client extends PeerClient
 {
+    /**
+     * Path to WAMP routes
+     *
+     * @var string|null
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
     protected $routePath = null;
 
-    protected $session;
+    /**
+     * Retry connection on close or no
+     *
+     * @var bool
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $connectionRetry = true;
 
     /**
      * Session start event
@@ -36,18 +50,40 @@ class Client extends PeerClient
         $this->includeRoutes($session, $transport);
     }
 
-    public function setRoutePath($path)
-    {
-        $this->routePath = $path;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function start($startLoop = true)
     {
-        app()->router->parseGroups();
+        app()->wampRouter->parseGroups();
         parent::start($startLoop);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onClose($reason, $retry = true)
+    {
+        $this->connectionRetry = $retry;
+
+        parent::onClose($reason);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function retryConnection()
+    {
+        if (!$this->connectionRetry) {
+            return;
+        }
+
+        return parent::retryConnection();
+    }
+
+    public function setRoutePath($path)
+    {
+        $this->routePath = $path;
     }
 
     /**
@@ -72,6 +108,7 @@ class Client extends PeerClient
 
         if (is_file($this->routePath)) {
             require $this->routePath;
+
             return;
         }
 
@@ -84,7 +121,7 @@ class Client extends PeerClient
                 }
 
                 if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                    require $this->routePath . DIRECTORY_SEPARATOR . $file;
+                    require $this->routePath.DIRECTORY_SEPARATOR.$file;
                 }
             }
         }

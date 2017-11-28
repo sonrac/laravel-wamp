@@ -10,11 +10,15 @@
 namespace sonrac\WAMP\tests\app;
 
 use Laravel\Lumen\Console\Kernel;
+use sonrac\WAMP\Commands\DownWAMP;
+use sonrac\WAMP\Commands\RegisterRoutes;
 use sonrac\WAMP\Commands\RunServer;
 
 class LumenKernel extends Kernel
 {
     protected $commands = [
         RunServer::class,
+        RegisterRoutes::class,
+        DownWAMP::class,
     ];
 }

@@ -1,7 +1,5 @@
 <?php
 
-use Mockery;
-
 /**
  * Class BackgroundCommandCest
  *
@@ -29,9 +27,9 @@ class BackgroundCommandCest
         $pid = \sonrac\WAMP\Commands\RunCommandInBackground::factory('wamp:register-routes')->runInBackground();
 
         $I->assertInternalType('int', $pid);
-        $I->assertTrue(file_exists('/proc/' . $pid));
-        exec('kill ' . $pid);
+        $I->assertTrue(file_exists('/proc/'.$pid));
+        exec('kill '.$pid);
         sleep(1);
-        $I->assertFalse(file_exists('/proc/' . $pid));
+        $I->assertFalse(file_exists('/proc/'.$pid));
     }
 }

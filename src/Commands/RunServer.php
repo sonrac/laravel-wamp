@@ -26,8 +26,15 @@ class RunServer extends Command
      */
     protected $host = '127.0.0.1';
 
+    /**
+     * {@inheritdoc}
+     */
     protected $name = 'wamp:run-server {--realm=?} {--host=?} {--port=?} {--tls?} {--transport-provider=?}
     {--no-loop?} {--no-debug?} {--in-background?} {--client-transport-provider=?} {--route-path=?}';
+
+    /**
+     * {@inheritdoc}
+     */
     protected $signature = 'wamp:run-server
                                 {--realm= : Specify WAMP realm to be used}
                                 {--host= : Specify the router host}
@@ -36,20 +43,15 @@ class RunServer extends Command
                                 {--no-debug : Disable debug mode.}
                                 {--no-loop : Disable loop runner}
                                 {--transport-provider : Transport provider class}
-                                {--route-path=? : Path to routes config}
-                                {--client-transport-provider=? : Client transport provider class}
+                                {--route-path= : Path to routes config}
+                                {--client-transport-provider= : Client transport provider class}
                                 {--in-background : Run task in background}
                                 ';
-    protected $description = 'Run wamp server';
 
     /**
-     * Run in background.
-     *
-     * @var bool
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
+     * {@inheritdoc}
      */
-    protected $runInBackground = false;
+    protected $description = 'Run wamp server';
 
     /**
      * Wamp server.
@@ -68,15 +70,6 @@ class RunServer extends Command
     protected $clientTransportProvider = null;
 
     /**
-     * No loop runner
-     *
-     * @var bool
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    protected $noLoop = false;
-
-    /**
      * Run server handle.
      *
      * @throws \Exception
@@ -86,56 +79,21 @@ class RunServer extends Command
         $this->parseOptions();
         $this->changeWampLogger();
 
-        $clientCommand = 'php artisan wamp:register-routes' . $this->getCommandLineOptions();
-
-        if ($this->clientTransportProvider) {
-            $clientCommand .= ' --transport-provider=' . $this->clientTransportProvider;
-        }
-
-        RunCommandInBackground::factory($clientCommand)->runInBackground();
-
         if (!$this->runInBackground) {
             $this->WAMPServer = app()->wampRouter;
-            $this->WAMPServer->registerModule($this->getTransportProvider());
+            $transportProvider = $this->getTransportProvider();
+            $this->WAMPServer->registerModule($transportProvider);
             $this->WAMPServer->start(!$this->runOnce);
         } else {
-            $serverCommand = 'php artisan wamp:run-server ' . $this->getCommandLineOptions();
+            $serverCommand = ' '.$this->getName().$this->getCommandLineOptions();
 
             if ($this->clientTransportProvider) {
-                $serverCommand .= ' --client-transport-provider=' . $this->clientTransportProvider;
+                $serverCommand .= ' --client-transport-provider='.$this->clientTransportProvider;
             }
 
-            RunCommandInBackground::factory($serverCommand)->runInBackground();
+            $this->addPidToLog(RunCommandInBackground::factory($serverCommand)->runInBackground(),
+                DownWAMP::SERVER_PID_FILE);
         }
-    }
-
-    protected function getCommandLineOptions()
-    {
-        $command = ' --port=' . $this->port .
-            ' --host=' . $this->host .
-            ' --realm=' . $this->realm;
-
-        if ($this->clientTransportProvider) {
-            $command .= ' --transport-provider=' . $this->clientTransportProvider;
-        }
-
-        if ($this->noDebug) {
-            $command .= ' --no-debug';
-        }
-
-        if ($this->tls) {
-            $command .= ' --tls';
-        }
-
-        if ($this->routePath) {
-            $command .= ' --route-path=' . $this->routePath;
-        }
-
-        if ($this->noLoop) {
-            $command .= ' --no-loop';
-        }
-
-        return $command;
     }
 
     /**
@@ -149,12 +107,48 @@ class RunServer extends Command
     }
 
     /**
+     * Get commandline options for background command
+     *
+     * @return string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function getCommandLineOptions()
+    {
+        $command = ' --port='.$this->port.
+            ' --host='.$this->host.
+            ' --realm='.$this->realm;
+
+        if ($this->clientTransportProvider) {
+            $command .= ' --transport-provider='.$this->clientTransportProvider;
+        }
+
+        if ($this->noDebug) {
+            $command .= ' --no-debug';
+        }
+
+        if ($this->tls) {
+            $command .= ' --tls';
+        }
+
+        if ($this->routePath) {
+            $command .= ' --route-path='.$this->routePath;
+        }
+
+        if ($this->noLoop) {
+            $command .= ' --no-loop';
+        }
+
+        return $command;
+    }
+
+    /**
      * Merge config & input options.
      */
     protected function parseOptions()
     {
+        $this->clientTransportProvider = $this->getOptionFromInput('client-transport-provider');
         $this->parseBaseOptions();
-        $this->runInBackground = $this->getOptionFromInput('in-background') ?? false;
     }
 
     /**

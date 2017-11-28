@@ -9,7 +9,6 @@
 
 namespace sonrac\WAMP\Routers;
 
-use Thruway\ClientSession;
 use Thruway\Peer\RouterInterface;
 
 /**
@@ -100,6 +99,9 @@ trait RouterTrait
      */
     public function parseGroups()
     {
+        if (!is_array($this->groups) || !count($this->groups)) {
+            return;
+        }
         gc_enable();
         $callbacks = [];
         foreach ($this->groups as $group) {
@@ -199,22 +201,21 @@ trait RouterTrait
         $namespace = $namespace ? $namespace.'\\' : '';
 
         $callback = explode('&', $callback);
-        $self = $this;
 
-        return function (ClientSession $clientSession) use ($callback, $namespace, $self) {
+        return function () use ($callback, $namespace) {
             if (count($callback) === 1) {
-                return $this->{$callback[0]}($clientSession, $self->getClient());
+                return call_user_func_array([$this, $callback[0]], func_get_args());
             }
 
-            if (!isset($this->controllers[$callback[0]])) {
-                return $this->controllers[$callback[0]]->{$callback[1]}($clientSession, $this->getClient());
+            if (isset($this->controllers[$callback[0]])) {
+                return call_user_func_array([$this->controllers[$callback[0]], $callback[1]], func_get_args());
             }
 
             $className = class_exists($callback[0]) ? $callback[0] : $namespace.$callback[0];
 
             $this->controllers[$callback[0]] = app()->make($className);
 
-            return $this->controllers[$callback[0]]->{$callback[1]}($clientSession, $self->getClient());
+            return call_user_func_array([$this->controllers[$callback[0]], $callback[1]], func_get_args());
         };
     }
 

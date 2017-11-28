@@ -33,7 +33,7 @@ trait WAMPCommandTrait
      *
      * @var string
      */
-    protected $realm;
+    protected $realm = 'realm';
 
     /**
      * WAMP router port.
@@ -80,6 +80,24 @@ trait WAMPCommandTrait
      * @author Donii Sergii <doniysa@gmail.com>
      */
     protected $transportProvider = 'Thruway\Transport\RatchetTransportProvider';
+
+    /**
+     * Run in background.
+     *
+     * @var bool
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $runInBackground = false;
+
+    /**
+     * No loop runner
+     *
+     * @var bool
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $noLoop = false;
 
     /**
      * Get option value from input.
@@ -129,7 +147,7 @@ trait WAMPCommandTrait
             return;
         }
 
-        $path = $this->getConfig('pathLogFile') ?? storage_path('logs/' . $fileName);
+        $path = $this->getConfig('pathLogFile') ?? storage_path('logs/'.$fileName);
 
         $handler = (new StreamHandler($path, MonologLogger::DEBUG))
             ->setFormatter(new LineFormatter(null, null, true, true));
@@ -152,6 +170,7 @@ trait WAMPCommandTrait
         $this->tls = $this->getOptionFromInput('tls') ?? $this->getConfig('tls', $this->tls);
         $this->transportProvider = $this->getOptionFromInput('transport-provider') ?? $this->getConfig('transportProvider',
                 $this->transportProvider);
+        $this->runInBackground = $this->getOptionFromInput('in-background') ?? false;
 
         $this->noDebug = $this->getOptionFromInput('no-debug') ?? $this->noDebug;
         $this->runOnce = $this->getOptionFromInput('no-loop') ?? $this->runOnce;
@@ -181,4 +200,26 @@ trait WAMPCommandTrait
      * @author Donii Sergii <doniysa@gmail.com>
      */
     abstract protected function getTransportProvider();
+
+    /**
+     * Add pid process
+     *
+     * @param int    $pid      Process pid
+     * @param string $fileName Filename
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function addPidToLog($pid, $fileName = 'server.pids')
+    {
+        $fileName = storage_path($fileName);
+        if (!file_exists(storage_path($fileName))) {
+            file_put_contents($fileName, $pid);
+
+            return;
+        }
+
+        $content = file_get_contents($fileName);
+
+        file_put_contents($fileName, $content.PHP_EOL.$pid);
+    }
 }

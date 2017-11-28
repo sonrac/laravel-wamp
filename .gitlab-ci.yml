@@ -4,6 +4,7 @@ before_script:
   - cp codeception-lumen.yml codeception.yml
   - composer install
   - composer require --dev laravel/lumen-framework:5.* --no-interaction
+  - php tests/replace_autoload.php
 
 # Test
 test:

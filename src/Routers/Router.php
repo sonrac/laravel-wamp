@@ -186,18 +186,6 @@ class Router extends PeerRouter implements WAMPRouterInterface
     }
 
     /**
-     * Set default controller namespace.
-     *
-     * @param string $namespace
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function setControllerNamespace($namespace)
-    {
-        $this->controllerNamespace = $namespace;
-    }
-
-    /**
      * Get default controller namespace.
      *
      * @return null|string
@@ -207,6 +195,18 @@ class Router extends PeerRouter implements WAMPRouterInterface
     public function getControllerNamespace()
     {
         return $this->controllerNamespace;
+    }
+
+    /**
+     * Set default controller namespace.
+     *
+     * @param string $namespace
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setControllerNamespace($namespace)
+    {
+        $this->controllerNamespace = $namespace;
     }
 
     /**
