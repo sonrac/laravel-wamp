@@ -7,6 +7,8 @@
  * Date: 10/23/17
  * Time: 4:31 PM
  */
+require __DIR__.'/helper.php';
+require __DIR__.'/../vendor/autoload.php';
 $file = __DIR__.'/_output/database.sqlite';
 if (!file_exists($file)) {
     file_put_contents($file, '');

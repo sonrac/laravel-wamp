@@ -20,3 +20,9 @@ app()->wampRouter->addSubscriber('com.test.publish', function ($arguments) {
 app()->wampRouter->addRoute('test', function () {
     return 'test_message';
 });
+
+app()->wampRouter->group([
+    'namespace' => 'sonrac\\WAMP\\tests\\app'
+], function () {
+    app()->wampRouter->addRoute('/wamp/test', 'WAMPController@getUserInfo');
+});

@@ -69,6 +69,32 @@ class RoutesCallCest
     }
 
     /**
+     * Call procedure test
+     *
+     * @param \UnitTester $tester
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function callProcedureGroup(UnitTester $tester)
+    {
+        $this->prepareClient();
+
+        app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
+            $session->call('/wamp/test')->then(function (\Thruway\CallResult $res) use ($session) {
+                $this->closeLoop();
+                $session->getLoop()->stop();
+                $this->tester->assertInstanceOf(\Thruway\CallResult::class, $res);
+                $this->tester->assertEquals('test', $res->getResultMessage()->getArguments()[0]);
+            }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
+                $this->closeLoop();
+                $session->getLoop()->stop();
+            });
+            $this->closeLoop();
+        });
+        app()->wampClient->start(true);
+    }
+
+    /**
      * Subscribe
      *
      * @param \UnitTester $tester
