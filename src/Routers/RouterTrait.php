@@ -192,6 +192,37 @@ trait RouterTrait
         return $this->groupControllerNamespace;
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseGroups()
+    {
+        if (!is_array($this->groups) || !count($this->groups)) {
+            return;
+        }
+        gc_enable();
+        $callbacks = [];
+        foreach ($this->groups as $group) {
+            $this->prefix = $group['prefix'];
+            $this->groupControllerNamespace = $group['namespace'];
+            $this->middleware = $group['middleware'];
+            $callbacks[] = $group['callback']($this->getClientSession(), $this->getClient());
+        }
+
+        $this->groups = null;
+        unset($this->groups);
+        $this->groups = [];
+
+        $this->prefix = null;
+        $this->groupControllerNamespace = null;
+
+        gc_collect_cycles();
+        gc_disable();
+
+        return $callbacks;
+    }
+
     /**
      * Prepare path.
      *
