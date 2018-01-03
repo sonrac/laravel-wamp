@@ -192,7 +192,6 @@ trait RouterTrait
         return $this->groupControllerNamespace;
     }
 
-
     /**
      * {@inheritdoc}
      */

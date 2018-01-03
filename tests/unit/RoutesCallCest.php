@@ -67,7 +67,6 @@ class RoutesCallCest
                 $this->closeLoop();
                 $session->getLoop()->stop();
             }, function () {
-
             });
         });
         app()->wampClient->start(true);
@@ -103,7 +102,7 @@ class RoutesCallCest
                 $this->closeLoop();
                 $session->getLoop()->stop();
             });
-            $session->publish('wamp.test', ['Test Message'], [], ["exclude_me" => false]);
+            $session->publish('wamp.test', ['Test Message'], [], ['exclude_me' => false]);
         });
 
         app()->wampClient->start(true);

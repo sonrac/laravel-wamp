@@ -77,7 +77,7 @@ class DownWAMP extends Command
 
             if (count($content)) {
                 foreach ($content as $pid) {
-                    $pid = (int)trim($pid);
+                    $pid = (int) trim($pid);
 
                     posix_kill($pid, 9);
                 }
