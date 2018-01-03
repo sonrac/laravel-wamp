@@ -23,7 +23,7 @@ app()->wampRouter->addRoute('test', function () {
 });
 
 app()->wampRouter->group([
-    'namespace' => 'sonrac\\WAMP\\tests\\app'
+    'namespace' => 'sonrac\\WAMP\\tests\\app',
 ], function () {
     app()->wampRouter->addSubscriber('wamp.test', 'WAMPController@getUserInfo');
 });

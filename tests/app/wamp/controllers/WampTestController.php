@@ -6,8 +6,6 @@
 namespace sonrac\WAMP\tests\app\wamp\controllers;
 
 use sonrac\WAMP\Abstracts\WAMPControllerInterface;
-use sonrac\WAMP\Client;
-use Thruway\ClientSession;
 
 /**
  * Class WampTestController

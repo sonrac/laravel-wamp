@@ -78,10 +78,10 @@ class WAMPServiceProvider extends ServiceProvider
             return new RawSocketClientTransportProvider($config['host'], $config['port']);
         });
 
-        /**
+        /*
          * Register loggers
          */
-        $this->app->singleton('wamp.server.logger', function () use ($config){
+        $this->app->singleton('wamp.server.logger', function () use ($config) {
             $fileName = isset($config['log_file_server']) && $config['log_file_server'] ? $config['log_file_server'] : 'wamp-server.log';
             $path = storage_path('logs/'.$fileName);
 
