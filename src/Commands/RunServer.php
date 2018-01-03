@@ -176,4 +176,14 @@ class RunServer extends Command
 
         throw new InvalidWampTransportProvider();
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function getLogger()
+    {
+        return app('wamp.server.logger');
+    }
 }

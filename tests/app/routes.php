@@ -10,7 +10,8 @@
  */
 
 app()->wampRouter->addSubscriber('com.hello', function (...$arguments) {
-    app()->wampClient->getSession()->publish('com.test.publish', count($arguments) ? $arguments : [1, 2, 3]);
+    var_dump($arguments);
+    app()->wampClient->getSession()->publish('com.test.publish', count($arguments[0]) ? $arguments[0] : [1, 2, 3]);
 });
 
 app()->wampRouter->addSubscriber('com.test.publish', function ($arguments) {
@@ -24,5 +25,5 @@ app()->wampRouter->addRoute('test', function () {
 app()->wampRouter->group([
     'namespace' => 'sonrac\\WAMP\\tests\\app'
 ], function () {
-    app()->wampRouter->addRoute('/wamp/test', 'WAMPController@getUserInfo');
+    app()->wampRouter->addSubscriber('wamp.test', 'WAMPController@getUserInfo');
 });

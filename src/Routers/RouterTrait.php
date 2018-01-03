@@ -27,13 +27,6 @@ trait RouterTrait
     protected $controllers;
 
     /**
-     * Router groups.
-     *
-     * @var null|array
-     */
-    protected $groups = null;
-
-    /**
      * Main router
      *
      * @var null|\Thruway\Peer\RouterInterface|\sonrac\WAMP\Routers\Router
@@ -88,40 +81,6 @@ trait RouterTrait
             'prefix'     => isset($config['prefix']) ? $config['prefix'] : '',
             'callback'   => $runner,
         ];
-    }
-
-    /**
-     * Parse groups
-     *
-     * @return \sonrac\WAMP\GroupsConfigInterface[]|\stdClass[]
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function parseGroups()
-    {
-        if (!is_array($this->groups) || !count($this->groups)) {
-            return;
-        }
-        gc_enable();
-        $callbacks = [];
-        foreach ($this->groups as $group) {
-            $this->prefix = $group['prefix'];
-            $this->groupControllerNamespace = $group['namespace'];
-            $this->middleware = $group['middleware'];
-            $callbacks[] = $group['callback']($this->getClientSession(), $this->getClient());
-        }
-
-        $this->groups = null;
-        unset($this->groups);
-        $this->groups = [];
-
-        $this->prefix = null;
-        $this->groupControllerNamespace = null;
-
-        gc_collect_cycles();
-        gc_disable();
-
-        return $callbacks;
     }
 
     /**
@@ -200,23 +159,37 @@ trait RouterTrait
 
         $namespace = $namespace ? $namespace.'\\' : '';
 
-        $callback = explode('&', $callback);
+        $callback = explode('@', $callback);
 
         return function () use ($callback, $namespace) {
             if (count($callback) === 1) {
-                return call_user_func_array([$this, $callback[0]], func_get_args());
+                return app()->call([$this, $callback[0]], func_get_args());
             }
 
             if (isset($this->controllers[$callback[0]])) {
                 return call_user_func_array([$this->controllers[$callback[0]], $callback[1]], func_get_args());
             }
 
-            $className = class_exists($callback[0]) ? $callback[0] : $namespace.$callback[0];
+            $namespace = rtrim($namespace, '\\');
+
+            $className = class_exists($callback[0]) ? $callback[0] : $namespace.'\\'.$callback[0];
 
             $this->controllers[$callback[0]] = app()->make($className);
 
-            return call_user_func_array([$this->controllers[$callback[0]], $callback[1]], func_get_args());
+            return app()->call([$this->controllers[$callback[0]], $callback[1]], func_get_args());
         };
+    }
+
+    /**
+     * get controller namespace for group
+     *
+     * @return null|string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function getGroupControllerNamespace()
+    {
+        return $this->groupControllerNamespace;
     }
 
     /**
@@ -230,11 +203,8 @@ trait RouterTrait
      */
     protected function prepareCallback($callback)
     {
-        $namespace = $this->groupControllerNamespace ?? $this->getRouter()->getControllerNamespace();
-        if ($this->groupControllerNamespace && $this->groupControllerNamespace
-            && is_string($callback) && count(explode('&', $callback)) === 2) {
-            $callback = rtrim($namespace, '\\').$callback;
-        }
+        $namespace = $this->groupControllerNamespace ?? $this->getRouter()->getGroupControllerNamespace();
+        $namespace = $namespace ?? $this->getRouter()->getControllerNamespace();
 
         return [
             'prefix'     => $this->prefix,

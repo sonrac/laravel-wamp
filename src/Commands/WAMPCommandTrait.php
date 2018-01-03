@@ -15,7 +15,7 @@ use Thruway\Logging\ConsoleLogger;
 use Thruway\Logging\Logger;
 
 /**
- * @trait  WAMPCommandTrait
+ * @trait WAMPCommandTrait
  *
  * @author Donii Sergii <doniysa@gmail.com>
  */
@@ -125,7 +125,7 @@ trait WAMPCommandTrait
      */
     protected function getConfig($optName = null, $default = null)
     {
-        $options = config('minion') ?? [];
+        $options = config('wamp') ?? [];
 
         if (null === $optName) {
             return $options ?? [];
@@ -135,9 +135,20 @@ trait WAMPCommandTrait
     }
 
     /**
+     * Get logger class for wamp
+     *
+     * @return \Psr\Log\LoggerInterface
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    abstract protected function getLogger();
+
+    /**
      * Change WAMP logger
      *
      * @param string $fileName
+     *
+     * @return void
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
@@ -147,14 +158,7 @@ trait WAMPCommandTrait
             return;
         }
 
-        $path = $this->getConfig('pathLogFile') ?? storage_path('logs/'.$fileName);
-
-        $handler = (new StreamHandler($path, MonologLogger::DEBUG))
-            ->setFormatter(new LineFormatter(null, null, true, true));
-
-        $logger = new MonologLogger($fileName, [$handler]);
-
-        Logger::set($logger);
+        Logger::set($this->getLogger());
     }
 
     /**

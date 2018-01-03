@@ -23,7 +23,7 @@ class WAMPController
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function index() {
+    public function getUserInfo() {
         return [
             'test' => 'test'
         ];

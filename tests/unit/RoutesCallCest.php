@@ -2,8 +2,6 @@
 
 require_once __DIR__.'/../_support/CallTest.php';
 
-use Illuminate\Support\Facades\Artisan;
-
 class RoutesCallCest
 {
     /**
@@ -15,31 +13,31 @@ class RoutesCallCest
 
     public function _before(UnitTester $tester)
     {
-        Artisan::setFacadeApplication(app());
-        Artisan::call('wamp:run-server', [
-            '--realm'         => 'realm',
-            '--host'          => '127.0.0.1',
-            '--port'          => 9192,
-            '--in-background' => '--in-background',
-            '--no-debug'      => '--no-debug',
-        ]);
-        sleep(1);
-        Artisan::call('wamp:register-routes', [
-            '--realm'         => 'realm',
-            '--host'          => '127.0.0.1',
-            '--port'          => 9192,
-            '--in-background' => '--in-background',
-            '--no-debug'      => '--no-debug',
-        ]);
-        sleep(1);
+//        Artisan::setFacadeApplication(app());
+//        Artisan::call('wamp:run-server', [
+//            '--realm'         => 'realm',
+//            '--host'          => '127.0.0.1',
+//            '--port'          => 9192,
+//            '--in-background' => '--in-background',
+//            '--no-debug'      => '--no-debug',
+//        ]);
+//        sleep(2);
+//        Artisan::call('wamp:register-routes', [
+//            '--realm'         => 'realm',
+//            '--host'          => '127.0.0.1',
+//            '--port'          => 9192,
+//            '--in-background' => '--in-background',
+//            '--no-debug'      => '--no-debug',
+//        ]);
+//        sleep(1);
 
         $this->tester = $tester;
     }
 
     public function _after(UnitTester $tester)
     {
-        Artisan::call('wamp:stop');
-        sleep(1);
+//        Artisan::call('wamp:stop');
+//        sleep(1);
     }
 
     /**
@@ -53,19 +51,28 @@ class RoutesCallCest
     {
         $this->prepareClient();
 
-        app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
-            $session->call('test')->then(function (\Thruway\CallResult $res) use ($session) {
-                $this->closeLoop();
+        $result = [];
+        app()->wampClient->on('open', function (\Thruway\ClientSession $session) use (&$result) {
+            $session->call('test')->then(function (\Thruway\CallResult $res) use ($session, &$result) {
+                $result = [
+                    'obj'  => $res,
+                    'data' => $res->getResultMessage()->getArguments(),
+                ];
                 $session->getLoop()->stop();
-                $this->tester->assertInstanceOf(\Thruway\CallResult::class, $res);
-                $this->tester->assertEquals('test_message', $res->getResultMessage()->getArguments()[0]);
+                $this->closeLoop();
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
                 $this->closeLoop();
                 $session->getLoop()->stop();
+            }, function () {
+
             });
-            $this->closeLoop();
         });
         app()->wampClient->start(true);
+
+        $this->tester->assertArrayHasKey('obj', $result);
+        $this->tester->assertInstanceOf(\Thruway\CallResult::class, $result['obj']);
+        $this->tester->assertInternalType('array', $result['data']);
+        $this->tester->assertEquals('test_message', $result['data'][0]);
     }
 
     /**
@@ -75,53 +82,42 @@ class RoutesCallCest
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function callProcedureGroup(UnitTester $tester)
+    public function subscribeFromGroup(UnitTester $tester)
     {
         $this->prepareClient();
 
-        app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
-            $session->call('/wamp/test')->then(function (\Thruway\CallResult $res) use ($session) {
+        $result = [];
+
+        app()->wampClient->on('open', function (\Thruway\ClientSession $session) use (&$result) {
+            $session->subscribe('wamp.test', function (\Thruway\CallResult $res) use (&$result, $session) {
+                $result = [
+                    'obj'  => $res,
+                    'data' => $res->getResultMessage()->getArguments(),
+                ];
                 $this->closeLoop();
                 $session->getLoop()->stop();
-                $this->tester->assertInstanceOf(\Thruway\CallResult::class, $res);
-                $this->tester->assertEquals('test', $res->getResultMessage()->getArguments()[0]);
             }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
+                var_dump($error);
                 $this->closeLoop();
                 $session->getLoop()->stop();
             });
-            $this->closeLoop();
+            $session->publish('wamp.test', ['Test Message'], [], ["acknowledge" => true])->then(
+                function () {
+                    echo PHP_EOL."Publish Acknowledged!".PHP_EOL;
+                },
+                function ($error) {
+                    // publish failed
+                    echo PHP_EOL."Publish Error {$error}".PHP_EOL;
+                    $this->closeLoop();
+                }
+            );
         });
+
         app()->wampClient->start(true);
-    }
-
-    /**
-     * Subscribe
-     *
-     * @param \UnitTester $tester
-     *
-     * @author Donii Sergii <doniysa@gmail.com>
-     */
-    public function subscribeTest(UnitTester $tester)
-    {
-        $this->prepareClient();
-
-        app()->wampClient->on('open', function (\Thruway\ClientSession $session) {
-            $session->subscribe('com.test.publish', function ($res, $arg = null, $arg1 = null, $arg2 = null) use ($session) {
-                $this->closeLoop();
-                $session->getLoop()->stop();
-
-                $this->tester->assertInternalType('array', $res);
-                $this->tester->assertCount(4, $res);
-                $this->tester->assertCount(3, $res[0]);
-                $this->tester->assertEquals([1, 2, 3], $res[0]);
-            }, function (\Thruway\Message\ErrorMessage $error) use (&$tester, $session) {
-                $this->closeLoop();
-                $session->getLoop()->stop();
-            });
-            $session->publish('com.hello');
-            $this->closeLoop();
-        });
-        app()->wampClient->start(true);
+        $this->tester->assertArrayHasKey('obj', $result);
+        $this->tester->assertArrayHasKey('data', $result);
+        $this->tester->assertInstanceOf(\Thruway\CallResult::class, $result['obj']);
+        $this->tester->assertEquals('test', $result['data'][0]);
     }
 
     /**
@@ -144,6 +140,7 @@ class RoutesCallCest
      */
     private function prepareClient($host = 'ws://127.0.0.1:9192')
     {
+        app()->wampClient = new \sonrac\WAMP\Client('realm');
         app()->wampClient->addTransportProvider(new \Thruway\Transport\PawlTransportProvider(
             $host
         ));

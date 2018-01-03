@@ -63,19 +63,26 @@ class DownWAMP extends Command
         $this->fire();
     }
 
-    private function stopInstances($file)
+    /**
+     * Stop all process by pids from file $file
+     *
+     * @param string $filename
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    private function stopInstances($filename)
     {
-        if (file_exists($file)) {
-            $content = explode(PHP_EOL, file_get_contents($file));
+        if (file_exists($filename)) {
+            $content = explode(PHP_EOL, file_get_contents($filename));
 
             if (count($content)) {
                 foreach ($content as $pid) {
-                    $pid = (int) trim($pid);
+                    $pid = (int)trim($pid);
 
                     posix_kill($pid, 9);
                 }
             }
-            exec('rm '.$file);
+            unlink($filename);
         }
     }
 }

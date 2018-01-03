@@ -166,6 +166,16 @@ class RouterCest
         $tester->assertEquals(app()->wampRouter, $this->router->getRouter());
     }
 
+    public function testCallController(UnitTester $tester)
+    {
+        $callback = $this->router->parseCallback('WampTestController@testMessage',
+            'sonrac\\WAMP\\tests\\app\\wamp\\controllers');
+        $data = $callback();
+
+        $tester->assertInternalType('array', $data);
+        $tester->assertEquals(['message' => 'message'], $data);
+    }
+
     public function testControllerNamespace(UnitTester $tester)
     {
         app()->wampRouter->setControllerNamespace('\test');

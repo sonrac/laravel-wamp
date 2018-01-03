@@ -78,6 +78,28 @@ class WAMPServiceProvider extends ServiceProvider
             return new RawSocketClientTransportProvider($config['host'], $config['port']);
         });
 
+        /**
+         * Register loggers
+         */
+        $this->app->singleton('wamp.server.logger', function () use ($config){
+            $fileName = isset($config['log_file_server']) && $config['log_file_server'] ? $config['log_file_server'] : 'wamp-server.log';
+            $path = storage_path('logs/'.$fileName);
+
+            $handler = (new StreamHandler($path, MonologLogger::DEBUG))
+                ->setFormatter(new LineFormatter(null, null, true, true));
+
+            return new MonologLogger($fileName, [$handler]);
+        });
+
+        $this->app->singleton('wamp.client.logger', function () use ($config) {
+            $fileName = isset($config['log_file_client']) && $config['log_file_client'] ? $config['log_file_client'] : 'wamp-client.log';
+            $path = storage_path('logs/'.$fileName);
+
+            $handler = (new StreamHandler($path, MonologLogger::DEBUG))
+                ->setFormatter(new LineFormatter(null, null, true, true));
+
+            return new MonologLogger($fileName, [$handler]);
+        });
         /*
          * Set logging
          */
@@ -85,7 +107,7 @@ class WAMPServiceProvider extends ServiceProvider
             $handler = (new StreamHandler($config['pathLogFile'], MonologLogger::DEBUG))
                 ->setFormatter(new LineFormatter(null, null, true, true));
 
-            $logger = new MonologLogger('wamp-server', [$handler]);
+            $logger = new MonologLogger('wamp-client', [$handler]);
 
             Logger::set($logger);
         }

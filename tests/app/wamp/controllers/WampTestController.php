@@ -3,7 +3,7 @@
  * @author Donii Sergii <doniysa@gmail.com>
  */
 
-namespace tests\wamp\controllers\WampTestController;
+namespace sonrac\WAMP\tests\app\wamp\controllers;
 
 use sonrac\WAMP\Abstracts\WAMPControllerInterface;
 use sonrac\WAMP\Client;
@@ -21,13 +21,11 @@ class WampTestController implements WAMPControllerInterface
     /**
      * Send test message
      *
-     * @param \Thruway\Session $session
-     *
      * @return array
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function testMessage(ClientSession $session, Client $client)
+    public function testMessage()
     {
         return [
             'message' => 'message',

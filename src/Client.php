@@ -38,6 +38,15 @@ class Client extends PeerClient
     protected $connectionRetry = true;
 
     /**
+     * Realm
+     *
+     * @var string
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $realm;
+
+    /**
      * Session start event
      *
      * @param \Thruway\ClientSession                $session
@@ -55,7 +64,6 @@ class Client extends PeerClient
      */
     public function start($startLoop = true)
     {
-        app()->wampRouter->parseGroups();
         parent::start($startLoop);
     }
 
@@ -87,6 +95,30 @@ class Client extends PeerClient
     }
 
     /**
+     * Set attribute connectionRetry
+     *
+     * @return bool
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function isConnectionRetry(): bool
+    {
+        return $this->connectionRetry;
+    }
+
+    /**
+     * Set connection retry
+     *
+     * @param bool $connectionRetry
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    public function setConnectionRetry(bool $connectionRetry)
+    {
+        $this->connectionRetry = $connectionRetry;
+    }
+
+    /**
      * Include routes
      *
      * @param \Thruway\ClientSession                $session   Client session
@@ -108,7 +140,7 @@ class Client extends PeerClient
 
         if (is_file($this->routePath)) {
             require $this->routePath;
-
+            app()->wampRouter->parseGroups();
             return;
         }
 
@@ -125,5 +157,6 @@ class Client extends PeerClient
                 }
             }
         }
+        app()->wampRouter->parseGroups();
     }
 }

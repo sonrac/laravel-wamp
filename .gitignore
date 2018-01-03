@@ -3,3 +3,4 @@ composer.lock
 codeception.yml
 .idea/
 bower.json
+composer-bkp.json

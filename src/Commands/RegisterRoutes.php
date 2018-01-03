@@ -9,6 +9,7 @@
 namespace sonrac\WAMP\Commands;
 
 use Illuminate\Console\Command;
+use sonrac\WAMP\Client;
 use sonrac\WAMP\Exceptions\InvalidWampTransportProvider;
 
 /**
@@ -25,7 +26,7 @@ class RegisterRoutes extends Command
      * {@inheritdoc}
      */
     protected $name = 'wamp:register-routes {--realm=?} {--host=?} {--port=?} {--tls?} {--transport-provider=?}
-                {--no-loop?} {--debug?} {--route=path=?}';
+                {--no-loop?} {--no-debug?} {--route-path=?}';
 
     /**
      * {@inheritdoc}
@@ -56,14 +57,20 @@ class RegisterRoutes extends Command
     {
         $this->transportProvider = '\Thruway\Transport\PawlTransportProvider';
 
-        $this->changeWampLogger();
         $this->parseOptions();
+        $this->changeWampLogger();
 
         if (!$this->runInBackground) {
-            $client = app()->wampClient;
+            if ($this->realm) {
+                config('wamp.realm', $this->realm);
+                app()->wampClient = new Client($this->realm);
+                if ($this->routePath) {
+                    app()->wampClient->setRoutePath($this->routePath);
+                }
+            }
 
+            $client = app()->wampClient;
             $client->addTransportProvider($this->getTransportProvider());
-            $client->setRoutePath($this->routePath);
             $client->start(!$this->runOnce);
         } else {
             $command = $this->getName().($this->port ? ' --port='.$this->port : '').
@@ -145,5 +152,15 @@ class RegisterRoutes extends Command
     protected function getTransportURI()
     {
         return ($this->tls ? 'wss://' : 'ws://').$this->host.':'.$this->port;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected function getLogger()
+    {
+        return app('wamp.client.logger');
     }
 }

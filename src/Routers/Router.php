@@ -128,6 +128,15 @@ class Router extends PeerRouter implements WAMPRouterInterface
     protected $controllerNamespace = null;
 
     /**
+     * Callback groups
+     *
+     * @var array
+     *
+     * @author Donii Sergii <doniysa@gmail.com>
+     */
+    protected $groups = [];
+
+    /**
      * Events.
      *
      * @var array
@@ -313,8 +322,29 @@ class Router extends PeerRouter implements WAMPRouterInterface
      */
     public function parseGroups()
     {
-        $this->rpcRouter->parseGroups();
-        $this->pubSubRouter->parseGroups();
+        if (!is_array($this->groups) || !count($this->groups)) {
+            return;
+        }
+        gc_enable();
+        $callbacks = [];
+        foreach ($this->groups as $group) {
+            $this->prefix = $group['prefix'];
+            $this->groupControllerNamespace = $group['namespace'];
+            $this->middleware = $group['middleware'];
+            $callbacks[] = $group['callback']($this->getClientSession());
+        }
+
+        $this->groups = null;
+        unset($this->groups);
+        $this->groups = [];
+
+        $this->prefix = null;
+        $this->groupControllerNamespace = null;
+
+        gc_collect_cycles();
+        gc_disable();
+
+        return $callbacks;
     }
 
     /**
