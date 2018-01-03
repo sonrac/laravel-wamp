@@ -8,9 +8,6 @@
 
 namespace sonrac\WAMP\Commands;
 
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger as MonologLogger;
 use Thruway\Logging\ConsoleLogger;
 use Thruway\Logging\Logger;
 

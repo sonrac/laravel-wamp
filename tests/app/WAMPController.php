@@ -5,7 +5,6 @@
 
 namespace sonrac\WAMP\tests\app;
 
-
 /**
  * Class WAMPController
  *
@@ -15,7 +14,6 @@ namespace sonrac\WAMP\tests\app;
  */
 class WAMPController
 {
-
     /**
      * Index action
      *
@@ -23,9 +21,10 @@ class WAMPController
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    public function getUserInfo() {
+    public function getUserInfo()
+    {
         return [
-            'test' => 'test'
+            'test' => 'test',
         ];
     }
 }
