@@ -55,7 +55,7 @@ class RegisterRoutes extends Command
      */
     public function fire()
     {
-        $this->transportProvider = '\Thruway\Transport\PawlTransportProvider';
+        $this->transportProvider = 'Thruway\\Transport\\RawSocketClientTransportProvider';
 
         $this->parseOptions();
         $this->changeWampLogger();
@@ -134,11 +134,11 @@ class RegisterRoutes extends Command
         }
 
         if (is_null($this->transportProvider) || empty($this->transportProvider)) {
-            $this->transportProvider = '\Thruway\Transport\PawlTransportProvider';
+            $this->transportProvider = 'Thruway\\Transport\\RawSocketClientTransportProvider';
         }
 
         if (is_string($this->transportProvider)) {
-            return $this->transportProvider = new $this->transportProvider($this->getTransportURI());
+            return $this->transportProvider = new $this->transportProvider($this->host, $this->port);
         }
 
         throw new InvalidWampTransportProvider();

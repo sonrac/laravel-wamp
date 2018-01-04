@@ -56,6 +56,7 @@ class Client extends PeerClient
      */
     public function onSessionStart($session, $transport)
     {
+        var_dump(231);
         $this->includeRoutes($session, $transport);
     }
 

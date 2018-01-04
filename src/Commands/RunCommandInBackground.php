@@ -20,6 +20,7 @@ class RunCommandInBackground
     protected $before = null;
     protected $after = null;
     protected $phpBinary = null;
+    protected $disableXdebug = true;
 
     /**
      * RunCommandInBackground constructor.
@@ -27,13 +28,15 @@ class RunCommandInBackground
      * @param string $command
      * @param null   $before
      * @param null   $after
+     * @param bool   $disableXdebug
      */
-    public function __construct($command, $before = null, $after = null)
+    public function __construct($command, $before = null, $after = null, $disableXdebug = true)
     {
         $this->command = $command;
         $this->before = $before;
         $this->after = $after;
         $this->phpBinary = (new PhpExecutableFinder())->find();
+        $this->disableXdebug = $disableXdebug;
     }
 
     /**
@@ -59,7 +62,7 @@ class RunCommandInBackground
     {
         exec($this->composeForRunInBackground(), $out, $pid);
 
-        return count($out) ? (int) $out[0] : null;
+        return count($out) ? (int)$out[0] : null;
     }
 
     /**
@@ -81,12 +84,17 @@ class RunCommandInBackground
     {
         $parts = [];
         if (!empty($this->before)) {
-            $parts[] = (string) $this->before;
+            $parts[] = (string)$this->before;
         }
         $parts[] = 'cd '.base_path();
-        $parts[] = "{$this->phpBinary} {$this->getArtisan()} {$this->command}";
+        $command = "{$this->phpBinary}";
+        if ($this->disableXdebug) {
+            $command .= ' -d xdebug.remote_autostart=off ';
+        }
+        $command .= " {$this->getArtisan()} {$this->command} ";
+        $parts[] = $command;
         if (!empty($this->after)) {
-            $parts[] = (string) $this->after;
+            $parts[] = (string)$this->after;
         }
 
         return implode(' && ', $parts);

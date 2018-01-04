@@ -6,6 +6,7 @@
  * Date: 10/23/17
  * Time: 4:18 PM
  */
+$a = 123;
 require __DIR__.'/../../../vendor/autoload.php';
 
 putenv('CACHE_DRIVER=array');

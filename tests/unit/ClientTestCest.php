@@ -14,7 +14,7 @@ class ClientTestCest
 
     public function _before(UnitTester $I)
     {
-        $this->client = new \sonrac\WAMP\Client('ws://127.0.0.1:9090');
+        $this->client = new \sonrac\WAMP\Client('realm');
         $this->session = Mockery::mock(\Thruway\Session::class);
         $this->transport = Mockery::mock(\Thruway\Transport\PawlTransportProvider::class);
     }

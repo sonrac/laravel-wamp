@@ -128,11 +128,11 @@ class RoutesCallCest
      *
      * @author Donii Sergii <doniysa@gmail.com>
      */
-    private function prepareClient($host = 'ws://127.0.0.1:9192')
+    private function prepareClient($host = '127.0.0.1', $port = 9192)
     {
         app()->wampClient = new \sonrac\WAMP\Client('realm');
-        app()->wampClient->addTransportProvider(new \Thruway\Transport\PawlTransportProvider(
-            $host
+        app()->wampClient->addTransportProvider(new \Thruway\Transport\RawSocketClientTransportProvider(
+            $host, $port
         ));
     }
 }
