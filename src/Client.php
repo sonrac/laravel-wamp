@@ -165,7 +165,7 @@ class Client extends PeerClient
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function processOther(ClientSession $session = null, Message $msg = null)
     {
