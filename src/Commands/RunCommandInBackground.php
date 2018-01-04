@@ -62,7 +62,7 @@ class RunCommandInBackground
     {
         exec($this->composeForRunInBackground(), $out, $pid);
 
-        return count($out) ? (int)$out[0] : null;
+        return count($out) ? (int) $out[0] : null;
     }
 
     /**
@@ -84,7 +84,7 @@ class RunCommandInBackground
     {
         $parts = [];
         if (!empty($this->before)) {
-            $parts[] = (string)$this->before;
+            $parts[] = (string) $this->before;
         }
         $parts[] = 'cd '.base_path();
         $command = "{$this->phpBinary}";
@@ -94,7 +94,7 @@ class RunCommandInBackground
         $command .= " {$this->getArtisan()} {$this->command} ";
         $parts[] = $command;
         if (!empty($this->after)) {
-            $parts[] = (string)$this->after;
+            $parts[] = (string) $this->after;
         }
 
         return implode(' && ', $parts);
