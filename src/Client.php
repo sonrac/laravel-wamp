@@ -9,6 +9,7 @@
 
 namespace sonrac\WAMP;
 
+use Thruway\ClientSession;
 use Thruway\Peer\Client as PeerClient;
 
 /**
@@ -132,7 +133,9 @@ class Client extends PeerClient
             return;
         }
 
-        $session = $this->session = $session;
+        if ($session instanceof ClientSession) {
+            $this->session = $session;
+        }
         $client = $this;
 
         /* @scrutinizer ignore-call */
