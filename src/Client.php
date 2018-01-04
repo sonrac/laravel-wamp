@@ -10,6 +10,7 @@
 namespace sonrac\WAMP;
 
 use Thruway\ClientSession;
+use Thruway\Message\Message;
 use Thruway\Peer\Client as PeerClient;
 
 /**
@@ -161,5 +162,17 @@ class Client extends PeerClient
             }
         }
         app()->wampRouter->parseGroups();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function processOther(ClientSession $session = null, Message $msg = null)
+    {
+        if (!$session) {
+            return;
+        }
+
+        parent::processOther($session, $msg);
     }
 }
