@@ -329,7 +329,7 @@ class Router extends PeerRouter implements WAMPRouterInterface
     protected function addEvent($callback, $eventName, $priority)
     {
         if (is_string($callback)) {
-            list($class, $method) = explode('&', $callback);
+            [$class, $method] = explode('&', $callback);
 
             $callback = function (ConnectionOpenEvent $event) use ($class, $method) {
                 return $class::{$method}($event);
